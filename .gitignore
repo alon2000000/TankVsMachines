@@ -1,6 +1,7 @@
 Library/*
 Temp/*
 Build/*
+Obj/*
 *.pidb
 *.sln
 *.userprefs
