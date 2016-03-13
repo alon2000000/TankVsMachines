@@ -1,15 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponProperties : MonoBehaviour 
+public class InputManager : MonoBehaviour 
 {
-	public float RotateSpeed;
-	public float PitchSpeed;
-	public float MaxPitch;
-	public Transform Nuzzle;
-	public GameObject Ammo;
-	public float ShootingForce;
-	public float AmmoLifeTime;
+
 	// ================================================================================================ //
 	void Start () 
 	{
@@ -18,7 +12,8 @@ public class WeaponProperties : MonoBehaviour
 	// ================================================================================================ //
 	void Update () 
 	{
-	
+		if (Input.GetKey (KeyCode.Escape))
+			Application.Quit ();
 	}
 	// ================================================================================================ //
 }

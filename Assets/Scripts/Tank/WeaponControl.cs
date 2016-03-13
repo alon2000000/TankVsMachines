@@ -5,21 +5,26 @@ public class WeaponControl : MonoBehaviour
 {
 	private Transform _currentWeapon;
 	private WeaponProperties _currentWeaponProperties;
+	private float _originBarrelScale;
 
 	public Transform Turret;
 	public Transform Mag;
 	public Transform Mortar;
+
+	public Transform Barrel;
 	// ================================================================================================ //
 	void Start () 
 	{
 		_currentWeapon = Turret;
 		_currentWeaponProperties = _currentWeapon.gameObject.GetComponent<WeaponProperties>();
+		_originBarrelScale = Barrel.transform.localScale.y;
 	}
 	// ================================================================================================ //
 	void Update () 
 	{
 		toggleWeaponUpdate();
 		rotateWeaponUpdate();
+		rotateBarrel();
 		shootUpdate();
 	}
 	// ================================================================================================ //
@@ -44,6 +49,20 @@ public class WeaponControl : MonoBehaviour
 			else if (_currentWeapon == Mortar)
 				_currentWeapon = Mag;
 			_currentWeaponProperties = _currentWeapon.gameObject.GetComponent<WeaponProperties>();
+		}
+	}
+	// ================================================================================================ //
+	private void rotateBarrel()
+	{
+		if (Input.GetKey (KeyCode.W)) 
+		{
+			if (Barrel.transform.localScale.y < _originBarrelScale)
+				Barrel.transform.localScale += new Vector3( 0.0F,_currentWeaponProperties.PitchSpeed * Time.deltaTime,0.0F );
+		}
+		if (Input.GetKey (KeyCode.S)) 
+		{
+			if (Barrel.transform.localScale.y > _originBarrelScale - _currentWeaponProperties.MaxPitch)
+				Barrel.transform.localScale -= new Vector3( 0.0F,_currentWeaponProperties.PitchSpeed * Time.deltaTime,0.0F );
 		}
 	}
 	// ================================================================================================ //
