@@ -30,7 +30,7 @@ public class WeaponControl : MonoBehaviour
 	// ================================================================================================ //
 	private void toggleWeaponUpdate()
 	{
-		if (Input.GetKeyDown (KeyCode.E)) 
+		/*if (Input.GetKeyDown (KeyCode.E)) 
 		{
 			if (_currentWeapon == Turret)
 				_currentWeapon = Mag;
@@ -49,7 +49,7 @@ public class WeaponControl : MonoBehaviour
 			else if (_currentWeapon == Mortar)
 				_currentWeapon = Mag;
 			_currentWeaponProperties = _currentWeapon.gameObject.GetComponent<WeaponProperties>();
-		}
+		}*/
 	}
 	// ================================================================================================ //
 	private void rotateBarrel()
