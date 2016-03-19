@@ -3,13 +3,14 @@ using System.Collections;
 
 public class ParallelMagShooting : MonoBehaviour 
 {
-	public KeyCode FireKey;
 	public float ShootingInterval;
 	public Transform Nuzzle;
 	public float BulletForce;
 	public Transform Flash;
 	public GameObject HitEffect;
 	public float ShootDistance;
+	public float ErrorShootDistance;
+	public float ErrorShootDir;
 
 	private float _lastTimeShooting;
 	// ================================================================================================ //
@@ -21,7 +22,7 @@ public class ParallelMagShooting : MonoBehaviour
 	void FixedUpdate () 
 	{
 		float timePassedfFromLastShot = Time.time - _lastTimeShooting;
-		if (Input.GetKey (FireKey) && timePassedfFromLastShot > ShootingInterval) 
+		if (Input.GetMouseButton(1) && timePassedfFromLastShot > ShootingInterval) 
 		{
 			// show flash effect
 			Flash.GetComponent<Renderer>().enabled = true;
@@ -29,8 +30,10 @@ public class ParallelMagShooting : MonoBehaviour
 			_lastTimeShooting = Time.time;
 
 			Vector2 nuzzleRotation = Nuzzle.localRotation * Nuzzle.up;
+			Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * ErrorShootDir;
+			float shootDistanceWithError = ShootDistance + Random.value * ErrorShootDistance;
 
-			RaycastHit2D hit = Physics2D.Raycast (Nuzzle.position, nuzzleRotation, ShootDistance, ~(1 << LayerMask.NameToLayer ("TankLayer")));
+			RaycastHit2D hit = Physics2D.Raycast (Nuzzle.position, nuzzleRotationWithError, shootDistanceWithError, ~(1 << LayerMask.NameToLayer ("TankLayer")));
 
 			if (hit.collider != null) 
 			{
@@ -46,7 +49,7 @@ public class ParallelMagShooting : MonoBehaviour
 			else 
 			{
 				// hit effect
-				Vector3 hitPosition = Nuzzle.position + new Vector3(nuzzleRotation.x, nuzzleRotation.y, 0.0F) * ShootDistance;
+				Vector3 hitPosition = Nuzzle.position + new Vector3(nuzzleRotationWithError.x, nuzzleRotationWithError.y, 0.0F) * shootDistanceWithError;
 				Instantiate (HitEffect, hitPosition, Quaternion.identity);
 			}
 		} 
