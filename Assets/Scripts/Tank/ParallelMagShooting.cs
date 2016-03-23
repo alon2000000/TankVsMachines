@@ -43,7 +43,7 @@ public class ParallelMagShooting : MonoBehaviour
 				Rigidbody2D collidedRigidBody = hit.collider.gameObject.GetComponent<Rigidbody2D> ();
 				if (collidedRigidBody != null) 
 				{
-					collidedRigidBody.AddForce (nuzzleRotation * BulletForce);
+					collidedRigidBody.AddForceAtPosition (nuzzleRotationWithError * BulletForce, hit.point);
 				}
 			} 
 			else 

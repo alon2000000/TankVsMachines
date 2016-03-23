@@ -3,8 +3,7 @@ using System.Collections;
 
 public class ShellCollision : MonoBehaviour 
 {
-	private bool _isCollided = false;
-	private int _framesCounterSinceCollision = 0;
+
 	// ================================================================================================ //
 	void Start () 
 	{
@@ -13,24 +12,20 @@ public class ShellCollision : MonoBehaviour
 	// ================================================================================================ //
 	void Update () 
 	{
-		if (_isCollided)
-			_framesCounterSinceCollision++;
-		if (_framesCounterSinceCollision == 3)
-			Destroy(gameObject); // try
+		
 	}
 	// ================================================================================================ //
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log ("Collision...");
-		_isCollided = true;
-		//Destroy(gameObject);
+		Rigidbody2D selfRigidBody =  this.gameObject.GetComponent<Rigidbody2D> ();
+		Rigidbody2D collidedRigidBody =  collision.collider.gameObject.GetComponent<Rigidbody2D> ();
+		if (collidedRigidBody != null && selfRigidBody != null) 
+		{
+			Vector2 impulse = selfRigidBody.mass * selfRigidBody.velocity / Time.deltaTime;
+
+			collidedRigidBody.AddForceAtPosition (impulse, collision.contacts[0].point); // 50 is bulletForce
+		}
+		Destroy(gameObject);
 	}
-	// ================================================================================================ //
-	/*void OnTriggerEnter2D(Collider2D other)
-	{
-		Debug.Log ("Trigger...");
-		//if(other.gameObject.tag=="bullet")
-		Destroy(gameObject);    
-	}*/
 	// ================================================================================================ //
 }
