@@ -16,7 +16,7 @@ public class BarrelShooting : MonoBehaviour
 	// ================================================================================================ //
 	void Update () 
 	{
-		if (Input.GetMouseButtonDown(0)) // left click
+		if (Input.GetMouseButtonDown(1)) // left click
 		{
 			// create
 			GameObject shell = (GameObject)Instantiate(Ammo, Nuzzle.position, Nuzzle.rotation);

@@ -22,7 +22,7 @@ public class ParallelMagShooting : MonoBehaviour
 	void FixedUpdate () 
 	{
 		float timePassedfFromLastShot = Time.time - _lastTimeShooting;
-		if (Input.GetMouseButton(1) && timePassedfFromLastShot > ShootingInterval) 
+		if (Input.GetMouseButton(0) && timePassedfFromLastShot > ShootingInterval) 
 		{
 			// show flash effect
 			Flash.GetComponent<Renderer>().enabled = true;
