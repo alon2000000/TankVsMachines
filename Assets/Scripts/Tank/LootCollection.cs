@@ -39,6 +39,10 @@ public class LootCollection : MonoBehaviour
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
 
+			// update polygon collider
+			Destroy(chipObject.GetComponent<PolygonCollider2D>());
+			chipObject.AddComponent<PolygonCollider2D>();
+
 			// make the chip stop rotate
 			chipObject.GetComponent<Rotate>().enabled = false;
 			chipObject.transform.rotation = Quaternion.identity;
