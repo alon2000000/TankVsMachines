@@ -40,10 +40,7 @@ public class Chip : MonoBehaviour
 	// ================================================================================================ //
 	void OnMouseDown()
 	{
-		if (State == ChipState.ON_GROUND)
-			return;
-
-		GameObject.Find ("InputManager").GetComponent<InputManager> ().DraggedObject = this.gameObject;
+		
 	}
 	// ================================================================================================ //
 }
