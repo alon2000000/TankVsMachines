@@ -33,7 +33,12 @@ public class ParallelMagShooting : MonoBehaviour
 			Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * ErrorShootDir;
 			float shootDistanceWithError = ShootDistance + Random.value * ErrorShootDistance;
 
-			RaycastHit2D hit = Physics2D.Raycast (Nuzzle.position, nuzzleRotationWithError, shootDistanceWithError, ~(1 << LayerMask.NameToLayer ("TankLayer")));
+            LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
+            layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));
+            layerMask |= (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+            layerMask = ~layerMask;
+
+            RaycastHit2D hit = Physics2D.Raycast (Nuzzle.position, nuzzleRotationWithError, shootDistanceWithError, layerMask);
 
 			if (hit.collider != null) 
 			{

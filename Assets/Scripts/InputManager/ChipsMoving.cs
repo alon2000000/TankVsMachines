@@ -78,8 +78,41 @@ public class ChipsMoving : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Mathf.Abs(_objectHandledByMouse.transform.position.x - Camera.main.transform.position.x);
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            worldPos = limitedVectorIntoBag(worldPos);
             _objectHandledByMouse.transform.position = worldPos;
         }
 	}
+    // ======================================================================================================================================== //
+    private Vector3 limitedVectorIntoBag(Vector3 vec)
+    {
+        GameObject bag = GameObject.Find("ChipsBag");
+        SpriteRenderer bagSpriteRenderer = bag.GetComponent<SpriteRenderer>();
+        float bagWidth = bagSpriteRenderer.sprite.bounds.size.x;
+        float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
+        float minX = bag.transform.position.x - bagWidth / 2.0F;
+        float maxX = bag.transform.position.x + bagWidth / 2.0F;
+        float minY = bag.transform.position.y - bagHeight / 2.0F;
+        float maxY = bag.transform.position.y + bagHeight / 2.0F;
+        float halfWidthDraggedObject = _objectHandledByMouse.GetComponent<SpriteRenderer>().sprite.bounds.size.x / 2.0F;
+        float halfHeightDraggedObject = _objectHandledByMouse.GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0F;
+
+        // get the board height
+        GameObject board = GameObject.Find("ChipsBoard");
+        Board boardScript = board.GetComponent<Board>();
+        SpriteRenderer tileSpriteRenderer = boardScript.TilePrefab.gameObject.GetComponent<SpriteRenderer>();
+        float tileHeight = tileSpriteRenderer.sprite.bounds.size.y;
+        float boardHeight = tileHeight * boardScript.BoardSizeY;
+
+        if (vec.x < minX + halfWidthDraggedObject)
+            vec.x = minX + halfWidthDraggedObject;
+        if (vec.x > maxX - halfWidthDraggedObject)
+            vec.x = maxX - halfWidthDraggedObject;
+        if (vec.y < minY + halfHeightDraggedObject)
+            vec.y = minY + halfHeightDraggedObject;
+        if (vec.y > maxY - halfHeightDraggedObject + boardHeight)
+            vec.y = maxY - halfHeightDraggedObject + boardHeight;
+
+        return vec;
+    }
     // ======================================================================================================================================== //
 }

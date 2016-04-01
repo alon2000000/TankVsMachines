@@ -30,8 +30,8 @@ public class LootCollection : MonoBehaviour
 			// change position to be inside the bag
 			GameObject bag = GameObject.Find("ChipsBag");
 			SpriteRenderer bagSpriteRenderer = bag.GetComponent<SpriteRenderer> ();
-			float bagWidth = /*bag.transform.localScale.x / */bagSpriteRenderer.sprite.bounds.size.x;
-			float bagHeight = /*bag.transform.localScale.y / */bagSpriteRenderer.sprite.bounds.size.y;
+			float bagWidth = bagSpriteRenderer.sprite.bounds.size.x;
+			float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
 			float randomX = Random.Range (bag.transform.position.x - bagWidth / 2.0F, bag.transform.position.x + bagWidth / 2.0F);
 			float randomY = Random.Range (bag.transform.position.y - bagHeight / 2.0F, bag.transform.position.y + bagHeight / 2.0F);
 			chipObject.transform.position = new Vector3(randomX, randomY);
@@ -49,6 +49,9 @@ public class LootCollection : MonoBehaviour
 
 			// make the chip the child of the bag
 			chipObject.transform.parent = bag.transform;
+
+            // change chip layer
+            chipObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
 
 			// add to bag script ???? need this????
 			Bag.Chips.Add (chipObject);
