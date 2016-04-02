@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LootCollection : MonoBehaviour 
 {
-	public ChipsBag Bag;
+    public GameObject ChipsBagObj;
 
 	// ================================================================================================ //
 	void Start () 
@@ -28,12 +28,11 @@ public class LootCollection : MonoBehaviour
 			chipScript.State = Chip.ChipState.IN_BAG;
 
 			// change position to be inside the bag
-			GameObject bag = GameObject.Find("ChipsBag");
-			SpriteRenderer bagSpriteRenderer = bag.GetComponent<SpriteRenderer> ();
+            SpriteRenderer bagSpriteRenderer = ChipsBagObj.GetComponent<SpriteRenderer> ();
 			float bagWidth = bagSpriteRenderer.sprite.bounds.size.x;
 			float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
-			float randomX = Random.Range (bag.transform.position.x - bagWidth / 2.0F, bag.transform.position.x + bagWidth / 2.0F);
-			float randomY = Random.Range (bag.transform.position.y - bagHeight / 2.0F, bag.transform.position.y + bagHeight / 2.0F);
+            float randomX = Random.Range (ChipsBagObj.transform.position.x - bagWidth / 2.0F, ChipsBagObj.transform.position.x + bagWidth / 2.0F);
+            float randomY = Random.Range (ChipsBagObj.transform.position.y - bagHeight / 2.0F, ChipsBagObj.transform.position.y + bagHeight / 2.0F);
 			chipObject.transform.position = new Vector3(randomX, randomY);
 
 			// change the layer of sprite
@@ -48,13 +47,13 @@ public class LootCollection : MonoBehaviour
 			chipObject.transform.rotation = Quaternion.identity;
 
 			// make the chip the child of the bag
-			chipObject.transform.parent = bag.transform;
+            chipObject.transform.parent = ChipsBagObj.transform;
 
             // change chip layer
             chipObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
 
 			// add to bag script ???? need this????
-			Bag.Chips.Add (chipObject);
+            ChipsBagObj.GetComponent<ChipsBag>().Chips.Add (chipObject);
 		}
 	}
 	// ================================================================================================ //

@@ -78,12 +78,12 @@ public class ChipsMoving : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Mathf.Abs(_objectHandledByMouse.transform.position.x - Camera.main.transform.position.x);
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            worldPos = limitedVectorIntoBag(worldPos);
+            //worldPos = limitedVectorIntoBag(worldPos);
             _objectHandledByMouse.transform.position = worldPos;
         }
 	}
     // ======================================================================================================================================== //
-    private Vector3 limitedVectorIntoBag(Vector3 vec)
+    /*private Vector3 limitedVectorIntoBag(Vector3 vec)
     {
         GameObject bag = GameObject.Find("ChipsBag");
         SpriteRenderer bagSpriteRenderer = bag.GetComponent<SpriteRenderer>();
@@ -113,6 +113,6 @@ public class ChipsMoving : MonoBehaviour
             vec.y = maxY - halfHeightDraggedObject + boardHeight;
 
         return vec;
-    }
+    }*/
     // ======================================================================================================================================== //
 }
