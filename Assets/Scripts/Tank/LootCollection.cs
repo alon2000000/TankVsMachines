@@ -27,20 +27,12 @@ public class LootCollection : MonoBehaviour
 			// change cip state - to in bag
 			chipScript.State = Chip.ChipState.IN_BAG;
 
-			// change position to be inside the bag
-            SpriteRenderer bagSpriteRenderer = ChipsBagObj.GetComponent<SpriteRenderer> ();
-			float bagWidth = bagSpriteRenderer.sprite.bounds.size.x;
-			float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
-            float randomX = Random.Range (ChipsBagObj.transform.position.x - bagWidth / 2.0F, ChipsBagObj.transform.position.x + bagWidth / 2.0F);
-            float randomY = Random.Range (ChipsBagObj.transform.position.y - bagHeight / 2.0F, ChipsBagObj.transform.position.y + bagHeight / 2.0F);
-			chipObject.transform.position = new Vector3(randomX, randomY);
-
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
 
 			// update polygon collider
-			Destroy(chipObject.GetComponent<PolygonCollider2D>());
-			chipObject.AddComponent<PolygonCollider2D>();
+            Destroy(chipObject.GetComponent<BoxCollider2D>());
+            chipObject.AddComponent<BoxCollider2D>();
 
 			// make the chip stop rotate
 			chipObject.GetComponent<Rotate>().enabled = false;
@@ -52,8 +44,26 @@ public class LootCollection : MonoBehaviour
             // change chip layer
             chipObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
 
-			// add to bag script ???? need this????
+			// add to bag script
             ChipsBagObj.GetComponent<ChipsBag>().Chips.Add (chipObject);
+
+            // rotate the chip 90 deg at random
+            int rand = Random.Range(0,4);
+            chipObject.transform.Rotate(new Vector3(0.0F, 0.0F, 90.0F * rand));
+
+            // get the chip size
+            float chipWidth = chipSpriteRenderer.sprite.bounds.size.x;
+            float chipHeight = chipSpriteRenderer.sprite.bounds.size.y;
+            float maxScale = Mathf.Max(chipWidth, chipHeight);
+            maxScale *= 1.15F; // margin factor
+
+            // change position to be inside the bag
+            SpriteRenderer bagSpriteRenderer = ChipsBagObj.GetComponent<SpriteRenderer> ();
+            float bagWidth = bagSpriteRenderer.sprite.bounds.size.x;
+            float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
+            float randomX = Random.Range (ChipsBagObj.transform.position.x - bagWidth / 2.0F + maxScale / 2.0F, ChipsBagObj.transform.position.x + bagWidth / 2.0F - maxScale / 2.0F);
+            float randomY = Random.Range (ChipsBagObj.transform.position.y - bagHeight / 2.0F + maxScale / 2.0F, ChipsBagObj.transform.position.y + bagHeight / 2.0F - maxScale / 2.0F);
+            chipObject.transform.position = new Vector3(randomX, randomY);
 		}
 	}
 	// ================================================================================================ //

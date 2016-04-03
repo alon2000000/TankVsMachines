@@ -6,6 +6,7 @@ public class KeysPressing : MonoBehaviour
     private bool _isInInventory = false;
     public GameObject ChipsBagObj;
     public GameObject ChipsBoardObj;
+    public GameObject InventoryBackgroungObj;
     // ======================================================================================================================================== //
     void Start () 
     {
@@ -30,6 +31,7 @@ public class KeysPressing : MonoBehaviour
                 chip.SetActive(_isInInventory);
             }
 
+            InventoryBackgroungObj.SetActive(_isInInventory);
             ChipsBagObj.SetActive(_isInInventory);
             ChipsBoardObj.SetActive(_isInInventory);
         }
