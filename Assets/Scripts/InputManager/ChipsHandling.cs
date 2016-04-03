@@ -78,7 +78,8 @@ public class ChipsHandling : MonoBehaviour
         if (_objectHandledByMouse != null) 
         {
             Vector3 mousePos = Input.mousePosition;
-            mousePos.z = Mathf.Abs(_objectHandledByMouse.transform.position.x - Camera.main.transform.position.x);
+            mousePos.z = 5.0F;//Mathf.Abs(_objectHandledByMouse.transform.position.x - Camera.main.transform.position.x);
+            //Debug.Log(mousePos.z);
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             _objectHandledByMouse.transform.position = worldPos;
         }
