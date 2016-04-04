@@ -48,8 +48,9 @@ public class LootCollection : MonoBehaviour
             ChipsBagObj.GetComponent<ChipsBag>().Chips.Add (chipObject);
 
             // rotate the chip 90 deg at random
-            int rand = Random.Range(0,4);
-            chipObject.transform.Rotate(new Vector3(0.0F, 0.0F, 90.0F * rand));
+            int rand = Random.Range(0,2);
+            if (rand == 1) 
+                chipObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
 
             // get the chip size
             float chipWidth = chipSpriteRenderer.sprite.bounds.size.x;

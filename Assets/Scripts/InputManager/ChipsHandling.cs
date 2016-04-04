@@ -4,13 +4,7 @@ using System.Collections;
 public class ChipsHandling : MonoBehaviour 
 {
     private GameObject _objectHandledByMouse = null;
-    private enum HandledObjectState
-    {
-        NONE,
-        DRAGGED,
-        LIFTED
-    }
-    private HandledObjectState _objectState = HandledObjectState.NONE;
+
     private Vector3? _mouseDownPosition = null;
 
     // ======================================================================================================================================== //
@@ -21,8 +15,13 @@ public class ChipsHandling : MonoBehaviour
     // ======================================================================================================================================== //
 	void LateUpdate () 
     {
+        dragChip();
+        draggedChipHoverOverBoard();
         rotateChipUpdate();
-
+	}
+    // ======================================================================================================================================== //
+    private void dragChip()
+    {
         // MOUSE DOWN
         if (Input.GetMouseButtonDown (0)) 
         {
@@ -37,18 +36,8 @@ public class ChipsHandling : MonoBehaviour
                         {
                             _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                             _objectHandledByMouse = hit.collider.gameObject;
-                            _objectState = HandledObjectState.DRAGGED;
                         }
                     }
-                }
-            }
-            else
-            {
-                if (_objectState == HandledObjectState.LIFTED) 
-                {
-                    _objectHandledByMouse = null;
-                    _objectState = HandledObjectState.NONE;
-                    _mouseDownPosition = null;
                 }
             }
         }
@@ -58,19 +47,8 @@ public class ChipsHandling : MonoBehaviour
         {
             if (_objectHandledByMouse != null) 
             {
-                if (_mouseDownPosition == Camera.main.ScreenToWorldPoint (Input.mousePosition)) 
-                {
-                    _objectState = HandledObjectState.LIFTED;
-                } 
-                else 
-                {
-                    if (_objectState == HandledObjectState.DRAGGED) 
-                    {
-                        _objectHandledByMouse = null;
-                        _objectState = HandledObjectState.NONE;
-                        _mouseDownPosition = null;
-                    }
-                }
+                _objectHandledByMouse = null;
+                _mouseDownPosition = null;
             }
         }
 
@@ -83,7 +61,7 @@ public class ChipsHandling : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             _objectHandledByMouse.transform.position = worldPos;
         }
-	}
+    }
     // ======================================================================================================================================== //
     private void rotateChipUpdate()
     {
@@ -96,11 +74,28 @@ public class ChipsHandling : MonoBehaviour
                 {
                     if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
                     {
-                        hit.collider.gameObject.transform.Rotate(new Vector3(0.0F, 0.0F, 90.0F));
+                        hit.collider.gameObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
                     }
                 }
             }
         }
+    }
+    // ======================================================================================================================================== //
+    // raycast on board to mark tiles
+    private void draggedChipHoverOverBoard()
+    {
+        if (_objectHandledByMouse == null)
+            return;
+
+        BoxCollider2D chipCollider = _objectHandledByMouse.GetComponent<BoxCollider2D>();
+        Sprite chipSprite = _objectHandledByMouse.GetComponent<SpriteRenderer>().sprite;
+
+        float f1 = chipCollider.size.x;
+        float f2 = chipCollider.size.y;
+
+        float chipWidth = chipSprite.bounds.size.x * chipSprite.pixelsPerUnit;
+        float chipHeight = chipSprite.bounds.size.y * chipSprite.pixelsPerUnit;
+        Debug.Log(chipWidth + "," + chipHeight + "," + f1 + "," + f2);
     }
     // ======================================================================================================================================== //
 }
