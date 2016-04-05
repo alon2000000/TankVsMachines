@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ChipsHandling : MonoBehaviour 
 {
+    public GameObject ChipsBoardObj;
+
     private GameObject _objectHandledByMouse = null;
 
     private Vector3? _mouseDownPosition = null;
@@ -84,18 +86,56 @@ public class ChipsHandling : MonoBehaviour
     // raycast on board to mark tiles
     private void draggedChipHoverOverBoard()
     {
+        // all tiles to white
+        foreach (Transform child in ChipsBoardObj.transform)
+        {
+            child.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+
         if (_objectHandledByMouse == null)
             return;
 
         BoxCollider2D chipCollider = _objectHandledByMouse.GetComponent<BoxCollider2D>();
         Sprite chipSprite = _objectHandledByMouse.GetComponent<SpriteRenderer>().sprite;
 
-        float f1 = chipCollider.size.x;
-        float f2 = chipCollider.size.y;
+        Vector3 minPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.min;
+        Vector3 maxPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.max;
+        Vector3 rayPoint = new Vector3(minPoint.x, maxPoint.y, maxPoint.z);
 
         float chipWidth = chipSprite.bounds.size.x * chipSprite.pixelsPerUnit;
         float chipHeight = chipSprite.bounds.size.y * chipSprite.pixelsPerUnit;
-        Debug.Log(chipWidth + "," + chipHeight + "," + f1 + "," + f2);
+
+
+        /*LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
+        layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));
+        layerMask |= (1 << LayerMask.NameToLayer("LootInInventoryLayer"));*/
+
+        LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+        layerMask = ~layerMask;
+
+
+
+        int rows = Mathf.RoundToInt(Mathf.Abs(minPoint.x - maxPoint.x) * 100) / 32;
+        int cols = Mathf.RoundToInt(Mathf.Abs(minPoint.y - maxPoint.y) * 100) / 32;
+
+        for (int i = 0; i < rows; ++i)
+        {
+            for (int j = 0; j < cols; ++j)
+            {
+                rayPoint += new Vector3(i * 32.0F / 100.0F, -j * 32.0F / 100.0F);
+
+                RaycastHit2D hit = Physics2D.Raycast(rayPoint, Vector2.zero, 0f, layerMask);
+                if (hit.collider != null)
+                {
+                    //Debug.Log("HIT! " + hit.collider.gameObject.name);
+                    if (hit.collider.gameObject.tag == "BoardTile")
+                    {
+                        //Debug.Log("HIT TILE!");
+                        hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                    }
+                }
+            }
+        }
     }
     // ======================================================================================================================================== //
 }

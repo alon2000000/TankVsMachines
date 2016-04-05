@@ -36,6 +36,7 @@ public class ParallelMagShooting : MonoBehaviour
             LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
             layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));
             layerMask |= (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+            layerMask |= (1 << LayerMask.NameToLayer("InventoryLayer"));
             layerMask = ~layerMask;
 
             RaycastHit2D hit = Physics2D.Raycast (Nuzzle.position, nuzzleRotationWithError, shootDistanceWithError, layerMask);
