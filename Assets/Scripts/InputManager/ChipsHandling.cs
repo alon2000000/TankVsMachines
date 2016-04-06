@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ChipsHandling : MonoBehaviour 
 {
@@ -8,6 +9,9 @@ public class ChipsHandling : MonoBehaviour
     private GameObject _objectHandledByMouse = null;
 
     private Vector3? _mouseDownPosition = null;
+
+    private bool _isHandledChipCanBeSocketed = false;
+    private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
     // ======================================================================================================================================== //
 	void Start () 
@@ -29,15 +33,19 @@ public class ChipsHandling : MonoBehaviour
         {
             if (_objectHandledByMouse == null)
             {
-                RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f);
+                LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
                 if (hit.collider != null)
                 {
+                    Debug.Log(hit.collider.gameObject.name);
+
                     if (hit.collider.gameObject.GetComponent<Chip>() != null)
                     {
                         if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
                         {
                             _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                             _objectHandledByMouse = hit.collider.gameObject;
+                            unsocketChip();
                         }
                     }
                 }
@@ -49,6 +57,18 @@ public class ChipsHandling : MonoBehaviour
         {
             if (_objectHandledByMouse != null) 
             {
+                // if on legal board tiles - socket!
+                if (_isHandledChipCanBeSocketed)
+                {
+                    // insert chip to all the hovered tiles
+                    foreach (GameObject boardTile in _hoveredBoardTiles)
+                    {
+                        boardTile.GetComponent<BoardTile>().SocketedChip = _objectHandledByMouse;
+                    }
+                    // place the chip on the first tile (the top left)
+                    socketChip();
+                }
+
                 _objectHandledByMouse = null;
                 _mouseDownPosition = null;
             }
@@ -69,7 +89,8 @@ public class ChipsHandling : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1)) // check right click
         {
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f);
+            LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
             if (hit.collider != null)
             {
                 if (hit.collider.gameObject.GetComponent<Chip>() != null)
@@ -95,28 +116,15 @@ public class ChipsHandling : MonoBehaviour
         if (_objectHandledByMouse == null)
             return;
 
-        BoxCollider2D chipCollider = _objectHandledByMouse.GetComponent<BoxCollider2D>();
-        Sprite chipSprite = _objectHandledByMouse.GetComponent<SpriteRenderer>().sprite;
-
-        Vector3 minPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.min;
-        Vector3 maxPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.max;
-        Vector3 rayPoint = new Vector3(minPoint.x, maxPoint.y, maxPoint.z);
-
-        float chipWidth = chipSprite.bounds.size.x * chipSprite.pixelsPerUnit;
-        float chipHeight = chipSprite.bounds.size.y * chipSprite.pixelsPerUnit;
-
-
-        /*LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
-        layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));
-        layerMask |= (1 << LayerMask.NameToLayer("LootInInventoryLayer"));*/
-
-        LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
-        layerMask = ~layerMask;
-
-
+        Vector3 minPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.min; // bottom-left point
+        Vector3 maxPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.max; // top-right point
+        Vector3 rayPoint = new Vector3(minPoint.x, maxPoint.y, maxPoint.z) + new Vector3(16.0F / 100.0F, -16.0F / 100.0F); // top-left + 16 to center of chip-unit
 
         int rows = Mathf.RoundToInt(Mathf.Abs(minPoint.x - maxPoint.x) * 100) / 32;
         int cols = Mathf.RoundToInt(Mathf.Abs(minPoint.y - maxPoint.y) * 100) / 32;
+
+        _isHandledChipCanBeSocketed = true;
+        _hoveredBoardTiles.Clear();
 
         for (int i = 0; i < rows; ++i)
         {
@@ -124,17 +132,64 @@ public class ChipsHandling : MonoBehaviour
             {
                 rayPoint += new Vector3(i * 32.0F / 100.0F, -j * 32.0F / 100.0F);
 
+                LayerMask layerMask = (1 << LayerMask.NameToLayer("InventoryLayer"));
                 RaycastHit2D hit = Physics2D.Raycast(rayPoint, Vector2.zero, 0f, layerMask);
                 if (hit.collider != null)
                 {
-                    //Debug.Log("HIT! " + hit.collider.gameObject.name);
                     if (hit.collider.gameObject.tag == "BoardTile")
                     {
-                        //Debug.Log("HIT TILE!");
-                        hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                        if (hit.collider.gameObject.GetComponent<BoardTile>().SocketedChip == null)
+                        {
+                            hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                            _hoveredBoardTiles.Add(hit.collider.gameObject);
+                        }
+                        else
+                        {
+                            _isHandledChipCanBeSocketed = false;
+                        }
+                    }
+                    else
+                    {
+                        _isHandledChipCanBeSocketed = false;
                     }
                 }
+                else
+                {
+                    _isHandledChipCanBeSocketed = false;
+                }
             }
+        }
+    }
+    // ======================================================================================================================================== //
+    private void socketChip()
+    {
+        Vector3 minPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.min;
+        Vector3 maxPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.max;
+
+        int rows = Mathf.RoundToInt(Mathf.Abs(minPoint.x - maxPoint.x) * 100) / 32;
+        int cols = Mathf.RoundToInt(Mathf.Abs(minPoint.y - maxPoint.y) * 100) / 32;
+
+        _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
+    }
+    // ======================================================================================================================================== //
+    private void unsocketChip()
+    {
+        bool isUnsocked = false;
+
+        // remove chip from all tiles (if socketed)
+        foreach (Transform child in ChipsBoardObj.transform)
+        {
+            if (child.gameObject.GetComponent<BoardTile>().SocketedChip == _objectHandledByMouse)
+            {
+                isUnsocked = true;
+                child.gameObject.GetComponent<BoardTile>().SocketedChip = null;
+            }
+        }
+
+        // if unsocked - remove chip effects
+        if (isUnsocked)
+        {
+            // imp.
         }
     }
     // ======================================================================================================================================== //
