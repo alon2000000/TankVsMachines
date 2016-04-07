@@ -27,10 +27,14 @@ public class Chip : MonoBehaviour
 	public Sprite GroundTexture;
 	public Sprite BagTexture;
 
+    private TankParams _params;
+    public TankParam ChipBonus;
+
 	// ================================================================================================ //
 	void Start () 
 	{
-	
+        _params = GameObject.Find("Tank").GetComponent<TankParams>();
+        ChipBonus = _params.GetRandomTankParam();
 	}
 	// ================================================================================================ //
 	void Update () 

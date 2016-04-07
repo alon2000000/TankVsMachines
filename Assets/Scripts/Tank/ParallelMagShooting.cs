@@ -3,26 +3,26 @@ using System.Collections;
 
 public class ParallelMagShooting : MonoBehaviour 
 {
-	public float ShootingInterval;
 	public Transform Nuzzle;
 	public float BulletForce;
 	public Transform Flash;
 	public GameObject HitEffect;
-	public float ShootDistance;
 	public float ErrorShootDistance;
-	public float ErrorShootDir;
 
-	private float _lastTimeShooting;
+    private TankParams _params;
+    private float _lastTimeShooting;
 	// ================================================================================================ //
 	void Start () 
 	{
-		_lastTimeShooting = Time.time;
+        _params = gameObject.GetComponent<TankParams>();
+
+        _lastTimeShooting = Time.time;
 	}
 	// ================================================================================================ //
 	void FixedUpdate () 
 	{
 		float timePassedfFromLastShot = Time.time - _lastTimeShooting;
-		if (Input.GetMouseButton(0) && timePassedfFromLastShot > ShootingInterval) 
+        if (Input.GetMouseButton(0) && timePassedfFromLastShot > _params.GetParam("MagFireRate")) 
 		{
 			// show flash effect
 			Flash.GetComponent<Renderer>().enabled = true;
@@ -30,8 +30,8 @@ public class ParallelMagShooting : MonoBehaviour
 			_lastTimeShooting = Time.time;
 
 			Vector2 nuzzleRotation = Nuzzle.localRotation * Nuzzle.up;
-			Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * ErrorShootDir;
-			float shootDistanceWithError = ShootDistance + Random.value * ErrorShootDistance;
+            Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * _params.GetParam("MagAccuracy");
+            float shootDistanceWithError = _params.GetParam("MagRange") + Random.value * ErrorShootDistance;
 
             LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
             layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));

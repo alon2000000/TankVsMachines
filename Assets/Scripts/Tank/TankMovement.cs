@@ -3,8 +3,6 @@
 public class TankMovement : MonoBehaviour
 {
 	public int m_PlayerNumber = 1;              // Used to identify which tank belongs to which player.  This is set by this tank's manager.
-	public float m_Speed = 12f;                 // How fast the tank moves forward and back.
-	public float m_TurnSpeed = 180f;            // How fast the tank turns in degrees per second.
 	public AudioSource m_MovementAudio;         // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
 	public AudioClip m_EngineIdling;            // Audio to play when the tank isn't moving.
 	public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
@@ -18,10 +16,14 @@ public class TankMovement : MonoBehaviour
 	private float m_TurnInputValue;             // The current value of the turn input.
 	private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
 
+    private TankParams _params;
+
 	// ================================================================================================ //
 	private void Awake ()
 	{
-		m_Rigidbody = GetComponent<Rigidbody2D> ();
+        _params = gameObject.GetComponent<TankParams>();
+
+        m_Rigidbody = GetComponent<Rigidbody2D> ();
 	}
 	// ================================================================================================ //
 	private void OnEnable ()
@@ -96,7 +98,7 @@ public class TankMovement : MonoBehaviour
 	private void Move ()
 	{
 		// Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-		Vector2 movement = transform.up * m_MovementInputValue * m_Speed * Time.deltaTime;
+        Vector2 movement = transform.up * m_MovementInputValue * _params.GetParam("TankSpeed") * Time.deltaTime;
 
 		// Apply this movement to the rigidbody's position.
 		m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
@@ -105,7 +107,7 @@ public class TankMovement : MonoBehaviour
 	private void Turn ()
 	{
 		// Determine the number of degrees to be turned based on the input, speed and time between frames.
-		float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
+        float turn = m_TurnInputValue * _params.GetParam("TankTurnSpeed") * Time.deltaTime;
 
 		// Make this into a rotation in the y axis.
 		//Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);

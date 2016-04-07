@@ -13,10 +13,12 @@ public class ChipsHandling : MonoBehaviour
     private bool _isHandledChipCanBeSocketed = false;
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
+    private TankParams _params;
+
     // ======================================================================================================================================== //
 	void Start () 
     {
-	
+        _params = GameObject.Find("Tank").GetComponent<TankParams>();
 	}
     // ======================================================================================================================================== //
 	void LateUpdate () 
@@ -170,6 +172,10 @@ public class ChipsHandling : MonoBehaviour
         int cols = Mathf.RoundToInt(Mathf.Abs(minPoint.y - maxPoint.y) * 100) / 32;
 
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
+
+        TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
+        _params.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
+        _params.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
     }
     // ======================================================================================================================================== //
     private void unsocketChip()
@@ -189,7 +195,9 @@ public class ChipsHandling : MonoBehaviour
         // if unsocked - remove chip effects
         if (isUnsocked)
         {
-            // imp.
+            TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
+            _params.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
+            _params.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
         }
     }
     // ======================================================================================================================================== //
