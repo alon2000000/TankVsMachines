@@ -32,7 +32,8 @@ public class Chip : MonoBehaviour
 	void Start () 
 	{
         ChipBonus = Toolbox.Instance.TankParams.GetRandomTankParam();
-        this.GetComponent<SpriteRenderer>().sprite = GroundTexture; // set init ground texture
+        this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
+        //this.GetComponent<SpriteRenderer>().sprite = GroundTexture; // set init ground texture
         setRandomBagTexture();
 	}
 	// ================================================================================================ //

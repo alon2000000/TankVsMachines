@@ -27,6 +27,9 @@ public class LootCollection : MonoBehaviour
 			// change chip state - to in bag
 			chipScript.State = Chip.ChipState.IN_BAG;
 
+            // remove animator
+            //chipObject.GetComponent<Animator>().enabled = false;
+
             // change chip texture
             chipSpriteRenderer.sprite = chipScript.BagTexture;
 
