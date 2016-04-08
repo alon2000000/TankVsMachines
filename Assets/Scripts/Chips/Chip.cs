@@ -14,27 +14,26 @@ public class Chip : MonoBehaviour
 	public ChipState State
 	{
 		get { return _state; }
-		set 
-		{
-			_state = value;
-			if (_state == ChipState.ON_GROUND)
-				this.GetComponent<SpriteRenderer> ().sprite = GroundTexture;
-			else
-				this.GetComponent<SpriteRenderer> ().sprite = BagTexture;
-		}
+		set { _state = value; }
 	}
 
-	public Sprite GroundTexture;
+    public Sprite GroundTexture;
 	public Sprite BagTexture;
 
-    private TankParams _params;
+    public Sprite BagTexture1on1;
+    public Sprite BagTexture1on2;
+    public Sprite BagTexture1on3;
+    public Sprite BagTexture2on2;
+    public Sprite BagTexture2on3;
+
     public TankParam ChipBonus;
 
 	// ================================================================================================ //
 	void Start () 
 	{
-        _params = GameObject.Find("Tank").GetComponent<TankParams>();
-        ChipBonus = _params.GetRandomTankParam();
+        ChipBonus = Toolbox.Instance.TankParams.GetRandomTankParam();
+        this.GetComponent<SpriteRenderer>().sprite = GroundTexture; // set init ground texture
+        setRandomBagTexture();
 	}
 	// ================================================================================================ //
 	void Update () 
@@ -46,5 +45,20 @@ public class Chip : MonoBehaviour
 	{
 		
 	}
-	// ================================================================================================ //
+    // ================================================================================================ //
+    public void setRandomBagTexture()
+    {
+        int rand = Random.Range(0, 30);
+        if (rand >= 0 && rand < 5)
+            BagTexture = BagTexture1on1;
+        else if (rand >= 5 && rand < 15)
+            BagTexture = BagTexture1on2;
+        else if (rand >= 15 && rand < 20)
+            BagTexture = BagTexture1on3;
+        else if (rand >= 20 && rand < 25)
+            BagTexture = BagTexture2on2;
+        else
+            BagTexture = BagTexture2on3;
+    }
+    // ================================================================================================ //
 }

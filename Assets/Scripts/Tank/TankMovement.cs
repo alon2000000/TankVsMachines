@@ -16,13 +16,9 @@ public class TankMovement : MonoBehaviour
 	private float m_TurnInputValue;             // The current value of the turn input.
 	private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
 
-    private TankParams _params;
-
 	// ================================================================================================ //
 	private void Awake ()
 	{
-        _params = gameObject.GetComponent<TankParams>();
-
         m_Rigidbody = GetComponent<Rigidbody2D> ();
 	}
 	// ================================================================================================ //
@@ -98,7 +94,7 @@ public class TankMovement : MonoBehaviour
 	private void Move ()
 	{
 		// Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-        Vector2 movement = transform.up * m_MovementInputValue * _params.GetParam("TankSpeed") * Time.deltaTime;
+        Vector2 movement = transform.up * m_MovementInputValue * Toolbox.Instance.TankParams.GetParam("TankSpeed") * Time.deltaTime;
 
 		// Apply this movement to the rigidbody's position.
 		m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
@@ -107,7 +103,7 @@ public class TankMovement : MonoBehaviour
 	private void Turn ()
 	{
 		// Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = m_TurnInputValue * _params.GetParam("TankTurnSpeed") * Time.deltaTime;
+        float turn = m_TurnInputValue * Toolbox.Instance.TankParams.GetParam("TankTurnSpeed") * Time.deltaTime;
 
 		// Make this into a rotation in the y axis.
 		//Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);

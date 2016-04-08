@@ -24,8 +24,11 @@ public class LootCollection : MonoBehaviour
 
 		if (chipScript != null) 
 		{
-			// change cip state - to in bag
+			// change chip state - to in bag
 			chipScript.State = Chip.ChipState.IN_BAG;
+
+            // change chip texture
+            chipSpriteRenderer.sprite = chipScript.BagTexture;
 
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";

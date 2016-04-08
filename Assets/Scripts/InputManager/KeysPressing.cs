@@ -7,6 +7,7 @@ public class KeysPressing : MonoBehaviour
     public GameObject ChipsBagObj;
     public GameObject ChipsBoardObj;
     public GameObject InventoryBackgroungObj;
+    public GameObject UiCanvas;
     // ======================================================================================================================================== //
     void Start () 
     {
@@ -34,6 +35,7 @@ public class KeysPressing : MonoBehaviour
             InventoryBackgroungObj.SetActive(_isInInventory);
             ChipsBagObj.SetActive(_isInInventory);
             ChipsBoardObj.SetActive(_isInInventory);
+            UiCanvas.SetActive(_isInInventory);
         }
     }
     // ======================================================================================================================================== //

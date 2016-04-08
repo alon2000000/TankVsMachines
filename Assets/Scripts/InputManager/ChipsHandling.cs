@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,12 +14,12 @@ public class ChipsHandling : MonoBehaviour
     private bool _isHandledChipCanBeSocketed = false;
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
-    private TankParams _params;
+    private Text _chipDescriptionText = null;
 
     // ======================================================================================================================================== //
 	void Start () 
     {
-        _params = GameObject.Find("Tank").GetComponent<TankParams>();
+
 	}
     // ======================================================================================================================================== //
 	void LateUpdate () 
@@ -26,6 +27,7 @@ public class ChipsHandling : MonoBehaviour
         dragChip();
         draggedChipHoverOverBoard();
         rotateChipUpdate();
+        showChipDescriptionInUI();
 	}
     // ======================================================================================================================================== //
     private void dragChip()
@@ -39,11 +41,11 @@ public class ChipsHandling : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
                 if (hit.collider != null)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
+                    //Debug.Log(hit.collider.gameObject.name);
 
                     if (hit.collider.gameObject.GetComponent<Chip>() != null)
                     {
-                        if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
+                        //if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
                         {
                             _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                             _objectHandledByMouse = hit.collider.gameObject;
@@ -97,7 +99,7 @@ public class ChipsHandling : MonoBehaviour
             {
                 if (hit.collider.gameObject.GetComponent<Chip>() != null)
                 {
-                    if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
+                    if (hit.collider.gameObject.GetComponent<Chip>().State == Chip.ChipState.IN_BAG)
                     {
                         hit.collider.gameObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
                     }
@@ -120,7 +122,7 @@ public class ChipsHandling : MonoBehaviour
 
         Vector3 minPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.min; // bottom-left point
         Vector3 maxPoint = _objectHandledByMouse.GetComponent<SpriteRenderer>().bounds.max; // top-right point
-        Vector3 rayPoint = new Vector3(minPoint.x, maxPoint.y, maxPoint.z) + new Vector3(16.0F / 100.0F, -16.0F / 100.0F); // top-left + 16 to center of chip-unit
+        Vector3 firstRayPoint = new Vector3(minPoint.x, maxPoint.y, maxPoint.z) + new Vector3(16.0F / 100.0F, -16.0F / 100.0F); // top-left + 16 to center of chip-unit
 
         int rows = Mathf.RoundToInt(Mathf.Abs(minPoint.x - maxPoint.x) * 100) / 32;
         int cols = Mathf.RoundToInt(Mathf.Abs(minPoint.y - maxPoint.y) * 100) / 32;
@@ -132,7 +134,8 @@ public class ChipsHandling : MonoBehaviour
         {
             for (int j = 0; j < cols; ++j)
             {
-                rayPoint += new Vector3(i * 32.0F / 100.0F, -j * 32.0F / 100.0F);
+                Vector3 rayPoint;
+                rayPoint = firstRayPoint + new Vector3(i * 32.0F / 100.0F, -j * 32.0F / 100.0F);
 
                 LayerMask layerMask = (1 << LayerMask.NameToLayer("InventoryLayer"));
                 RaycastHit2D hit = Physics2D.Raycast(rayPoint, Vector2.zero, 0f, layerMask);
@@ -174,8 +177,11 @@ public class ChipsHandling : MonoBehaviour
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
 
         TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
-        _params.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
-        _params.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
+        Toolbox.Instance.TankParams.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
+        Toolbox.Instance.TankParams.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
+
+        // change state
+        _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BOARD;
     }
     // ======================================================================================================================================== //
     private void unsocketChip()
@@ -196,8 +202,42 @@ public class ChipsHandling : MonoBehaviour
         if (isUnsocked)
         {
             TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
-            _params.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
-            _params.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
+            Toolbox.Instance.TankParams.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
+            Toolbox.Instance.TankParams.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
+
+            // change state
+            _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BAG;
+        }
+    }
+    // ======================================================================================================================================== //
+    private void showChipDescriptionInUI()
+    {
+        if (_chipDescriptionText == null)
+        {
+            GameObject descriptionTextObj = GameObject.Find("ChipDescriptionText");
+            if (descriptionTextObj != null)
+            {
+                _chipDescriptionText = descriptionTextObj.GetComponent<Text>();
+            }
+        }
+        if (_chipDescriptionText == null)
+            return;
+
+        _chipDescriptionText.text = "";
+
+        LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.GetComponent<Chip>() != null)
+            {
+                TankParam chipBonus = hit.collider.gameObject.GetComponent<Chip>().ChipBonus;
+
+                _chipDescriptionText.text += chipBonus.Name + ": ";
+                _chipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";
+                _chipDescriptionText.text += chipBonus.Bonus.ToString() + ", ";
+                _chipDescriptionText.text += chipBonus.PercentBonus.ToString() + "%";
+            }
         }
     }
     // ======================================================================================================================================== //
