@@ -3,7 +3,14 @@ using System.Collections;
 
 public class Chip : MonoBehaviour 
 {
-	public enum ChipState
+    public enum ChipType
+    {
+        BURNT,
+        SIMPLE,
+        UNIQUE
+    }
+
+    public enum ChipState
 	{
 		ON_GROUND,
 		IN_BAG,
@@ -17,6 +24,8 @@ public class Chip : MonoBehaviour
 		set { _state = value; }
 	}
 
+    public ChipType Type;
+
     public Sprite GroundTexture;
 	public Sprite BagTexture;
 
@@ -28,6 +37,10 @@ public class Chip : MonoBehaviour
 
     public TankParam ChipBonus;
 
+    public RuntimeAnimatorController SimpleAnimationController;
+    public RuntimeAnimatorController UniqueAnimationController;
+    public float AnimationSpeed;
+
 	// ================================================================================================ //
 	void Start () 
 	{
@@ -35,6 +48,28 @@ public class Chip : MonoBehaviour
         this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
         //this.GetComponent<SpriteRenderer>().sprite = GroundTexture; // set init ground texture
         setRandomBagTexture();
+
+        // set type
+        int rand = Random.Range(0,20);
+        if (rand >= 0 && rand < 17)
+        {
+            Type = ChipType.BURNT;
+            gameObject.GetComponent<Animator>().enabled = false;
+        }
+        else if (rand >= 17 && rand < 18)
+        {
+            Type = ChipType.SIMPLE;
+            gameObject.GetComponent<Animator>().runtimeAnimatorController = SimpleAnimationController;
+            gameObject.GetComponent<Animator>().speed = AnimationSpeed;
+        }
+        else
+        {
+            Type = ChipType.UNIQUE;
+            gameObject.GetComponent<Animator>().runtimeAnimatorController = UniqueAnimationController;
+            gameObject.GetComponent<Animator>().speed = AnimationSpeed;
+        }
+
+
 	}
 	// ================================================================================================ //
 	void Update () 

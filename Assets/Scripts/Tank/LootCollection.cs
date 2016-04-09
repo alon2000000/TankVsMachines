@@ -28,7 +28,8 @@ public class LootCollection : MonoBehaviour
 			chipScript.State = Chip.ChipState.IN_BAG;
 
             // remove animator
-            //chipObject.GetComponent<Animator>().enabled = false;
+            if (chipObject.GetComponent<Animator>() != null)
+                chipObject.GetComponent<Animator>().enabled = false;
 
             // change chip texture
             chipSpriteRenderer.sprite = chipScript.BagTexture;
@@ -41,8 +42,10 @@ public class LootCollection : MonoBehaviour
             chipObject.AddComponent<BoxCollider2D>();
 
 			// make the chip stop rotate
-			chipObject.GetComponent<Rotate>().enabled = false;
-			chipObject.transform.rotation = Quaternion.identity;
+			//chipObject.GetComponent<Rotate>().enabled = false;
+			
+            // cancel rotation
+            chipObject.transform.rotation = Quaternion.identity;
 
 			// make the chip the child of the bag
             chipObject.transform.parent = ChipsBagObj.transform;
