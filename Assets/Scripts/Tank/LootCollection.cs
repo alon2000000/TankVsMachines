@@ -22,7 +22,16 @@ public class LootCollection : MonoBehaviour
 		Chip 			chipScript 			= chipObject.GetComponent<Chip> ();
 		SpriteRenderer 	chipSpriteRenderer 	= chipObject.GetComponent<SpriteRenderer> ();
 
-		if (chipScript != null) 
+        // if burnt add to cash
+        if (chipScript.Type == Chip.ChipType.BURNT)
+        {
+            Destroy(chipObject);
+            Toolbox.Instance.TankParams.CashChips++;
+            return;
+        }
+
+        // else, create bigger version in inventory
+        if (chipScript != null) 
 		{
 			// change chip state - to in bag
 			chipScript.State = Chip.ChipState.IN_BAG;

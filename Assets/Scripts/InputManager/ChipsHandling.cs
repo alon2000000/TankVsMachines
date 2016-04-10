@@ -14,7 +14,7 @@ public class ChipsHandling : MonoBehaviour
     private bool _isHandledChipCanBeSocketed = false;
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
-    private Text _chipDescriptionText = null;
+    public Text ChipDescriptionText;
 
     // ======================================================================================================================================== //
 	void Start () 
@@ -212,18 +212,7 @@ public class ChipsHandling : MonoBehaviour
     // ======================================================================================================================================== //
     private void showChipDescriptionInUI()
     {
-        if (_chipDescriptionText == null)
-        {
-            GameObject descriptionTextObj = GameObject.Find("ChipDescriptionText");
-            if (descriptionTextObj != null)
-            {
-                _chipDescriptionText = descriptionTextObj.GetComponent<Text>();
-            }
-        }
-        if (_chipDescriptionText == null)
-            return;
-
-        _chipDescriptionText.text = "";
+        ChipDescriptionText.text = "";
 
         LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
@@ -233,10 +222,10 @@ public class ChipsHandling : MonoBehaviour
             {
                 TankParam chipBonus = hit.collider.gameObject.GetComponent<Chip>().ChipBonus;
 
-                _chipDescriptionText.text += chipBonus.Name + ": ";
-                _chipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";
-                _chipDescriptionText.text += chipBonus.Bonus.ToString() + ", ";
-                _chipDescriptionText.text += chipBonus.PercentBonus.ToString() + "%";
+                ChipDescriptionText.text += chipBonus.Name + ": ";
+                ChipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";
+                ChipDescriptionText.text += chipBonus.Bonus.ToString() + ", ";
+                ChipDescriptionText.text += chipBonus.PercentBonus.ToString() + "%";
             }
         }
     }

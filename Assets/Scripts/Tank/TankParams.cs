@@ -7,10 +7,11 @@ using System.Linq;
 public class TankParams : MonoBehaviour 
 {
     private Text _tankParamsDescriptionText = null;
+    private Text _chipsAmountText;
 
     private Dictionary<string, TankParam> _params = new Dictionary<string, TankParam>();
 
-
+    public int CashChips = 0;
 
     // ======================================================================================================================================== //
     void Awake()
@@ -31,6 +32,7 @@ public class TankParams : MonoBehaviour
 	void Update () 
     {
         showTankParamsDescriptionInUI();
+        showChipsCashAmountInUI();
 	}
     // ======================================================================================================================================== //
     public float GetParam(string name)
@@ -82,6 +84,22 @@ public class TankParams : MonoBehaviour
             _tankParamsDescriptionText.text += GetParam(item.Key);
             _tankParamsDescriptionText.text += "\n";
         }
+    }
+    // ======================================================================================================================================== //
+    private void showChipsCashAmountInUI()
+    {
+        if (_chipsAmountText == null)
+        {
+            GameObject cashChipsAmountTextObj = GameObject.Find("ChipsAmountText");
+            if (cashChipsAmountTextObj != null)
+            {
+                _chipsAmountText = cashChipsAmountTextObj.GetComponent<Text>();
+            }
+        }
+        if (_chipsAmountText == null)
+            return;
+
+        _chipsAmountText.text = CashChips.ToString();;
     }
     // ======================================================================================================================================== //
 }
