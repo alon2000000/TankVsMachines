@@ -20,6 +20,8 @@ public class LootCollection : MonoBehaviour
 	{
 		GameObject 		chipObject 			= collision.collider.gameObject;
 		Chip 			chipScript 			= chipObject.GetComponent<Chip> ();
+        if (chipScript == null)
+            return;
 		SpriteRenderer 	chipSpriteRenderer 	= chipObject.GetComponent<SpriteRenderer> ();
 
         // if burnt add to cash
@@ -61,9 +63,6 @@ public class LootCollection : MonoBehaviour
 
             // change chip layer
             chipObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
-
-			// add to bag script
-            ChipsBagObj.GetComponent<ChipsBag>().Chips.Add (chipObject);
 
             // rotate the chip 90 deg at random
             int rand = Random.Range(0,2);

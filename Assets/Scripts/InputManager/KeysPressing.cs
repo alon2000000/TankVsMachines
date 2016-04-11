@@ -27,11 +27,6 @@ public class KeysPressing : MonoBehaviour
 
             Time.timeScale = _isInInventory ? 0.0F : 1.0F;
 
-            foreach ( GameObject chip in ChipsBagObj.GetComponent<ChipsBag>().Chips )
-            {
-                chip.SetActive(_isInInventory);
-            }
-
             InventoryBackgroungObj.SetActive(_isInInventory);
             ChipsBagObj.SetActive(_isInInventory);
             ChipsBoardObj.SetActive(_isInInventory);

@@ -12,6 +12,7 @@ public class ChipsHandling : MonoBehaviour
     private Vector3? _mouseDownPosition = null;
 
     private bool _isHandledChipCanBeSocketed = false;
+    private bool _isHandledChipAboveSalvage = false;
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
     public Text ChipDescriptionText;
@@ -28,6 +29,7 @@ public class ChipsHandling : MonoBehaviour
         draggedChipHoverOverBoard();
         rotateChipUpdate();
         showChipDescriptionInUI();
+        salvageChips();
 	}
     // ======================================================================================================================================== //
     private void dragChip()
@@ -61,6 +63,13 @@ public class ChipsHandling : MonoBehaviour
         {
             if (_objectHandledByMouse != null) 
             {
+                // if above salvage - destroy + add chips cash
+                if (_isHandledChipAboveSalvage)
+                {
+                    Destroy(_objectHandledByMouse.gameObject);
+                    Toolbox.Instance.TankParams.CashChips += 5; // TODO: change to be different in unique etc.
+                }
+
                 // if on legal board tiles - socket!
                 if (_isHandledChipCanBeSocketed)
                 {
@@ -226,6 +235,26 @@ public class ChipsHandling : MonoBehaviour
                 ChipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";
                 ChipDescriptionText.text += chipBonus.Bonus.ToString() + ", ";
                 ChipDescriptionText.text += chipBonus.PercentBonus.ToString() + "%";
+            }
+        }
+    }
+    // ======================================================================================================================================== //
+    private void salvageChips()
+    {
+        if (_objectHandledByMouse == null)
+            return;
+
+        _objectHandledByMouse.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        _isHandledChipAboveSalvage = false;
+
+        LayerMask layerMask = (1 << LayerMask.NameToLayer("UI"));
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.tag == "SalvageChips")
+            {
+                _objectHandledByMouse.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                _isHandledChipAboveSalvage = true;
             }
         }
     }
