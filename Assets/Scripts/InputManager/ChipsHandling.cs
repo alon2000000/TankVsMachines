@@ -17,6 +17,8 @@ public class ChipsHandling : MonoBehaviour
 
     public Text ChipDescriptionText;
 
+    public TankParams TankParamsScript;
+
     // ======================================================================================================================================== //
 	void Start () 
     {
@@ -67,7 +69,7 @@ public class ChipsHandling : MonoBehaviour
                 if (_isHandledChipAboveSalvage)
                 {
                     Destroy(_objectHandledByMouse.gameObject);
-                    Toolbox.Instance.TankParams.CashChips += 5; // TODO: change to be different in unique etc.
+                    TankParamsScript.CashChips += 5; // TODO: change to be different in unique etc.
                 }
 
                 // if on legal board tiles - socket!
@@ -186,8 +188,8 @@ public class ChipsHandling : MonoBehaviour
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
 
         TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
-        Toolbox.Instance.TankParams.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
-        Toolbox.Instance.TankParams.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
+        TankParamsScript.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
+        TankParamsScript.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
 
         // change state
         _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BOARD;
@@ -211,8 +213,8 @@ public class ChipsHandling : MonoBehaviour
         if (isUnsocked)
         {
             TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
-            Toolbox.Instance.TankParams.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
-            Toolbox.Instance.TankParams.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
+            TankParamsScript.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
+            TankParamsScript.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
 
             // change state
             _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BAG;

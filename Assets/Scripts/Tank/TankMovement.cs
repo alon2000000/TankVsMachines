@@ -8,6 +8,8 @@ public class TankMovement : MonoBehaviour
 	public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
 	public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
 
+    public TankParams TankParamsScript;
+
 
 	private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
 	private string m_TurnAxisName;              // The name of the input axis for turning.
@@ -94,7 +96,7 @@ public class TankMovement : MonoBehaviour
 	private void Move ()
 	{
 		// Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-        Vector2 movement = transform.up * m_MovementInputValue * Toolbox.Instance.TankParams.GetParam("TankSpeed") * Time.deltaTime;
+        Vector2 movement = transform.up * m_MovementInputValue * TankParamsScript.GetParam("TankSpeed") * Time.deltaTime;
 
 		// Apply this movement to the rigidbody's position.
 		m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
@@ -103,7 +105,7 @@ public class TankMovement : MonoBehaviour
 	private void Turn ()
 	{
 		// Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = m_TurnInputValue * Toolbox.Instance.TankParams.GetParam("TankTurnSpeed") * Time.deltaTime;
+        float turn = m_TurnInputValue * TankParamsScript.GetParam("TankTurnSpeed") * Time.deltaTime;
 
 		// Make this into a rotation in the y axis.
 		//Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);

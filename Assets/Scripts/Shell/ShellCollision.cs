@@ -24,6 +24,12 @@ public class ShellCollision : MonoBehaviour
 			Vector2 impulse = selfRigidBody.mass * selfRigidBody.velocity / Time.deltaTime;
 
 			collidedRigidBody.AddForceAtPosition (impulse, collision.contacts[0].point); // 50 is bulletForce
+
+            TankParams paramsScript = collidedRigidBody.gameObject.GetComponent<TankParams>();
+            if (paramsScript != null)
+            {
+                paramsScript.Life -= 25; // TODO: to config
+            }
 		}
 		Destroy(gameObject);
 	}

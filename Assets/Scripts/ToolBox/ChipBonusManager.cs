@@ -1,21 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TankParams : MonoBehaviour 
+public class ChipBonusManager : MonoBehaviour 
 {
-    public GameObject ChipObj;
-
     private Dictionary<string, TankParam> _params = new Dictionary<string, TankParam>();
-    public Dictionary<string, TankParam> Params
-    {
-        get{ return _params;}
-    }
-
-    public int CashChips = 0;
-    public int Life = 100;
 
     // ======================================================================================================================================== //
     void Awake()
@@ -30,39 +20,26 @@ public class TankParams : MonoBehaviour
     // ======================================================================================================================================== //
 	void Start () 
     {
-        
+	
 	}
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (Life <= 0)
-        {
-            if (ChipObj != null)
-            {
-                for (int i = 0; i < Random.Range(1, 5); ++i)
-                {
-                    Instantiate(ChipObj, transform.position + (Vector3)Random.insideUnitCircle, Quaternion.identity);
-                }
-            }
-            Destroy(gameObject);
-        }
+	
 	}
     // ======================================================================================================================================== //
-    public float GetParam(string name)
+    public TankParam GetRandomTankParam()
     {
-        return _params[name].CalculatedValue;
-    }
-    // ======================================================================================================================================== //
-    public void AddBonus2Param(string name, float bonus)
-    {
-        _params[name].Bonus += bonus;
-    }
-    // ======================================================================================================================================== //
-    public void AddPercentBonus2Param(string name, float percentBonus)
-    {
-        _params[name].PercentBonus += percentBonus;
-    }
-    // ======================================================================================================================================== //
+        List<string> dicList = _params.Keys.ToList();
+        string randomName = dicList[Random.Range(0, dicList.Count)];
 
+        float randomBonus = Random.Range(-_params[randomName].MaxBonus, _params[randomName].MaxBonus);
+        float randomPercentBonus = Random.Range(-_params[randomName].MaxPercentBonus, _params[randomName].MaxPercentBonus);
 
+        //Debug.Log(randomName + randomBonus.ToString() +" "+ randomPercentBonus.ToString());
+
+        TankParam param = new TankParam(randomName, randomBonus, randomPercentBonus);
+        return param;
+    }
+    // ======================================================================================================================================== //
 }

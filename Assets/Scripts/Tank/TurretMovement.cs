@@ -5,6 +5,8 @@ public class TurretMovement : MonoBehaviour
 {
 	public Transform Turret;
 
+    public TankParams TankParamsScript;
+
 	// ================================================================================================ //
 	void Start () 
 	{
@@ -17,7 +19,7 @@ public class TurretMovement : MonoBehaviour
 		mousePos.z = -(transform.position.x - Camera.main.transform.position.x);
 		Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        float speed = -Toolbox.Instance.TankParams.GetParam("TurretRotateSpeed");
+        float speed = -TankParamsScript.GetParam("TurretRotateSpeed");
 		float step = speed * Time.deltaTime;
 
 		float angle = Mathf.Atan2 (transform.position.x - worldPos.x, transform.position.y - worldPos.y) * Mathf.Rad2Deg;

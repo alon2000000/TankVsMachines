@@ -4,20 +4,12 @@
 
     public string myGlobalVar = "whatever";
 
-    //public Language language = new Language();
-
-    public TankParams TankParams;
+    public ChipBonusManager ChipBonusManager;
 
     void Awake () 
     {
         // Your initialization code here
 
-        TankParams = gameObject.AddComponent<TankParams>();
+        ChipBonusManager = gameObject.AddComponent<ChipBonusManager>();
     }
 }
-
-/*[System.Serializable]
-public class Language {
-    public string current;
-    public string lastLang;
-}*/
