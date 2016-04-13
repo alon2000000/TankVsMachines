@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ShellCollision : MonoBehaviour 
 {
-
+    public GameObject ExplosionObj;
     // ======================================================================================================================================== //
 	void Start () 
 	{
@@ -31,7 +31,8 @@ public class ShellCollision : MonoBehaviour
                 paramsScript.Life -= 25; // TODO: to config
             }
 		}
-		Destroy(gameObject);
+        Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
 	}
     // ======================================================================================================================================== //
 }

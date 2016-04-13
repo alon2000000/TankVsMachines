@@ -17,6 +17,8 @@ public class TankParams : MonoBehaviour
     public int CashChips = 0;
     public int Life = 100;
 
+    public GameObject ExplosionObj;
+
     // ======================================================================================================================================== //
     void Awake()
     {
@@ -44,6 +46,7 @@ public class TankParams : MonoBehaviour
                     Instantiate(ChipObj, transform.position + (Vector3)Random.insideUnitCircle, Quaternion.identity);
                 }
             }
+            Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 	}
