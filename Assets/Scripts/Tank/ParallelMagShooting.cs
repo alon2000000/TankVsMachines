@@ -49,6 +49,12 @@ public class ParallelMagShooting : MonoBehaviour
 				if (collidedRigidBody != null) 
 				{
 					collidedRigidBody.AddForceAtPosition (nuzzleRotationWithError * BulletForce, hit.point);
+
+                    TankParams paramsScript = collidedRigidBody.gameObject.GetComponent<TankParams>();
+                    if (paramsScript != null)
+                    {
+                        paramsScript.Life -= 1; // TODO: to config
+                    }
 				}
 			} 
 			else 
