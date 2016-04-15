@@ -31,8 +31,13 @@ public class ShellCollision : MonoBehaviour
                 paramsScript.Life -= 25; // TODO: to config
             }
 		}
-        Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
+        //Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
 	}
+    // ======================================================================================================================================== //
+    void OnDestroy() 
+    {
+        Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
+    }
     // ======================================================================================================================================== //
 }
