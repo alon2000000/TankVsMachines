@@ -3,36 +3,70 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ChipsHandling : MonoBehaviour 
+public class InputManager : MonoBehaviour 
 {
+    private bool _isInInventory = false;
+
+    public GameObject ChipsBagObj;
     public GameObject ChipsBoardObj;
+    public GameObject InventoryBackgroungObj;
+    public GameObject UiCanvas;
 
+    // cursor
+    public Texture2D TargetCursor;
+    public Texture2D SelectCursor;
+
+    // chips handling
     private GameObject _objectHandledByMouse = null;
-
     private Vector3? _mouseDownPosition = null;
-
     private bool _isHandledChipCanBeSocketed = false;
     private bool _isHandledChipAboveSalvage = false;
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
     public Text ChipDescriptionText;
-
     public TankParams TankParamsScript;
 
     // ======================================================================================================================================== //
 	void Start () 
     {
 
-	}
+	}	
     // ======================================================================================================================================== //
-	void LateUpdate () 
+	void Update () 
     {
+        checkQuitInput();
+        checkToggleInventoryMode();
+
         dragChip();
         draggedChipHoverOverBoard();
         rotateChipUpdate();
         showChipDescriptionInUI();
         salvageChips();
+
+        updateCursor();
 	}
+    // ======================================================================================================================================== //
+    private void checkQuitInput()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+            Application.Quit ();
+    }
+    // ======================================================================================================================================== //
+    private void checkToggleInventoryMode()
+    {
+        // I to inventory
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            _isInInventory = !_isInInventory;
+
+            Time.timeScale = _isInInventory ? 0.0F : 1.0F;
+
+            InventoryBackgroungObj.SetActive(_isInInventory);
+            ChipsBagObj.SetActive(_isInInventory);
+            ChipsBoardObj.SetActive(_isInInventory);
+            UiCanvas.SetActive(_isInInventory);
+        }
+    }
     // ======================================================================================================================================== //
     private void dragChip()
     {
@@ -259,6 +293,14 @@ public class ChipsHandling : MonoBehaviour
                 _isHandledChipAboveSalvage = true;
             }
         }
+    }
+    // ======================================================================================================================================== //
+    private void updateCursor()
+    {
+        if (_isInInventory)
+            Cursor.SetCursor (SelectCursor, new Vector2(0.0F, 0.0F), CursorMode.Auto);
+        else
+            Cursor.SetCursor (TargetCursor, new Vector2(16.0F, 16.0F), CursorMode.Auto);
     }
     // ======================================================================================================================================== //
 }
