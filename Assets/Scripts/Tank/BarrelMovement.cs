@@ -7,11 +7,11 @@ public class BarrelMovement : MonoBehaviour
 	public float PitchSpeed;
 	public float MaxPitch;
 
-	private float _originBarrelScale;
+	//private float _originBarrelScale;
 	// ================================================================================================ //
 	void Start () 
 	{
-		_originBarrelScale = Barrel.transform.localScale.y;
+		//_originBarrelScale = Barrel.transform.localScale.y;
 	}
 	// ================================================================================================ //
 	void Update () 

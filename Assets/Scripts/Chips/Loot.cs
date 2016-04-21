@@ -1,30 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Chip : MonoBehaviour 
+public class Loot : MonoBehaviour 
 {
-    public enum ChipType
+    public enum LootType
     {
         BURNT,
-        SIMPLE,
-        UNIQUE
+        SIMPLE_CHIP,
+        SKILL_CHIP,
+        SKILL_CHIP_ADAPTER,
+        PLUG
     }
 
-    public enum ChipState
+    public enum LootState
 	{
 		ON_GROUND,
-		IN_BAG,
-		IN_BOARD
+		INSIDE_BAG,
+        ATTACHED
+        /*ATTACHED_TO_BOARD,
+        ATTACHED_TO_CHIP,
+        ATTACHED_TO_ADAPTER*/
 	}
 
-	private ChipState _state = ChipState.ON_GROUND;
-	public ChipState State
-	{
-		get { return _state; }
-		set { _state = value; }
-	}
+    public enum LootRarity
+    {
+        NORMAL,
+        SPECIAL,
+        RARE,
+        EXTREMLY_RARE
+    }
 
-    public ChipType Type;
+    public LootState State { get; set; }
+
+    public LootType Type;
 
     public Sprite GroundTexture;
 	public Sprite BagTexture;
@@ -37,13 +45,16 @@ public class Chip : MonoBehaviour
 
     public TankParam ChipBonus;
 
-    public RuntimeAnimatorController SimpleAnimationController;
-    public RuntimeAnimatorController UniqueAnimationController;
-    public float AnimationSpeed;
+    public Color SilverStartColor;
+    public Color SilverEndColor;
+    public Color GoldStartColor;
+    public Color GoldEndColor;
 
     // ======================================================================================================================================== //
 	void Start () 
 	{
+        State = LootState.ON_GROUND;
+
         ChipBonus = Toolbox.Instance.ChipBonusManager.GetRandomTankParam();
 
         this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
@@ -54,28 +65,36 @@ public class Chip : MonoBehaviour
         int rand = Random.Range(0,20);
         if (rand >= 0 && rand < 17)
         {
-            Type = ChipType.BURNT;
-            gameObject.GetComponent<Animator>().enabled = false;
+            Type = LootType.BURNT;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.black;
         }
         else if (rand >= 17 && rand < 18)
         {
-            Type = ChipType.SIMPLE;
-            gameObject.GetComponent<Animator>().runtimeAnimatorController = SimpleAnimationController;
-            gameObject.GetComponent<Animator>().speed = AnimationSpeed;
+            Type = LootType.SIMPLE_CHIP;
+            gameObject.GetComponent<SpriteRenderer>().color = SilverStartColor;
         }
         else
         {
-            Type = ChipType.UNIQUE;
-            gameObject.GetComponent<Animator>().runtimeAnimatorController = UniqueAnimationController;
-            gameObject.GetComponent<Animator>().speed = AnimationSpeed;
+            Type = LootType.SKILL_CHIP;
+            gameObject.GetComponent<SpriteRenderer>().color = GoldStartColor;
         }
 
 
 	}
     // ======================================================================================================================================== //
-	void Update () 
+    void Update () 
 	{
+        if (State != LootState.ON_GROUND)
+            return;
 
+        if (Type == LootType.SIMPLE_CHIP)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(SilverStartColor, SilverEndColor, Mathf.PingPong(Time.time, 1.0F));
+        }
+        else if (Type == LootType.SKILL_CHIP)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.time, 0.5F));
+        }
 	}
     // ======================================================================================================================================== //
 	void OnMouseDown()

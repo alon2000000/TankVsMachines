@@ -81,7 +81,7 @@ public class InputManager : MonoBehaviour
                 {
                     //Debug.Log(hit.collider.gameObject.name);
 
-                    if (hit.collider.gameObject.GetComponent<Chip>() != null)
+                    if (hit.collider.gameObject.GetComponent<Loot>() != null)
                     {
                         //if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
                         {
@@ -142,9 +142,9 @@ public class InputManager : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
             if (hit.collider != null)
             {
-                if (hit.collider.gameObject.GetComponent<Chip>() != null)
+                if (hit.collider.gameObject.GetComponent<Loot>() != null)
                 {
-                    if (hit.collider.gameObject.GetComponent<Chip>().State == Chip.ChipState.IN_BAG)
+                    if (hit.collider.gameObject.GetComponent<Loot>().State == Loot.LootState.INSIDE_BAG)
                     {
                         hit.collider.gameObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
                     }
@@ -221,12 +221,12 @@ public class InputManager : MonoBehaviour
 
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
 
-        TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
+        TankParam chipBonus = _objectHandledByMouse.GetComponent<Loot>().ChipBonus;
         TankParamsScript.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
         TankParamsScript.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
 
         // change state
-        _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BOARD;
+        _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.ATTACHED;
     }
     // ======================================================================================================================================== //
     private void unsocketChip()
@@ -246,12 +246,12 @@ public class InputManager : MonoBehaviour
         // if unsocked - remove chip effects
         if (isUnsocked)
         {
-            TankParam chipBonus = _objectHandledByMouse.GetComponent<Chip>().ChipBonus;
+            TankParam chipBonus = _objectHandledByMouse.GetComponent<Loot>().ChipBonus;
             TankParamsScript.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
             TankParamsScript.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
 
             // change state
-            _objectHandledByMouse.GetComponent<Chip>().State = Chip.ChipState.IN_BAG;
+            _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.INSIDE_BAG;
         }
     }
     // ======================================================================================================================================== //
@@ -263,9 +263,9 @@ public class InputManager : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
         if (hit.collider != null)
         {
-            if (hit.collider.gameObject.GetComponent<Chip>() != null)
+            if (hit.collider.gameObject.GetComponent<Loot>() != null)
             {
-                TankParam chipBonus = hit.collider.gameObject.GetComponent<Chip>().ChipBonus;
+                TankParam chipBonus = hit.collider.gameObject.GetComponent<Loot>().ChipBonus;
 
                 ChipDescriptionText.text += chipBonus.Name + ": ";
                 ChipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";

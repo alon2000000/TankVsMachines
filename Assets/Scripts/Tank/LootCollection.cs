@@ -20,56 +20,55 @@ public class LootCollection : MonoBehaviour
 	// ================================================================================================ //
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		GameObject 		chipObject 			= collision.collider.gameObject;
-		Chip 			chipScript 			= chipObject.GetComponent<Chip> ();
-        if (chipScript == null)
+		GameObject 		lootObject 			= collision.collider.gameObject;
+        Loot 			lootScript 			= lootObject.GetComponent<Loot> ();
+        if (lootScript == null)
             return;
-		SpriteRenderer 	chipSpriteRenderer 	= chipObject.GetComponent<SpriteRenderer> ();
+        SpriteRenderer 	chipSpriteRenderer 	= lootObject.GetComponent<SpriteRenderer> ();
 
         // if burnt add to cash
-        if (chipScript.Type == Chip.ChipType.BURNT)
+        if (lootScript.Type == Loot.LootType.BURNT)
         {
-            Destroy(chipObject);
+            Destroy(lootObject);
             TankParamsScript.CashChips++;
             return;
         }
 
         // else, create bigger version in inventory
-        if (chipScript != null) 
+        if (lootScript != null) 
 		{
 			// change chip state - to in bag
-			chipScript.State = Chip.ChipState.IN_BAG;
+            lootScript.State = Loot.LootState.INSIDE_BAG;
 
-            // remove animator
-            if (chipObject.GetComponent<Animator>() != null)
-                chipObject.GetComponent<Animator>().enabled = false;
+            // remove color
+            chipSpriteRenderer.color = Color.white;
 
             // change chip texture
-            chipSpriteRenderer.sprite = chipScript.BagTexture;
+            chipSpriteRenderer.sprite = lootScript.BagTexture;
 
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
 
 			// update polygon collider
-            Destroy(chipObject.GetComponent<BoxCollider2D>());
-            chipObject.AddComponent<BoxCollider2D>();
+            Destroy(lootObject.GetComponent<BoxCollider2D>());
+            lootObject.AddComponent<BoxCollider2D>();
 
 			// make the chip stop rotate
 			//chipObject.GetComponent<Rotate>().enabled = false;
 			
             // cancel rotation
-            chipObject.transform.rotation = Quaternion.identity;
+            lootObject.transform.rotation = Quaternion.identity;
 
 			// make the chip the child of the bag
-            chipObject.transform.parent = ChipsBagObj.transform;
+            lootObject.transform.parent = ChipsBagObj.transform;
 
             // change chip layer
-            chipObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
+            lootObject.layer = LayerMask.NameToLayer("LootInInventoryLayer");
 
             // rotate the chip 90 deg at random
             int rand = Random.Range(0,2);
             if (rand == 1) 
-                chipObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
+                lootObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
 
             // get the chip size
             float chipWidth = chipSpriteRenderer.sprite.bounds.size.x;
@@ -83,7 +82,7 @@ public class LootCollection : MonoBehaviour
             float bagHeight = bagSpriteRenderer.sprite.bounds.size.y;
             float randomX = Random.Range (ChipsBagObj.transform.position.x - bagWidth / 2.0F + maxScale / 2.0F, ChipsBagObj.transform.position.x + bagWidth / 2.0F - maxScale / 2.0F);
             float randomY = Random.Range (ChipsBagObj.transform.position.y - bagHeight / 2.0F + maxScale / 2.0F, ChipsBagObj.transform.position.y + bagHeight / 2.0F - maxScale / 2.0F);
-            chipObject.transform.position = new Vector3(randomX, randomY);
+            lootObject.transform.position = new Vector3(randomX, randomY);
 		}
 	}
 	// ================================================================================================ //
