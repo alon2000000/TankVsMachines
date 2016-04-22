@@ -42,6 +42,8 @@ public class Loot : MonoBehaviour
     public Sprite BagTexture1on3;
     public Sprite BagTexture2on2;
     public Sprite BagTexture2on3;
+    public Sprite BagTextureSkillChip;
+    public Sprite BagTextureSkillChipAdapter;
 
     public TankParam ChipBonus;
 
@@ -49,6 +51,8 @@ public class Loot : MonoBehaviour
     public Color SilverEndColor;
     public Color GoldStartColor;
     public Color GoldEndColor;
+    public Color GreenStartColor;
+    public Color GreenEndColor;
 
     // ======================================================================================================================================== //
 	void Start () 
@@ -58,20 +62,23 @@ public class Loot : MonoBehaviour
         ChipBonus = Toolbox.Instance.ChipBonusManager.GetRandomTankParam();
 
         this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
-        //this.GetComponent<SpriteRenderer>().sprite = GroundTexture; // set init ground texture
-        setRandomBagTexture();
 
         // set type
         int rand = Random.Range(0,20);
-        if (rand >= 0 && rand < 17)
+        if (rand >= 0 && rand < 10)
         {
             Type = LootType.BURNT;
             gameObject.GetComponent<SpriteRenderer>().color = Color.black;
         }
-        else if (rand >= 17 && rand < 18)
+        else if (rand >= 10 && rand < 17)
         {
             Type = LootType.SIMPLE_CHIP;
             gameObject.GetComponent<SpriteRenderer>().color = SilverStartColor;
+        }
+        else if (rand >= 17 && rand < 19)
+        {
+            Type = LootType.SKILL_CHIP_ADAPTER;
+            gameObject.GetComponent<SpriteRenderer>().color  = GreenStartColor;
         }
         else
         {
@@ -79,7 +86,7 @@ public class Loot : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = GoldStartColor;
         }
 
-
+        setRandomBagTexture();
 	}
     // ======================================================================================================================================== //
     void Update () 
@@ -93,7 +100,11 @@ public class Loot : MonoBehaviour
         }
         else if (Type == LootType.SKILL_CHIP)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.time, 0.5F));
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.time, 1.0F));
+        }
+        else if (Type == LootType.SKILL_CHIP_ADAPTER)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.time, 1.0F));
         }
 	}
     // ======================================================================================================================================== //
@@ -104,17 +115,28 @@ public class Loot : MonoBehaviour
     // ======================================================================================================================================== //
     public void setRandomBagTexture()
     {
-        int rand = Random.Range(0, 30);
-        if (rand >= 0 && rand < 5)
-            BagTexture = BagTexture1on1;
-        else if (rand >= 5 && rand < 15)
-            BagTexture = BagTexture1on2;
-        else if (rand >= 15 && rand < 20)
-            BagTexture = BagTexture1on3;
-        else if (rand >= 20 && rand < 25)
-            BagTexture = BagTexture2on2;
-        else
-            BagTexture = BagTexture2on3;
+        if (Type == LootType.SIMPLE_CHIP)
+        {
+            int rand = Random.Range(0, 30);
+            if (rand >= 0 && rand < 5)
+                BagTexture = BagTexture1on1;
+            else if (rand >= 5 && rand < 15)
+                BagTexture = BagTexture1on2;
+            else if (rand >= 15 && rand < 20)
+                BagTexture = BagTexture1on3;
+            else if (rand >= 20 && rand < 25)
+                BagTexture = BagTexture2on2;
+            else
+                BagTexture = BagTexture2on3;
+        }
+        else if (Type == LootType.SKILL_CHIP)
+        {
+            BagTexture = BagTextureSkillChip;
+        }
+        else if (Type == LootType.SKILL_CHIP_ADAPTER)
+        {
+            BagTexture = BagTextureSkillChipAdapter;
+        }
     }
     // ======================================================================================================================================== //
 }
