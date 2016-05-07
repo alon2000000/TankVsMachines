@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TurretMovement : MonoBehaviour 
+public class TurretMovement : MonoBehaviour
 {
 	public Transform Turret;
 
-    public TankParams TankParamsScript;
-
+    public TankParams Params;
 	// ================================================================================================ //
 	void Start () 
 	{
-
+       
 	}
 	// ================================================================================================ //
 	void Update () 
@@ -19,7 +18,7 @@ public class TurretMovement : MonoBehaviour
 		mousePos.z = -(transform.position.x - Camera.main.transform.position.x);
 		Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        float speed = -TankParamsScript.GetParam("TurretRotateSpeed");
+        float speed = -Params.Get("TurretRotateSpeed");
 		float step = speed * Time.deltaTime;
 
 		float angle = Mathf.Atan2 (transform.position.x - worldPos.x, transform.position.y - worldPos.y) * Mathf.Rad2Deg;

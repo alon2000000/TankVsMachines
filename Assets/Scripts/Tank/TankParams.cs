@@ -22,12 +22,12 @@ public class TankParams : MonoBehaviour
     // ======================================================================================================================================== //
     void Awake()
     {
-        _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  90.0F,  50.0F,  30.0F);
-        _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      180.0F, 30.0F,  20.0F);
-        _params["TankSpeed"] =           new TankParam("TankSpeed",          3.0F,   2.0F,   100.0F);
-        _params["MagFireRate"] =         new TankParam("MagFireRate",        0.05F,  0.05F,  50.0F);
-        _params["MagRange"] =            new TankParam("MagRange",           3.0F,   2.0F,   100.0F);
-        _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F,  0.05F,  60.0F);
+        _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  90.0F  );
+        _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      180.0F );
+        _params["TankSpeed"] =           new TankParam("TankSpeed",          3.0F   );
+        _params["MagFireRate"] =         new TankParam("MagFireRate",        0.05F  );
+        _params["MagRange"] =            new TankParam("MagRange",           3.0F   );
+        _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F  );
     }
     // ======================================================================================================================================== //
 	void Start () 
@@ -51,21 +51,25 @@ public class TankParams : MonoBehaviour
         }
 	}
     // ======================================================================================================================================== //
-    public float GetParam(string name)
+    public float Get(string name)
     {
-        return _params[name].CalculatedValue;
+        return _params[name].Value;
     }
     // ======================================================================================================================================== //
-    public void AddBonus2Param(string name, float bonus)
+    public void AddReward(TankParamReward reward)
     {
-        _params[name].Bonus += bonus;
+        if (reward.Type == TankParamReward.RewardType.ADDITION)
+            _params[reward.Name].Bonus += reward.Value;
+        if (reward.Type == TankParamReward.RewardType.PERCENT)
+            _params[reward.Name].PercentBonus += reward.Value;
     }
     // ======================================================================================================================================== //
-    public void AddPercentBonus2Param(string name, float percentBonus)
+    public void RemoveReward(TankParamReward reward)
     {
-        _params[name].PercentBonus += percentBonus;
+        if (reward.Type == TankParamReward.RewardType.ADDITION)
+            _params[reward.Name].Bonus -= reward.Value;
+        if (reward.Type == TankParamReward.RewardType.PERCENT)
+            _params[reward.Name].PercentBonus -= reward.Value;
     }
     // ======================================================================================================================================== //
-
-
 }

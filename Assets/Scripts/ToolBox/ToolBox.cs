@@ -4,12 +4,12 @@
 
     public string myGlobalVar = "whatever";
 
-    public ChipBonusManager ChipBonusManager;
+    //public ChipBonusManager ChipBonusManager;
 
     void Awake () 
     {
         // Your initialization code here
 
-        ChipBonusManager = gameObject.AddComponent<ChipBonusManager>();
+        //ChipBonusManager = gameObject.AddComponent<ChipBonusManager>();
     }
 }

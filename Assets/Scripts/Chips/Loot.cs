@@ -9,7 +9,12 @@ public class Loot : MonoBehaviour
         SIMPLE_CHIP,
         SKILL_CHIP,
         SKILL_CHIP_ADAPTER,
-        PLUG
+        PLUG,
+        TURRET_CHIP,
+        BARREL_CHIP,
+        SHELL_CHIP,
+        ENGINE_CHIP,
+        TELEPORT_CHIP
     }
 
     public enum LootState
@@ -17,17 +22,15 @@ public class Loot : MonoBehaviour
 		ON_GROUND,
 		INSIDE_BAG,
         ATTACHED
-        /*ATTACHED_TO_BOARD,
-        ATTACHED_TO_CHIP,
-        ATTACHED_TO_ADAPTER*/
 	}
 
     public enum LootRarity
     {
-        NORMAL,
-        SPECIAL,
-        RARE,
-        EXTREMLY_RARE
+        NORMAL,         // gray
+        SPECIAL,        // silver
+        RARE,           // gold
+        EXTREMLY_RARE,  // glow gold
+        UNIQUE          // blinked random colors
     }
 
     public LootState State { get; set; }
@@ -45,7 +48,7 @@ public class Loot : MonoBehaviour
     public Sprite BagTextureSkillChip;
     public Sprite BagTextureSkillChipAdapter;
 
-    public TankParam ChipBonus;
+    public TankParamReward Reward;
 
     public Color SilverStartColor;
     public Color SilverEndColor;
@@ -59,7 +62,7 @@ public class Loot : MonoBehaviour
 	{
         State = LootState.ON_GROUND;
 
-        ChipBonus = Toolbox.Instance.ChipBonusManager.GetRandomTankParam();
+        Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
 
         this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
 

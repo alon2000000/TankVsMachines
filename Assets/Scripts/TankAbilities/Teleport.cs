@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TankParam
+public class Teleport : MonoBehaviour 
 {
-    public string Name;
-    public float OriginalValue;
-    public float Bonus = 0.0F;
-    public float PercentBonus = 0.0F;
-
+    public KeyCode Key;
+    public Texture2D Image;
+    public int Level;
+    public int Experience;
     // ======================================================================================================================================== //
-    public TankParam(string name, float originalValue)
+	void Start () 
     {
-        Name = name;
-        OriginalValue = originalValue;
-    }
+	
+	}
     // ======================================================================================================================================== //
-    public float Value
+	void Update () 
     {
-        get { return (OriginalValue + Bonus) * (1 + PercentBonus / 100.0F); }
-    }
+        if (Input.GetKeyDown(Key))
+        {
+            gameObject.transform.position = new Vector3(
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
+                gameObject.transform.position.z);
+        }
+	}
     // ======================================================================================================================================== //
 }

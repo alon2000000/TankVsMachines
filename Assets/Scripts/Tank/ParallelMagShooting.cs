@@ -11,7 +11,7 @@ public class ParallelMagShooting : MonoBehaviour
 
     private float _lastTimeShooting;
 
-    public TankParams TankParamsScript;
+    public TankParams Params;
 	// ================================================================================================ //
 	void Start () 
 	{
@@ -21,16 +21,16 @@ public class ParallelMagShooting : MonoBehaviour
 	void FixedUpdate () 
 	{
 		float timePassedfFromLastShot = Time.time - _lastTimeShooting;
-        if (Input.GetMouseButton(0) && timePassedfFromLastShot > TankParamsScript.GetParam("MagFireRate")) 
-		{
+        if (Input.GetMouseButton(0) && timePassedfFromLastShot > Params.Get("MagFireRate"))
+		{                
 			// show flash effect
 			Flash.GetComponent<Renderer>().enabled = true;
 
 			_lastTimeShooting = Time.time;
 
 			Vector2 nuzzleRotation = Nuzzle.localRotation * Nuzzle.up;
-            Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * TankParamsScript.GetParam("MagAccuracy");
-            float shootDistanceWithError = TankParamsScript.GetParam("MagRange") + Random.value * ErrorShootDistance;
+                Vector2 nuzzleRotationWithError = nuzzleRotation + Random.insideUnitCircle * Params.Get("MagAccuracy");
+            float shootDistanceWithError = Params.Get("MagRange") + Random.value * ErrorShootDistance;
 
             LayerMask layerMask = (1 << LayerMask.NameToLayer("TankLayer"));
             layerMask |= (1 << LayerMask.NameToLayer("LootOnGroundLayer"));

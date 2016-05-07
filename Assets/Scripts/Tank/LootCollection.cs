@@ -5,7 +5,7 @@ public class LootCollection : MonoBehaviour
 {
     public GameObject ChipsBagObj;
 
-    public TankParams TankParamsScript;
+    public TankParams Params;
 
 	// ================================================================================================ //
 	void Start () 
@@ -30,7 +30,7 @@ public class LootCollection : MonoBehaviour
         if (lootScript.Type == Loot.LootType.BURNT)
         {
             Destroy(lootObject);
-            TankParamsScript.CashChips++;
+            Params.CashChips++;
             return;
         }
 

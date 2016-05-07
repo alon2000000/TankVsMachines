@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ShowTankParamsInGui : MonoBehaviour 
 {
-    public TankParams TankParamsScript;
+    public TankParams Params;
     public Text TankParamsDescriptionText;
     public Text ChipsAmountText;
 
@@ -24,18 +24,18 @@ public class ShowTankParamsInGui : MonoBehaviour
     {
         TankParamsDescriptionText.text = "";
 
-        foreach (var item in TankParamsScript.Params)
+        foreach (var item in Params.Params)
         {
             TankParamsDescriptionText.text += item.Key;
             TankParamsDescriptionText.text += ": ";
-            TankParamsDescriptionText.text += TankParamsScript.GetParam(item.Key);
+            TankParamsDescriptionText.text += item.Value.Value;
             TankParamsDescriptionText.text += "\n";
         }
     }
     // ======================================================================================================================================== //
     private void showChipsCashAmountInUI()
     {
-        ChipsAmountText.text = TankParamsScript.CashChips.ToString();;
+        ChipsAmountText.text = Params.CashChips.ToString();
     }
     // ======================================================================================================================================== //
 }

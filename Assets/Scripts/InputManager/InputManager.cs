@@ -24,7 +24,7 @@ public class InputManager : MonoBehaviour
     private List<GameObject> _hoveredBoardTiles = new List<GameObject>();
 
     public Text ChipDescriptionText;
-    public TankParams TankParamsScript;
+    public TankParams Params;
 
     // ======================================================================================================================================== //
 	void Start () 
@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour
                 if (_isHandledChipAboveSalvage)
                 {
                     Destroy(_objectHandledByMouse.gameObject);
-                    TankParamsScript.CashChips += 5; // TODO: change to be different in unique etc.
+                    Params.CashChips += 5; // TODO: change to be different in unique etc.
                 }
 
                 // if on legal board tiles - socket!
@@ -221,9 +221,8 @@ public class InputManager : MonoBehaviour
 
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
 
-        TankParam chipBonus = _objectHandledByMouse.GetComponent<Loot>().ChipBonus;
-        TankParamsScript.AddBonus2Param(chipBonus.Name, chipBonus.Bonus);
-        TankParamsScript.AddPercentBonus2Param(chipBonus.Name, chipBonus.PercentBonus);
+        TankParamReward reward = _objectHandledByMouse.GetComponent<Loot>().Reward;
+        Params.AddReward(reward);
 
         // change state
         _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.ATTACHED;
@@ -246,9 +245,8 @@ public class InputManager : MonoBehaviour
         // if unsocked - remove chip effects
         if (isUnsocked)
         {
-            TankParam chipBonus = _objectHandledByMouse.GetComponent<Loot>().ChipBonus;
-            TankParamsScript.AddBonus2Param(chipBonus.Name, -chipBonus.Bonus);
-            TankParamsScript.AddPercentBonus2Param(chipBonus.Name, -chipBonus.PercentBonus);
+            TankParamReward reward = _objectHandledByMouse.GetComponent<Loot>().Reward;
+            Params.RemoveReward(reward);
 
             // change state
             _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.INSIDE_BAG;
@@ -265,12 +263,12 @@ public class InputManager : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<Loot>() != null)
             {
-                TankParam chipBonus = hit.collider.gameObject.GetComponent<Loot>().ChipBonus;
+                TankParamReward reward = hit.collider.gameObject.GetComponent<Loot>().Reward;
 
-                ChipDescriptionText.text += chipBonus.Name + ": ";
-                ChipDescriptionText.text += chipBonus.Bonus > 0.0F ? "+" : "";
-                ChipDescriptionText.text += chipBonus.Bonus.ToString() + ", ";
-                ChipDescriptionText.text += chipBonus.PercentBonus.ToString() + "%";
+                ChipDescriptionText.text += reward.Name + ": ";
+                ChipDescriptionText.text += reward.Value;
+                if (reward.Type == TankParamReward.RewardType.PERCENT)
+                    ChipDescriptionText.text += "%";
             }
         }
     }
