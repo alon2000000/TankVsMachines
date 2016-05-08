@@ -57,17 +57,46 @@ public class Loot : MonoBehaviour
     public Color GreenStartColor;
     public Color GreenEndColor;
 
+    public Transform SkillTextureTransform;
+    public Sprite SkillTexture;
+    // skills sprites
+    public Sprite RepairTexture;
+    public Sprite TurretTexture;
+    public Sprite ShellTexture;
+    public Sprite TeleportTexture;
+
     // ======================================================================================================================================== //
 	void Start () 
 	{
         State = LootState.ON_GROUND;
 
-        Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
+        // TODO: to function...
+        int rand = Random.Range(0,4);
+        if (rand == 0)
+        {
+            Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
+            SkillTexture = TurretTexture;
+        }
+        else if (rand == 1)
+        {
+            Reward = new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION);
+            SkillTexture = TeleportTexture;
+        }
+        else if (rand == 2)
+        {
+            Reward = new TankParamReward("MagFireRate", 0.2F, TankParamReward.RewardType.ADDITION);
+            SkillTexture = RepairTexture;
+        }
+        else if (rand == 3)
+        {
+            Reward = new TankParamReward("MagAccuracy", 0.1F, TankParamReward.RewardType.ADDITION);
+            SkillTexture = ShellTexture;
+        }
 
         this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
 
         // set type
-        int rand = Random.Range(0,20);
+        rand = Random.Range(0,20);
         if (rand >= 0 && rand < 10)
         {
             Type = LootType.BURNT;

@@ -28,6 +28,7 @@ public class TankParams : MonoBehaviour
         _params["MagFireRate"] =         new TankParam("MagFireRate",        0.05F  );
         _params["MagRange"] =            new TankParam("MagRange",           3.0F   );
         _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F  );
+        _params["TeleportLevel"] =       new TankParam("TeleportLevel",      0.0F   );
     }
     // ======================================================================================================================================== //
 	void Start () 

@@ -49,6 +49,10 @@ public class LootCollection : MonoBehaviour
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
 
+            // show skill sprite
+            lootScript.SkillTextureTransform.gameObject.SetActive(true);
+            lootScript.SkillTextureTransform.GetComponent<SpriteRenderer>().sprite = lootScript.SkillTexture;
+
 			// update polygon collider
             Destroy(lootObject.GetComponent<BoxCollider2D>());
             lootObject.AddComponent<BoxCollider2D>();
