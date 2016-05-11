@@ -91,29 +91,7 @@ public class Loot : MonoBehaviour
     // ======================================================================================================================================== //
     void Update () 
 	{
-        GameObject objectChangingColor;
-        if (State == LootState.ON_GROUND)
-            objectChangingColor = gameObject;
-        else
-            objectChangingColor = Body;
-
-        if (Rarity == LootRarity.SPECIAL)
-        {
-            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(SilverStartColor, SilverEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
-        }
-        else if (Rarity == LootRarity.RARE)
-        {
-            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
-        }
-        else if (Rarity == LootRarity.EXTREMLY_RARE)
-        {
-            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
-        }
-        else if (Rarity == LootRarity.UNIQUE)
-        {
-            float t = Mathf.PingPong(Time.realtimeSinceStartup / 2.0F, 1f);
-            objectChangingColor.GetComponent<SpriteRenderer>().color = UniqueGradient.Evaluate(t);
-        }
+        updateColor();
 	}
     // ======================================================================================================================================== //
 	void OnMouseDown()
@@ -197,7 +175,6 @@ public class Loot : MonoBehaviour
         {
             Debug.Log("NORMAL CHIP");
             Rarity = LootRarity.NORMAL;
-            gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
         }
         else if (rand < 950) // 20%
         {
@@ -218,6 +195,40 @@ public class Loot : MonoBehaviour
         {
             Debug.Log("UNIQUE CHIP");
             Rarity = LootRarity.UNIQUE;
+        }
+    }
+    // ======================================================================================================================================== //
+    private void updateColor()
+    {
+        if (Type == LootType.BURNT)
+            return;
+
+        GameObject objectChangingColor;
+        if (State == LootState.ON_GROUND)
+            objectChangingColor = gameObject;
+        else
+            objectChangingColor = Body;
+
+        if (Rarity == LootRarity.NORMAL)
+        {
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.gray;
+        }
+        else if (Rarity == LootRarity.SPECIAL)
+        {
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(SilverStartColor, SilverEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+        }
+        else if (Rarity == LootRarity.RARE)
+        {
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+        }
+        else if (Rarity == LootRarity.EXTREMLY_RARE)
+        {
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+        }
+        else if (Rarity == LootRarity.UNIQUE)
+        {
+            float t = Mathf.PingPong(Time.realtimeSinceStartup / 2.0F, 1f);
+            objectChangingColor.GetComponent<SpriteRenderer>().color = UniqueGradient.Evaluate(t);
         }
     }
     // ======================================================================================================================================== //
