@@ -35,13 +35,20 @@ public class Loot : MonoBehaviour
     public LootRarity Rarity;
 
     public Sprite GroundTexture;
-	public Sprite BagTexture;
+    public Sprite BodyTexture;
+    public Sprite FrameTexture;
 
-    public Sprite BagTexture1on1;
-    public Sprite BagTexture1on2;
-    public Sprite BagTexture1on3;
-    public Sprite BagTexture2on2;
-    public Sprite BagTexture2on3;
+    public Sprite BodyTexture1on1;
+    public Sprite BodyTexture1on2;
+    public Sprite BodyTexture1on3;
+    public Sprite BodyTexture2on2;
+    public Sprite BodyTexture2on3;
+
+    public Sprite FrameTexture1on1;
+    public Sprite FrameTexture1on2;
+    public Sprite FrameTexture1on3;
+    public Sprite FrameTexture2on2;
+    public Sprite FrameTexture2on3;
 
     public TankParamReward Reward;
 
@@ -51,10 +58,6 @@ public class Loot : MonoBehaviour
     public Color GoldEndColor;
     public Color GreenStartColor;
     public Color GreenEndColor;
-    public Color RedStartColor;
-    public Color RedEndColor;
-    public Color BlueStartColor;
-    public Color BlueEndColor;
 
     public Gradient UniqueGradient;
 
@@ -65,6 +68,11 @@ public class Loot : MonoBehaviour
     public Sprite TurretTexture;
     public Sprite ShellTexture;
     public Sprite TeleportTexture;
+
+    // the parts of the chip
+    public GameObject Body;
+    public GameObject Frame;
+    public GameObject Logo;
     // ======================================================================================================================================== //
 	void Start () 
 	{
@@ -83,25 +91,28 @@ public class Loot : MonoBehaviour
     // ======================================================================================================================================== //
     void Update () 
 	{
-        /*if (State != LootState.ON_GROUND)
-            return;*/
+        GameObject objectChangingColor;
+        if (State == LootState.ON_GROUND)
+            objectChangingColor = gameObject;
+        else
+            objectChangingColor = Body;
 
         if (Rarity == LootRarity.SPECIAL)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(SilverStartColor, SilverEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(SilverStartColor, SilverEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
         else if (Rarity == LootRarity.RARE)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
         else if (Rarity == LootRarity.EXTREMLY_RARE)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
         else if (Rarity == LootRarity.UNIQUE)
         {
             float t = Mathf.PingPong(Time.realtimeSinceStartup / 2.0F, 1f);
-            gameObject.GetComponent<SpriteRenderer>().color = UniqueGradient.Evaluate(t);
+            objectChangingColor.GetComponent<SpriteRenderer>().color = UniqueGradient.Evaluate(t);
         }
 	}
     // ======================================================================================================================================== //
@@ -114,15 +125,30 @@ public class Loot : MonoBehaviour
     {
         int rand = Random.Range(0, 30);
         if (rand >= 0 && rand < 5)
-            BagTexture = BagTexture1on1;
+        {
+            BodyTexture = BodyTexture1on1;
+            FrameTexture = FrameTexture1on1;
+        }
         else if (rand >= 5 && rand < 15)
-            BagTexture = BagTexture1on2;
+        {
+            BodyTexture = BodyTexture1on2;
+            FrameTexture = FrameTexture1on2;
+        }
         else if (rand >= 15 && rand < 20)
-            BagTexture = BagTexture1on3;
+        {
+            BodyTexture = BodyTexture1on3;
+            FrameTexture = FrameTexture1on3;
+        }
         else if (rand >= 20 && rand < 25)
-            BagTexture = BagTexture2on2;
+        {
+            BodyTexture = BodyTexture2on2;
+            FrameTexture = FrameTexture2on2;
+        }
         else
-            BagTexture = BagTexture2on3;
+        {
+            BodyTexture = BodyTexture2on3;
+            FrameTexture = FrameTexture2on3;
+        }
     }
     // ======================================================================================================================================== //
     private void setLootType()

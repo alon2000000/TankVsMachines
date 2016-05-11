@@ -44,14 +44,16 @@ public class LootCollection : MonoBehaviour
             chipSpriteRenderer.color = Color.white;
 
             // change chip texture
-            chipSpriteRenderer.sprite = lootScript.BagTexture;
+            chipSpriteRenderer.sprite = lootScript.FrameTexture;
+            lootScript.Logo.SetActive(true);
+            lootScript.Body.SetActive(true);
+            //lootScript.Frame.SetActive(true);
+            lootScript.Logo.GetComponent<SpriteRenderer>().sprite = lootScript.SkillTexture;
+            lootScript.Body.GetComponent<SpriteRenderer>().sprite = lootScript.BodyTexture;
+            //lootScript.Frame.GetComponent<SpriteRenderer>().sprite = lootScript.FrameTexture;
 
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
-
-            // show skill sprite
-            lootScript.SkillTextureTransform.gameObject.SetActive(true);
-            lootScript.SkillTextureTransform.GetComponent<SpriteRenderer>().sprite = lootScript.SkillTexture;
 
 			// update polygon collider
             Destroy(lootObject.GetComponent<BoxCollider2D>());
