@@ -73,8 +73,10 @@ public class LootCollection : MonoBehaviour
 
             // rotate the chip 90 deg at random
             int rand = Random.Range(0,2);
-            if (rand == 1) 
-                lootObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
+            if (rand == 1)
+            {
+                lootScript.Rotate90Deg();
+            }
 
             // get the chip size
             float chipWidth = chipSpriteRenderer.sprite.bounds.size.x;

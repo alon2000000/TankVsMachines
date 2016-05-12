@@ -232,4 +232,23 @@ public class Loot : MonoBehaviour
         }
     }
     // ======================================================================================================================================== //
+    public void Rotate90Deg()
+    {
+        // return if on ground or attached to mother board
+        if (State != Loot.LootState.INSIDE_BAG)
+            return;
+
+        // return if square
+        SpriteRenderer  chipSpriteRenderer  = gameObject.GetComponent<SpriteRenderer> ();
+        int chipWidth = Mathf.RoundToInt(10 * chipSpriteRenderer.sprite.bounds.size.x);
+        int chipHeight = Mathf.RoundToInt(10 * chipSpriteRenderer.sprite.bounds.size.y);
+        //Debug.Log(chipWidth+","+chipHeight);
+        if (chipWidth == chipHeight)
+            return;
+        
+        float ZRotation = (transform.rotation.eulerAngles.z == 0) ? -90.0F : 90.0F;
+        transform.Rotate(new Vector3(0.0F, 0.0F, ZRotation));
+        Body.transform.Rotate(new Vector3(180.0F, 0.0F, 0.0F));
+    }
+    // ======================================================================================================================================== //
 }

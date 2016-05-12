@@ -144,10 +144,7 @@ public class InputManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.GetComponent<Loot>() != null)
                 {
-                    if (hit.collider.gameObject.GetComponent<Loot>().State == Loot.LootState.INSIDE_BAG)
-                    {
-                        hit.collider.gameObject.transform.Rotate(new Vector3(180.0F, 0.0F, 90.0F));
-                    }
+                    hit.collider.gameObject.GetComponent<Loot>().Rotate90Deg();
                 }
             }
         }
