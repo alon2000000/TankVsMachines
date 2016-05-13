@@ -173,27 +173,27 @@ public class Loot : MonoBehaviour
         int rand = Random.Range(0,1000);
         if (rand < 750) // 75%
         {
-            Debug.Log("NORMAL CHIP");
+            //Debug.Log("NORMAL CHIP");
             Rarity = LootRarity.NORMAL;
         }
         else if (rand < 950) // 20%
         {
-            Debug.Log("SPECIAL CHIP");
+            //Debug.Log("SPECIAL CHIP");
             Rarity = LootRarity.SPECIAL;
         }
         else if (rand < 990) // 4%
         {
-            Debug.Log("RARE CHIP");
+            //Debug.Log("RARE CHIP");
             Rarity = LootRarity.RARE;
         }
         else if (rand < 998) // 0.7%
         {
-            Debug.Log("EXTREMLY RARE CHIP");
+            //Debug.Log("EXTREMLY RARE CHIP");
             Rarity = LootRarity.EXTREMLY_RARE;
         }
         else // 0.2%
         {
-            Debug.Log("UNIQUE CHIP");
+            //Debug.Log("UNIQUE CHIP");
             Rarity = LootRarity.UNIQUE;
         }
     }

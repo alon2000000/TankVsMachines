@@ -276,6 +276,7 @@ public class InputManager : MonoBehaviour
             return;
 
         _objectHandledByMouse.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        //_objectHandledByMouse.gameObject.GetComponent<Loot>().Body.GetComponent<SpriteRenderer>().color = Color.white;
         _isHandledChipAboveSalvage = false;
 
         LayerMask layerMask = (1 << LayerMask.NameToLayer("UI"));
@@ -285,6 +286,7 @@ public class InputManager : MonoBehaviour
             if (hit.collider.gameObject.tag == "SalvageChips")
             {
                 _objectHandledByMouse.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                //_objectHandledByMouse.gameObject.GetComponent<Loot>().Body.GetComponent<SpriteRenderer>().color = Color.red;
                 _isHandledChipAboveSalvage = true;
             }
         }

@@ -7,6 +7,9 @@ public class ShowTankParamsInGui : MonoBehaviour
     public TankParams Params;
     public Text TankParamsDescriptionText;
     public Text ChipsAmountText;
+    public Slider HealthBar;
+    public Slider ShieldBar;
+    public Slider EnergyBar;
 
     // ======================================================================================================================================== //
 	void Start () 
@@ -18,6 +21,7 @@ public class ShowTankParamsInGui : MonoBehaviour
     {
         showTankParamsDescriptionInUI();
         showChipsCashAmountInUI();
+        showBars();
 	}
     // ======================================================================================================================================== //
     private void showTankParamsDescriptionInUI()
@@ -36,6 +40,18 @@ public class ShowTankParamsInGui : MonoBehaviour
     private void showChipsCashAmountInUI()
     {
         ChipsAmountText.text = Params.CashChips.ToString();
+    }
+    // ======================================================================================================================================== //
+    private void showBars()
+    {
+        HealthBar.value = Params.HP;
+        HealthBar.maxValue = Params.MaxHP;
+
+        ShieldBar.value = Params.Shield;
+        ShieldBar.maxValue = Params.MaxShield;
+
+        EnergyBar.value = Params.Energy;
+        EnergyBar.maxValue = Params.MaxEnergy;
     }
     // ======================================================================================================================================== //
 }

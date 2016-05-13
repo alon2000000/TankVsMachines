@@ -28,7 +28,8 @@ public class ShellCollision : MonoBehaviour
             TankParams paramsScript = collidedRigidBody.gameObject.GetComponent<TankParams>();
             if (paramsScript != null)
             {
-                paramsScript.Life -= 25; // TODO: to config
+                //paramsScript.Shield
+                paramsScript.HP -= 25; // TODO: to config
             }
 		}
         //Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);

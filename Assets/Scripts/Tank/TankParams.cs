@@ -15,7 +15,12 @@ public class TankParams : MonoBehaviour
     }
 
     public int CashChips = 0;
-    public int Life = 100;
+    public int MaxHP = 100;
+    public int HP = 100;
+    public int MaxShield = 100;
+    public int Shield = 100;
+    public int MaxEnergy = 100;
+    public int Energy = 100;
 
     public GameObject ExplosionObj;
 
@@ -38,7 +43,7 @@ public class TankParams : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (Life <= 0)
+        if (HP <= 0)
         {
             if (ChipObj != null)
             {
