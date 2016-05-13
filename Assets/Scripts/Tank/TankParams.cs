@@ -15,12 +15,17 @@ public class TankParams : MonoBehaviour
     }
 
     public int CashChips = 0;
-    public int MaxHP = 100;
-    public int HP = 100;
-    public int MaxShield = 100;
-    public int Shield = 100;
-    public int MaxEnergy = 100;
-    public int Energy = 100;
+    public float MaxHP = 100.0F;
+    public float HP = 100.0F;
+    public float MaxEnergy = 100.0F;
+    public float Energy = 100.0F;
+
+    public float MaxShield = 100.0F;
+    public float Shield = 100.0F;
+    public float ShieldDurability = 5.0F;
+    public float ShieldVsPenetration = 25.0F;
+    public float ShieldAbsorption = 25.0F;
+    public float ShieldWeight = 20.0F;
 
     public GameObject ExplosionObj;
 
@@ -34,6 +39,14 @@ public class TankParams : MonoBehaviour
         _params["MagRange"] =            new TankParam("MagRange",           3.0F   );
         _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F  );
         _params["TeleportLevel"] =       new TankParam("TeleportLevel",      0.0F   );
+
+        // shield skill
+        _params["MaxShield"] =              new TankParam("MaxShield",              MaxShield);
+        _params["Shield"] =                 new TankParam("Shield",                 Shield);
+        _params["ShieldDurability"] =       new TankParam("ShieldDurability",       ShieldDurability);
+        _params["ShieldVsPenetration"] =    new TankParam("ShieldVsPenetration",    ShieldVsPenetration);
+        _params["ShieldAbsorption"] =       new TankParam("ShieldAbsorption",       ShieldAbsorption);
+        _params["ShieldWeight"] =           new TankParam("ShieldWeight",           ShieldWeight);
     }
     // ======================================================================================================================================== //
 	void Start () 

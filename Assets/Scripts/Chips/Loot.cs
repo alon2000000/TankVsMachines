@@ -10,7 +10,8 @@ public class Loot : MonoBehaviour
         BARREL_CHIP,
         SHELL_CHIP,
         ENGINE_CHIP,
-        TELEPORT_CHIP
+        TELEPORT_CHIP,
+        SHIELD_CHIP
     }
 
     public enum LootState
@@ -68,6 +69,7 @@ public class Loot : MonoBehaviour
     public Sprite TurretTexture;
     public Sprite ShellTexture;
     public Sprite TeleportTexture;
+    public Sprite ShieldTexture;
 
     // the parts of the chip
     public GameObject Body;
@@ -141,7 +143,7 @@ public class Loot : MonoBehaviour
         }
 
         // 30% to be usable chip
-        rand = Random.Range(0,4);
+        rand = Random.Range(0,5);
         if (rand == 0)
         {
             Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
@@ -165,6 +167,12 @@ public class Loot : MonoBehaviour
             Reward = new TankParamReward("MagAccuracy", 0.1F, TankParamReward.RewardType.ADDITION);
             SkillTexture = ShellTexture;
             Type = LootType.ENGINE_CHIP;
+        }
+        else if (rand == 4)
+        {
+            Reward = new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION);
+            SkillTexture = ShieldTexture;
+            Type = LootType.SHIELD_CHIP;
         }
     }
     // ======================================================================================================================================== //
