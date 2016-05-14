@@ -75,6 +75,11 @@ public class TankParams : MonoBehaviour
         return _params[name].Value;
     }
     // ======================================================================================================================================== //
+    public float Set(string name, float val)
+    {
+        return _params[name].OriginalValue = val;
+    }
+    // ======================================================================================================================================== //
     public void AddReward(TankParamReward reward)
     {
         if (reward.Type == TankParamReward.RewardType.ADDITION)
