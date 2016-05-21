@@ -15,23 +15,30 @@ public class TankParams : MonoBehaviour
     }
 
     public int CashChips = 0;
+
     public float MaxHP = 100.0F;
     public float HP = 100.0F;
     public float MaxEnergy = 100.0F;
     public float Energy = 100.0F;
+    public float Weight = 10.0F;
 
     public float MaxShield = 100.0F;
     public float Shield = 100.0F;
     public float ShieldDurability = 5.0F;
     public float ShieldVsPenetration = 25.0F;
     public float ShieldAbsorption = 25.0F;
-    public float ShieldWeight = 20.0F;
 
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
     void Awake()
     {
+        _params["MaxHP"] =      new TankParam("MaxHP",      MaxHP);
+        _params["HP"] =         new TankParam("HP",         HP);
+        _params["MaxEnergy"] =  new TankParam("MaxEnergy",  MaxEnergy);
+        _params["Energy"] =     new TankParam("Energy",     Energy);
+        _params["Weight"] =     new TankParam("Weight",     Weight);
+
         _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  90.0F  );
         _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      180.0F );
         _params["TankSpeed"] =           new TankParam("TankSpeed",          3.0F   );
@@ -46,7 +53,6 @@ public class TankParams : MonoBehaviour
         _params["ShieldDurability"] =       new TankParam("ShieldDurability",       ShieldDurability);
         _params["ShieldVsPenetration"] =    new TankParam("ShieldVsPenetration",    ShieldVsPenetration);
         _params["ShieldAbsorption"] =       new TankParam("ShieldAbsorption",       ShieldAbsorption);
-        _params["ShieldWeight"] =           new TankParam("ShieldWeight",           ShieldWeight);
     }
     // ======================================================================================================================================== //
 	void Start () 

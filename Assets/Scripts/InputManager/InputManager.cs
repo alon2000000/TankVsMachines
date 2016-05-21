@@ -218,8 +218,10 @@ public class InputManager : MonoBehaviour
 
         _objectHandledByMouse.transform.position = _hoveredBoardTiles[0].transform.position + new Vector3((rows-1) * 16.0F / 100.0F, -(cols-1) * 16.0F / 100.0F);
 
-        TankParamReward reward = _objectHandledByMouse.GetComponent<Loot>().Reward;
-        Params.AddReward(reward);
+        List<TankParamReward> rewards = _objectHandledByMouse.GetComponent<Loot>().Rewards;
+        if (rewards != null)
+            foreach (TankParamReward reward in rewards)
+                Params.AddReward(reward);
 
         // change state
         _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.ATTACHED;
@@ -242,8 +244,10 @@ public class InputManager : MonoBehaviour
         // if unsocked - remove chip effects
         if (isUnsocked)
         {
-            TankParamReward reward = _objectHandledByMouse.GetComponent<Loot>().Reward;
-            Params.RemoveReward(reward);
+            List<TankParamReward> rewards = _objectHandledByMouse.GetComponent<Loot>().Rewards;
+            if (rewards != null)
+                foreach (TankParamReward reward in rewards)
+                    Params.RemoveReward(reward);
 
             // change state
             _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.INSIDE_BAG;
@@ -260,12 +264,16 @@ public class InputManager : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<Loot>() != null)
             {
-                TankParamReward reward = hit.collider.gameObject.GetComponent<Loot>().Reward;
-
-                ChipDescriptionText.text += reward.Name + ": ";
-                ChipDescriptionText.text += reward.Value;
-                if (reward.Type == TankParamReward.RewardType.PERCENT)
-                    ChipDescriptionText.text += "%";
+                List<TankParamReward> rewards = hit.collider.gameObject.GetComponent<Loot>().Rewards;
+                if (rewards != null)
+                    foreach (TankParamReward reward in rewards)
+                    {
+                        ChipDescriptionText.text += "[" + reward.Name + ": ";
+                        ChipDescriptionText.text += reward.Value;
+                        if (reward.Type == TankParamReward.RewardType.PERCENT)
+                            ChipDescriptionText.text += "%";
+                        ChipDescriptionText.text += "] ";
+                    }
             }
         }
     }

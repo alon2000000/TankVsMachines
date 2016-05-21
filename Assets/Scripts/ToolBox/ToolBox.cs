@@ -1,4 +1,6 @@
-﻿public class Toolbox : Singleton<Toolbox> 
+﻿using UnityEngine;
+
+public class Toolbox : Singleton<Toolbox> 
 {
     protected Toolbox () {} // guarantee this will be always a singleton only - can't use the constructor!
 
@@ -6,10 +8,15 @@
 
     //public ChipBonusManager ChipBonusManager;
 
+    public ChipsResources ChipsResources;
+
+
     void Awake () 
     {
         // Your initialization code here
 
         //ChipBonusManager = gameObject.AddComponent<ChipBonusManager>();
+
+        ChipsResources = GameObject.Find("Resources").GetComponent<ChipsResources>();
     }
 }

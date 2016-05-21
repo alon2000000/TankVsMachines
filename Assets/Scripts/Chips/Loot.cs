@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Loot : MonoBehaviour 
 {
+    public enum LootState
+    {
+        ON_GROUND,
+        INSIDE_BAG,
+        ATTACHED
+    }
+
     public enum LootType
     {
         BURNT,
@@ -14,45 +22,27 @@ public class Loot : MonoBehaviour
         SHIELD_CHIP
     }
 
-    public enum LootState
-	{
-		ON_GROUND,
-		INSIDE_BAG,
-        ATTACHED
-	}
-
     public enum LootRarity
     {
-        NORMAL,                 // gray
-        SPECIAL,                // silver glow
-        RARE,                   // glow gold
-        EXTREMLY_RARE,          // glow color
+        NORMAL = 1,                 // gray
+        SPECIAL = 3,                // silver glow
+        RARE = 5,                   // glow gold
+        EXTREMELY_RARE = 10,          // glow color
         UNIQUE                  // blinked random colors r/g/b
     }
 
-    public LootState State { get; set; }
+    public List<TankParamReward> Rewards = new List<TankParamReward>();
 
+    public LootState State;
     public LootType Type;
     public LootRarity Rarity;
 
     public Sprite GroundTexture;
     public Sprite BodyTexture;
     public Sprite FrameTexture;
+    public Sprite SkillTexture;
 
-    public Sprite BodyTexture1on1;
-    public Sprite BodyTexture1on2;
-    public Sprite BodyTexture1on3;
-    public Sprite BodyTexture2on2;
-    public Sprite BodyTexture2on3;
-
-    public Sprite FrameTexture1on1;
-    public Sprite FrameTexture1on2;
-    public Sprite FrameTexture1on3;
-    public Sprite FrameTexture2on2;
-    public Sprite FrameTexture2on3;
-
-    public TankParamReward Reward;
-
+    // colors
     public Color SilverStartColor;
     public Color SilverEndColor;
     public Color GoldStartColor;
@@ -62,8 +52,6 @@ public class Loot : MonoBehaviour
 
     public Gradient UniqueGradient;
 
-    public Transform SkillTextureTransform;
-    public Sprite SkillTexture;
     // skills sprites
     public Sprite RepairTexture;
     public Sprite TurretTexture;
@@ -75,20 +63,40 @@ public class Loot : MonoBehaviour
     public GameObject Body;
     public GameObject Frame;
     public GameObject Logo;
+
+    // chances
+    public float BurntChance = 75.0F;
+    public float SpecialChance = 20.0F;
+    public float RareChance = 4.0F;
+    public float ExtremelyRareChance = 0.7F;
+    public float UniqueChance = 0.2F;
     // ======================================================================================================================================== //
 	void Start () 
 	{
+        // set init state to be on ground
         State = LootState.ON_GROUND;
+        // rotate randomly on ground
+        this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); 
 
-        this.transform.RotateAround (this.transform.position, this.transform.forward, Random.Range(0, 360)); // rotate randomly
-
-        setLootType();
-
-        if (Type == LootType.BURNT)
+        // burnt chance
+        bool isBurnt = setBurnt();
+        if (isBurnt)
             return;
 
+        // rarity
         setLootRarity();
-        setRandomBagTexture();
+
+        // due to rarity make the chip body & reward
+        if (Rarity == LootRarity.UNIQUE)
+        {
+            setChipUnique();
+        }
+        else
+        {
+            setLootSize();
+            setLootType();
+            setRewards();
+        }
 	}
     // ======================================================================================================================================== //
     void Update () 
@@ -96,128 +104,130 @@ public class Loot : MonoBehaviour
         updateColor();
 	}
     // ======================================================================================================================================== //
-	void OnMouseDown()
-	{
-		
-	}
-    // ======================================================================================================================================== //
-    private void setRandomBagTexture()
+    private bool setBurnt()
     {
-        int rand = Random.Range(0, 30);
-        if (rand >= 0 && rand < 5)
+        float rand = Random.Range(0.0F, 100.0F);
+        if (rand <= BurntChance)
         {
-            BodyTexture = BodyTexture1on1;
-            FrameTexture = FrameTexture1on1;
+            Type = LootType.BURNT;
+            return true;
         }
-        else if (rand >= 5 && rand < 15)
+        return false;
+    }
+    // ======================================================================================================================================== //
+    private void setLootRarity()
+    {
+        float rand = Random.Range(0.0F, 100.0F);
+
+
+        if (rand <= SpecialChance)
         {
-            BodyTexture = BodyTexture1on2;
-            FrameTexture = FrameTexture1on2;
+            //Debug.Log("SPECIAL CHIP");
+            Rarity = LootRarity.SPECIAL;
         }
-        else if (rand >= 15 && rand < 20)
+        else if (rand <= SpecialChance + RareChance)
         {
-            BodyTexture = BodyTexture1on3;
-            FrameTexture = FrameTexture1on3;
+            //Debug.Log("RARE CHIP");
+            Rarity = LootRarity.RARE;
         }
-        else if (rand >= 20 && rand < 25)
+        else if (rand <= SpecialChance + RareChance + ExtremelyRareChance)
         {
-            BodyTexture = BodyTexture2on2;
-            FrameTexture = FrameTexture2on2;
+            //Debug.Log("EXTREMLY RARE CHIP");
+            Rarity = LootRarity.EXTREMELY_RARE;
+        }
+        else if (rand <= SpecialChance + RareChance + ExtremelyRareChance + UniqueChance)
+        {
+            //Debug.Log("UNIQUE CHIP");
+            Rarity = LootRarity.UNIQUE;
         }
         else
         {
-            BodyTexture = BodyTexture2on3;
-            FrameTexture = FrameTexture2on3;
+            //Debug.Log("NORMAL CHIP");
+            Rarity = LootRarity.NORMAL;
+        }
+    }
+    // ======================================================================================================================================== //
+    private void setLootSize()
+    {
+        int rand = Random.Range(0, 5);
+        if (rand == 0)
+        {
+            BodyTexture = Toolbox.Instance.ChipsResources.BodyTexture1on1;
+            FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture1on1;
+        }
+        else if (rand == 1)
+        {
+            BodyTexture = Toolbox.Instance.ChipsResources.BodyTexture1on2;
+            FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture1on2;
+        }
+        else if (rand == 2)
+        {
+            BodyTexture = Toolbox.Instance.ChipsResources.BodyTexture1on3;
+            FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture1on3;
+        }
+        else if (rand == 3)
+        {
+            BodyTexture = Toolbox.Instance.ChipsResources.BodyTexture2on2;
+            FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture2on2;
+        }
+        else
+        {
+            BodyTexture = Toolbox.Instance.ChipsResources.BodyTexture2on3;
+            FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture2on3;
         }
     }
     // ======================================================================================================================================== //
     private void setLootType()
     {
-        // 70% to be burnt
-        int rand = Random.Range(0,10);
-        if (rand < 7)
-        {
-            Type = LootType.BURNT;
-            gameObject.GetComponent<SpriteRenderer>().color = Color.black;
-            return;
-        }
-
-        // 30% to be usable chip
-        rand = Random.Range(0,5);
+        int rand = Random.Range(0,5);
         if (rand == 0)
         {
-            Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
+            //Reward = new TankParamReward("TurretRotateSpeed", 5.0F, TankParamReward.RewardType.ADDITION);
             SkillTexture = TurretTexture;
             Type = LootType.TURRET_CHIP;
         }
         else if (rand == 1)
         {
-            Reward = new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION);
+            //Reward = new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION);
             SkillTexture = TeleportTexture;
             Type = LootType.TELEPORT_CHIP;
         }
         else if (rand == 2)
         {
-            Reward = new TankParamReward("MagFireRate", 0.2F, TankParamReward.RewardType.ADDITION);
+            //Reward = new TankParamReward("MagFireRate", 0.2F, TankParamReward.RewardType.ADDITION);
             SkillTexture = RepairTexture;
             Type = LootType.BARREL_CHIP;
         }
         else if (rand == 3)
         {
-            Reward = new TankParamReward("MagAccuracy", 0.1F, TankParamReward.RewardType.ADDITION);
+            //Reward = new TankParamReward("MagAccuracy", 0.1F, TankParamReward.RewardType.ADDITION);
             SkillTexture = ShellTexture;
             Type = LootType.ENGINE_CHIP;
         }
         else if (rand == 4)
         {
-            Reward = new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION);
+            //Reward = new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION);
             SkillTexture = ShieldTexture;
             Type = LootType.SHIELD_CHIP;
-        }
-    }
-    // ======================================================================================================================================== //
-    private void setLootRarity()
-    {
-        int rand = Random.Range(0,1000);
-        if (rand < 750) // 75%
-        {
-            //Debug.Log("NORMAL CHIP");
-            Rarity = LootRarity.NORMAL;
-        }
-        else if (rand < 950) // 20%
-        {
-            //Debug.Log("SPECIAL CHIP");
-            Rarity = LootRarity.SPECIAL;
-        }
-        else if (rand < 990) // 4%
-        {
-            //Debug.Log("RARE CHIP");
-            Rarity = LootRarity.RARE;
-        }
-        else if (rand < 998) // 0.7%
-        {
-            //Debug.Log("EXTREMLY RARE CHIP");
-            Rarity = LootRarity.EXTREMLY_RARE;
-        }
-        else // 0.2%
-        {
-            //Debug.Log("UNIQUE CHIP");
-            Rarity = LootRarity.UNIQUE;
+            //Reward = Toolbox.Instance.ShieldReward.GetReward(LootRarity.NORMAL);
         }
     }
     // ======================================================================================================================================== //
     private void updateColor()
     {
-        if (Type == LootType.BURNT)
-            return;
-
+        // set the changing color object
         GameObject objectChangingColor;
         if (State == LootState.ON_GROUND)
             objectChangingColor = gameObject;
         else
             objectChangingColor = Body;
 
-        if (Rarity == LootRarity.NORMAL)
+        // update color
+        if (Type == LootType.BURNT)
+        {
+            objectChangingColor.GetComponent<SpriteRenderer>().color = Color.black;
+        }
+        else if (Rarity == LootRarity.NORMAL)
         {
             objectChangingColor.GetComponent<SpriteRenderer>().color = Color.gray;
         }
@@ -229,7 +239,7 @@ public class Loot : MonoBehaviour
         {
             objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
-        else if (Rarity == LootRarity.EXTREMLY_RARE)
+        else if (Rarity == LootRarity.EXTREMELY_RARE)
         {
             objectChangingColor.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
@@ -258,5 +268,27 @@ public class Loot : MonoBehaviour
         transform.Rotate(new Vector3(0.0F, 0.0F, ZRotation));
         Body.transform.Rotate(new Vector3(180.0F, 0.0F, 0.0F));
     }
+    // ======================================================================================================================================== //
+    private void setChipUnique()
+    {
+        
+    }
+    // ======================================================================================================================================== //
+    private void setRewards()
+    {
+        //########################################################################### //
+        // SHIELD
+        //########################################################################### //
+        if (Type == LootType.SHIELD_CHIP)
+        {
+            for (int i = 0; i < (int)Rarity; ++i)
+            {
+                Rewards.Add( new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION) );
+            }
+        }
+    }
+    // ======================================================================================================================================== //
+    // ======================================================================================================================================== //
+    // ======================================================================================================================================== //
     // ======================================================================================================================================== //
 }
