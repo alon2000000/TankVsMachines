@@ -57,7 +57,7 @@ public class ParallelMagShooting : MonoBehaviour
                     TankParams paramsScript = collidedRigidBody.gameObject.GetComponent<TankParams>();
                     if (paramsScript != null)
                     {
-                        paramsScript.HP -= 1; // TODO: to config
+                        paramsScript.Add("HP", -1.0F); // TODO: to config
                     }
 				}
 			} 

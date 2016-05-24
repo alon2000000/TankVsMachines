@@ -18,8 +18,11 @@ public class TankParams : MonoBehaviour
 
     public float MaxHP = 100.0F;
     public float HP = 100.0F;
+
     public float MaxEnergy = 100.0F;
     public float Energy = 100.0F;
+    public float EnergyRegeneration = 1.0F; // energy unit per sec
+
     public float Weight = 10.0F;
 
     public float MaxShield = 100.0F;
@@ -35,8 +38,11 @@ public class TankParams : MonoBehaviour
     {
         _params["MaxHP"] =      new TankParam("MaxHP",      MaxHP);
         _params["HP"] =         new TankParam("HP",         HP);
-        _params["MaxEnergy"] =  new TankParam("MaxEnergy",  MaxEnergy);
-        _params["Energy"] =     new TankParam("Energy",     Energy);
+
+        _params["MaxEnergy"] =          new TankParam("MaxEnergy",          MaxEnergy);
+        _params["Energy"] =             new TankParam("Energy",             Energy);
+        _params["EnergyRegeneration"] = new TankParam("EnergyRegeneration", EnergyRegeneration);
+
         _params["Weight"] =     new TankParam("Weight",     Weight);
 
         _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  90.0F  );
@@ -47,7 +53,7 @@ public class TankParams : MonoBehaviour
         _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F  );
         _params["TeleportLevel"] =       new TankParam("TeleportLevel",      0.0F   );
 
-        // shield skill
+        // shield
         _params["MaxShield"] =              new TankParam("MaxShield",              MaxShield);
         _params["Shield"] =                 new TankParam("Shield",                 Shield);
         _params["ShieldDurability"] =       new TankParam("ShieldDurability",       ShieldDurability);
@@ -62,18 +68,8 @@ public class TankParams : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (HP <= 0)
-        {
-            if (ChipObj != null)
-            {
-                for (int i = 0; i < Random.Range(1, 5); ++i)
-                {
-                    Instantiate(ChipObj, transform.position + (Vector3)Random.insideUnitCircle, Quaternion.identity);
-                }
-            }
-            Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
+        updateCheckLife();
+        updateEnergyRegeneration();
 	}
     // ======================================================================================================================================== //
     public float Get(string name)
@@ -81,9 +77,14 @@ public class TankParams : MonoBehaviour
         return _params[name].Value;
     }
     // ======================================================================================================================================== //
-    public float Set(string name, float val)
+    public void Set(string name, float val)
     {
-        return _params[name].OriginalValue = val;
+        _params[name].OriginalValue = val;
+    }
+    // ======================================================================================================================================== //
+    public void Add(string name, float val)
+    {
+        _params[name].OriginalValue += val;
     }
     // ======================================================================================================================================== //
     public void AddReward(TankParamReward reward)
@@ -100,6 +101,30 @@ public class TankParams : MonoBehaviour
             _params[reward.Name].Bonus -= reward.Value;
         if (reward.Type == TankParamReward.RewardType.PERCENT)
             _params[reward.Name].PercentBonus -= reward.Value;
+    }
+    // ======================================================================================================================================== //
+    private void updateCheckLife()
+    {
+        if (this.Get("HP") <= 0)
+        {
+            if (ChipObj != null)
+            {
+                for (int i = 0; i < Random.Range(1, 5); ++i)
+                {
+                    Instantiate(ChipObj, transform.position + (Vector3)Random.insideUnitCircle, Quaternion.identity);
+                }
+            }
+            Instantiate(ExplosionObj, gameObject.transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+    }
+    // ======================================================================================================================================== //
+    private void updateEnergyRegeneration()
+    {
+        float regeneratedEnergy = Time.deltaTime * this.Get("EnergyRegeneration");
+        if ((this.Get("Energy") + regeneratedEnergy) > this.Get("MaxEnergy"))
+            regeneratedEnergy = this.Get("MaxEnergy") - this.Get("Energy");
+        this.Add("Energy", regeneratedEnergy);
     }
     // ======================================================================================================================================== //
 }

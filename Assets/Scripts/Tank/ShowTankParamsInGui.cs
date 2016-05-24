@@ -44,14 +44,14 @@ public class ShowTankParamsInGui : MonoBehaviour
     // ======================================================================================================================================== //
     private void showBars()
     {
-        HealthBar.value = Params.HP;
-        HealthBar.maxValue = Params.MaxHP;
+        HealthBar.value = Params.Get("HP");
+        HealthBar.maxValue = Params.Get("MaxHP");
 
         ShieldBar.value = Params.Get("Shield");
         ShieldBar.maxValue = Params.Get("MaxShield");
 
-        EnergyBar.value = Params.Energy;
-        EnergyBar.maxValue = Params.MaxEnergy;
+        EnergyBar.value = Params.Get("Energy");
+        EnergyBar.maxValue = Params.Get("MaxEnergy");
     }
     // ======================================================================================================================================== //
 }

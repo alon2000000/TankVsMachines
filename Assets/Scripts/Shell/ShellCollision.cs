@@ -50,12 +50,12 @@ public class ShellCollision : MonoBehaviour
                     paramsScript.Set("Shield", (shield < totalDamage4Shiled) ? 0.0F : (shield - totalDamage4Shiled));
 
                     float damage4HP = totalDamage - damage4Shield + margin;
-                    paramsScript.HP -= damage4HP;
+                    paramsScript.Add("HP", -damage4HP);
                 }
                 else // penetrate
                 {
                     Debug.Log("OUCH!");
-                    paramsScript.HP -= (totalDamage * 2.0F);
+                    paramsScript.Add("HP", -(totalDamage * 2.0F));
                 }
             }
 		}

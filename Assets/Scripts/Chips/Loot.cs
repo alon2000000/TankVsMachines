@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Loot : MonoBehaviour 
 {
@@ -19,7 +20,7 @@ public class Loot : MonoBehaviour
         SHELL_CHIP,
         ENGINE_CHIP,
         TELEPORT_CHIP,
-        SHIELD_CHIP
+        ARMOR_CHIP
     }
 
     public enum LootRarity
@@ -208,7 +209,7 @@ public class Loot : MonoBehaviour
         {
             //Reward = new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION);
             SkillTexture = ShieldTexture;
-            Type = LootType.SHIELD_CHIP;
+            Type = LootType.ARMOR_CHIP;
             //Reward = Toolbox.Instance.ShieldReward.GetReward(LootRarity.NORMAL);
         }
     }
@@ -269,23 +270,57 @@ public class Loot : MonoBehaviour
         Body.transform.Rotate(new Vector3(180.0F, 0.0F, 0.0F));
     }
     // ======================================================================================================================================== //
-    private void setChipUnique()
+    private void addReward(TankParamReward reward)
     {
-        
+        // if exists reward with the same name and type - add to it
+        foreach (TankParamReward r in Rewards)
+        {
+            if (r.Name == reward.Name && r.Type == reward.Type)
+            {
+                r.Value += reward.Value;
+                return;
+            }
+        }
+        // else - add new one
+        Rewards.Add(reward);
     }
     // ======================================================================================================================================== //
     private void setRewards()
     {
         //########################################################################### //
-        // SHIELD
+        // ARMOR
         //########################################################################### //
-        if (Type == LootType.SHIELD_CHIP)
+        if (Type == LootType.ARMOR_CHIP)
         {
             for (int i = 0; i < (int)Rarity; ++i)
             {
-                Rewards.Add( new TankParamReward("MaxShield", 5.0F, TankParamReward.RewardType.ADDITION) );
+                int rand = Random.Range(0, 21);
+                if (rand <= 15)
+                {
+                    addReward(new TankParamReward("MaxShield", (float)Random.Range(1,6), TankParamReward.RewardType.ADDITION));
+                }
+                else if (rand <= 18)
+                {
+                    addReward(new TankParamReward("ShieldVsPenetration", Random.Range(1.0F,10.0F), TankParamReward.RewardType.ADDITION));
+                }
+                else if (rand <= 19)
+                {
+                    addReward(new TankParamReward("ShieldDurability", (float)Random.Range(1,6), TankParamReward.RewardType.ADDITION));
+                }
+                else if (rand <= 20)
+                {
+                    addReward(new TankParamReward("ShieldAbsorption", (float)Random.Range(1,6), TankParamReward.RewardType.ADDITION));
+                }
             }
         }
+        //########################################################################### //
+        // ENGINE
+        //########################################################################### //
+    }
+    // ======================================================================================================================================== //
+    private void setChipUnique()
+    {
+
     }
     // ======================================================================================================================================== //
     // ======================================================================================================================================== //
