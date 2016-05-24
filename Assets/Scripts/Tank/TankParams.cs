@@ -31,6 +31,11 @@ public class TankParams : MonoBehaviour
     public float ShieldVsPenetration = 25.0F;
     public float ShieldAbsorption = 25.0F;
 
+    public float TeleportLevel = 0.0F;
+    public float TeleportCost = 50.0F;
+    public float TeleportCooldown = 5.0F; // in sec
+    public float TeleportDistance = 2.0F;
+
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
@@ -59,6 +64,12 @@ public class TankParams : MonoBehaviour
         _params["ShieldDurability"] =       new TankParam("ShieldDurability",       ShieldDurability);
         _params["ShieldVsPenetration"] =    new TankParam("ShieldVsPenetration",    ShieldVsPenetration);
         _params["ShieldAbsorption"] =       new TankParam("ShieldAbsorption",       ShieldAbsorption);
+
+        // teleport
+        _params["TeleportLevel"] =      new TankParam("TeleportLevel",      TeleportLevel);
+        _params["TeleportCost"] =       new TankParam("TeleportCost",       TeleportCost);
+        _params["TeleportCooldown"] =   new TankParam("TeleportCooldown",   TeleportCooldown);
+        _params["TeleportDistance"] =   new TankParam("TeleportDistance",   TeleportDistance);
     }
     // ======================================================================================================================================== //
 	void Start () 

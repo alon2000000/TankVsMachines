@@ -316,6 +316,24 @@ public class Loot : MonoBehaviour
         //########################################################################### //
         // ENGINE
         //########################################################################### //
+        if (Type == LootType.TELEPORT_CHIP)
+        {
+            addReward(new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION));
+
+            int rand = Random.Range(0, 21);
+            if (rand <= 17)
+            {
+                addReward(new TankParamReward("TeleportCost", -(int)Rarity * Random.Range(1.0F, 3.0F), TankParamReward.RewardType.PERCENT));
+            }
+            else
+            {
+                addReward(new TankParamReward("TeleportDistance", (int)Rarity * Random.Range(1.0F, 5.0F), TankParamReward.RewardType.ADDITION));
+                addReward(new TankParamReward("TeleportCost", (float)((int)Rarity * Random.Range(1, 5)), TankParamReward.RewardType.ADDITION));
+            }
+        }
+        //########################################################################### //
+        // OTHERS...
+        //########################################################################### //
     }
     // ======================================================================================================================================== //
     private void setChipUnique()
