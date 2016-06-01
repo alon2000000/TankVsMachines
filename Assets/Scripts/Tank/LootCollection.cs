@@ -27,7 +27,7 @@ public class LootCollection : MonoBehaviour
         SpriteRenderer 	chipSpriteRenderer 	= lootObject.GetComponent<SpriteRenderer> ();
 
         // if burnt add to cash
-        if (lootScript.Type == Loot.LootType.BURNT)
+        if (lootScript.Type == Loot.LootType.SCRAP)
         {
             Destroy(lootObject);
             Params.CashChips++;
