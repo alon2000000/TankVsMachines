@@ -9,6 +9,7 @@ public class Toolbox : Singleton<Toolbox>
     //public ChipBonusManager ChipBonusManager;
 
     public ChipsResources ChipsResources;
+    public ScrapOnGroundResources ScrapOnGroundResources;
 
 
     void Awake () 
@@ -18,5 +19,6 @@ public class Toolbox : Singleton<Toolbox>
         //ChipBonusManager = gameObject.AddComponent<ChipBonusManager>();
 
         ChipsResources = GameObject.Find("Resources").GetComponent<ChipsResources>();
+        ScrapOnGroundResources = GameObject.Find("Resources").GetComponent<ScrapOnGroundResources>();
     }
 }

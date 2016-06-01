@@ -31,19 +31,19 @@ public class Teleport : MonoBehaviour
 
         float distance = Vector2.Distance(gameObject.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-        if (Params.Get("TeleportDistance") >= distance)
+        //if (Params.Get("TeleportDistance") >= distance)
         {
             gameObject.transform.position = new Vector3(
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
                 gameObject.transform.position.z);
         }
-        else
+        /*else
         {
             Vector2 dir = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position).normalized;
             Vector2 newPosition = dir * Params.Get("TeleportDistance");
             gameObject.transform.position = newPosition;
-        }
+        }*/
 
         Params.Add("Energy", -Params.Get("TeleportCost"));
 	}

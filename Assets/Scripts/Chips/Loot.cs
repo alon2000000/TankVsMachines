@@ -82,7 +82,10 @@ public class Loot : MonoBehaviour
         // burnt chance
         bool isBurnt = setBurnt();
         if (isBurnt)
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = Toolbox.Instance.ScrapOnGroundResources.GetRandomSprite();
             return;
+        }
 
         // rarity
         setLootRarity();
