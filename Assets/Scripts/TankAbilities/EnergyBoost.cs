@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teleport : MonoBehaviour 
+public class EnergyBoost : MonoBehaviour 
 {
-    public KeyCode Key = KeyCode.Alpha1;//KeyCode.None;
+    public KeyCode Key = KeyCode.Alpha2;//KeyCode.None;
 
     private TankParams _params;
     // ======================================================================================================================================== //
@@ -19,22 +19,18 @@ public class Teleport : MonoBehaviour
         if (!Input.GetKeyDown(Key))
             return;
 
-        int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));
+        int level = Mathf.RoundToInt(_params.Get("EnergyBoostLevel"));
         if (level <= 0)
             return;
 
-        if (_params.Get("Energy") < _params.Get("TeleportCost"))
+        if (_params.CashChips < _params.Get("EnergyBoostCost"))
             return;
 
-        //float distance = Vector2.Distance(gameObject.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        _params.CashChips -= Mathf.RoundToInt(_params.Get("EnergyBoostCost"));
 
-        GameObject tankObj = GameObject.Find("Tank");
-        tankObj.transform.position = new Vector3(
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
-            tankObj.transform.position.z);
+        float newEnergyAmount = Mathf.Clamp(_params.Get("Energy") + _params.Get("EnergyBoostValue"), 0.0F, _params.Get("MaxEnergy"));
 
-        _params.Add("Energy", -_params.Get("TeleportCost"));
+        _params.Set("Energy", newEnergyAmount);
 	}
     // ======================================================================================================================================== //
 }

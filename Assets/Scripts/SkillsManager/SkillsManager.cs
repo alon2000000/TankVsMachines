@@ -69,6 +69,7 @@ public class SkillsManager : MonoBehaviour
                         _skills[tempIndex].GetComponent<Image>().color = Color.blue;
                         _skills[tempIndex].transform.FindChild("SkillImage").gameObject.SetActive(true);
                         _skills[tempIndex].transform.FindChild("SkillImage").GetComponent<Image>().sprite = chipScript.Logo.GetComponent<SpriteRenderer>().sprite;
+                        chipScript.SkillChildObject.SetActive(true);
                         tempIndex++;
                     }
                 }
@@ -81,8 +82,48 @@ public class SkillsManager : MonoBehaviour
         foreach (GameObject skill in _skills)
         {
             skill.GetComponent<Image>().color = Color.black;
-            skill.transform.FindChild("SkillImage").gameObject.SetActive(false);//.GetComponent<Renderer>().enabled = false;//.GetComponent<Image>().sprite = null;
+            skill.transform.FindChild("SkillImage").gameObject.SetActive(false); // hide the image - TODO... maybe not good
+
+            // move over all tiles
+            foreach (Transform tile in BoardObj.GetComponent<Board>().Tiles)
+            {
+                // if socket not null
+                GameObject socketedChip = tile.GetComponent<BoardTile>().SocketedChip;
+                if (socketedChip != null)
+                {
+                    // if chip is skill chip
+                    Loot chipScript = socketedChip.GetComponent<Loot>();
+                    if (chipScript.Type == Loot.LootType.SKILL_CHIP)
+                    {
+                        // deactive the skill child object
+                        chipScript.SkillChildObject.SetActive(false);
+                    }
+                }
+            }
         }
+    }
+    // ======================================================================================================================================== //
+    private KeyCode getKeyByNumber(int number)
+    {
+        return (KeyCode)(48 + number); // 48 is the number of KeyCode.Alpha0
+        /*if (number == 0)
+            return KeyCode.Alpha0;
+        if (number == 1)
+            return KeyCode.Alpha1;
+        if (number == 2)
+            return KeyCode.Alpha2;
+        if (number == 3)
+            return KeyCode.Alpha3;
+        if (number == 4)
+            return KeyCode.Alpha4;
+        if (number == 5)
+            return KeyCode.Alpha5;
+        if (number == 6)
+            return KeyCode.Alpha6;
+        if (number == 7)
+            return KeyCode.Alpha7;
+        if (number == 8)
+            return KeyCode.Alpha8;*/
     }
     // ======================================================================================================================================== //
 }

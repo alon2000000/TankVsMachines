@@ -36,6 +36,11 @@ public class TankParams : MonoBehaviour
     public float TeleportCooldown = 5.0F; // in sec
     public float TeleportDistance = 2.0F;
 
+    public float EnergyBoostLevel = 0.0F;
+    public float EnergyBoostCost = 10.0F;
+    public float EnergyBoostValue = 20.0F;
+    public float EnergyBoostCooldown = 5.0F; // in sec
+
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
@@ -70,6 +75,12 @@ public class TankParams : MonoBehaviour
         _params["TeleportCost"] =       new TankParam("TeleportCost",       TeleportCost);
         _params["TeleportCooldown"] =   new TankParam("TeleportCooldown",   TeleportCooldown);
         _params["TeleportDistance"] =   new TankParam("TeleportDistance",   TeleportDistance);
+
+        // energy boost
+        _params["EnergyBoostLevel"] =      new TankParam("EnergyBoostLevel",      EnergyBoostLevel);
+        _params["EnergyBoostCost"] =       new TankParam("EnergyBoostCost",       EnergyBoostCost);
+        _params["EnergyBoostValue"] =       new TankParam("EnergyBoostValue",       EnergyBoostValue);
+        _params["EnergyBoostCooldown"] =   new TankParam("EnergyBoostCooldown",   EnergyBoostCooldown);
     }
     // ======================================================================================================================================== //
 	void Start () 

@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private bool _isInInventory = false;
 
+    public GameObject Inventory;
     public GameObject ChipsBagObj;
     public GameObject ChipsBoardObj;
     public GameObject InventoryBackgroungObj;
@@ -61,9 +62,13 @@ public class InputManager : MonoBehaviour
 
             Time.timeScale = _isInInventory ? 0.0F : 1.0F;
 
-            InventoryBackgroungObj.SetActive(_isInInventory);
+            if (_isInInventory)
+                Inventory.transform.localPosition = new Vector3(0.0F, 0.0F, 0.0F);
+            else
+                Inventory.transform.localPosition = new Vector3(10000.0F, 10000.0F, 0.0F);
+            /*InventoryBackgroungObj.SetActive(_isInInventory);
             ChipsBagObj.SetActive(_isInInventory);
-            ChipsBoardObj.SetActive(_isInInventory);
+            ChipsBoardObj.SetActive(_isInInventory);*/
             UiCanvas.SetActive(_isInInventory);
         }
     }

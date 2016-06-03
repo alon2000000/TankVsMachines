@@ -21,12 +21,13 @@ public class Loot : MonoBehaviour
 
     public enum LogoType
     {
-        TURRET_CHIP,
-        BARREL_CHIP,
-        SHELL_CHIP,
-        ENGINE_CHIP,
-        TELEPORT_CHIP,
-        ARMOR_CHIP
+        TURRET,
+        BARREL,
+        SHELL,
+        ENGINE,
+        TELEPORT,
+        ARMOR,
+        ENERGY_BOOST
     }
 
     public enum LootRarity
@@ -61,17 +62,11 @@ public class Loot : MonoBehaviour
 
     public Gradient UniqueGradient;
 
-    // skills sprites
-    public Sprite RepairTexture;
-    public Sprite TurretTexture;
-    public Sprite ShellTexture;
-    public Sprite TeleportTexture;
-    public Sprite ShieldTexture;
-
     // the parts of the chip
     public GameObject Body;
     public GameObject Frame;
     public GameObject Logo;
+    public GameObject SkillChildObject;
 
     // chances
     public float GetScrapChance = 75.0F;
@@ -101,7 +96,7 @@ public class Loot : MonoBehaviour
             BodyTexture = Toolbox.Instance.ChipsResources.BodySkillTexture;
             FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture2on2;
 
-            setLootLogo4SkillChip();
+            setLootLogoAndScript4SkillChip();
             setRewards();
         }
         else // normal chip
@@ -211,33 +206,40 @@ public class Loot : MonoBehaviour
         int rand = Random.Range(0,4);
         if (rand == 0)
         {
-            SkillTexture = TurretTexture;
-            ChipLogo = LogoType.TURRET_CHIP;
+            SkillTexture = Toolbox.Instance.ChipsResources.TurretTexture;
+            ChipLogo = LogoType.TURRET;
         }
         else if (rand == 1)
         {
-            SkillTexture = RepairTexture;
-            ChipLogo = LogoType.BARREL_CHIP;
+            SkillTexture = Toolbox.Instance.ChipsResources.RepairTexture;
+            ChipLogo = LogoType.BARREL;
         }
         else if (rand == 2)
         {
-            SkillTexture = ShellTexture;
-            ChipLogo = LogoType.ENGINE_CHIP;
+            SkillTexture = Toolbox.Instance.ChipsResources.ShellTexture;
+            ChipLogo = LogoType.ENGINE;
         }
         else if (rand == 3)
         {
-            SkillTexture = ShieldTexture;
-            ChipLogo = LogoType.ARMOR_CHIP;
+            SkillTexture = Toolbox.Instance.ChipsResources.ShieldTexture;
+            ChipLogo = LogoType.ARMOR;
         }
     }
     // ======================================================================================================================================== //
-    private void setLootLogo4SkillChip()
+    private void setLootLogoAndScript4SkillChip()
     {
-        int rand = Random.Range(0,1);
+        int rand = Random.Range(0,2);
         if (rand == 0)
         {
-            SkillTexture = TeleportTexture;
-            ChipLogo = LogoType.TELEPORT_CHIP;
+            SkillTexture = Toolbox.Instance.ChipsResources.TeleportTexture;
+            ChipLogo = LogoType.TELEPORT;
+            SkillChildObject.AddComponent<Teleport>();
+        }
+        else if (rand == 1)
+        {
+            SkillTexture = Toolbox.Instance.ChipsResources.EnergyBoostTexture;
+            ChipLogo = LogoType.ENERGY_BOOST;
+            SkillChildObject.AddComponent<EnergyBoost>();
         }
     }
     // ======================================================================================================================================== //
@@ -334,7 +336,7 @@ public class Loot : MonoBehaviour
         //########################################################################### //
         // ARMOR
         //########################################################################### //
-        if (ChipLogo == LogoType.ARMOR_CHIP)
+        if (ChipLogo == LogoType.ARMOR)
         {
             for (int i = 0; i < (int)Rarity; ++i)
             {
@@ -360,7 +362,7 @@ public class Loot : MonoBehaviour
         //########################################################################### //
         // ENGINE
         //########################################################################### //
-        if (ChipLogo == LogoType.TELEPORT_CHIP)
+        if (ChipLogo == LogoType.TELEPORT)
         {
             addReward(new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION));
 
@@ -372,7 +374,25 @@ public class Loot : MonoBehaviour
             else
             {
                 addReward(new TankParamReward("TeleportDistance", (int)Rarity * Random.Range(1.0F, 5.0F), TankParamReward.RewardType.ADDITION));
-                addReward(new TankParamReward("TeleportCost", (float)((int)Rarity * Random.Range(1, 5)), TankParamReward.RewardType.ADDITION));
+                addReward(new TankParamReward("TeleportCost", (float)(int)Rarity * Random.Range(1, 5), TankParamReward.RewardType.ADDITION));
+            }
+        }
+        //########################################################################### //
+        // ENERGY BOOST
+        //########################################################################### //
+        if (ChipLogo == LogoType.ENERGY_BOOST)
+        {
+            addReward(new TankParamReward("EnergyBoostLevel", 1.0F, TankParamReward.RewardType.ADDITION));
+
+            int rand = Random.Range(0, 21);
+            if (rand <= 17)
+            {
+                addReward(new TankParamReward("EnergyBoostCost", (float)(-(int)Rarity * Random.Range(1, 4)), TankParamReward.RewardType.PERCENT));
+            }
+            else
+            {
+                addReward(new TankParamReward("EnergyBoostValue", (float)(int)Rarity * Random.Range(1, 6), TankParamReward.RewardType.ADDITION));
+                addReward(new TankParamReward("EnergyBoostCost", (float)(int)Rarity * Random.Range(1, 5), TankParamReward.RewardType.ADDITION));
             }
         }
         //########################################################################### //
