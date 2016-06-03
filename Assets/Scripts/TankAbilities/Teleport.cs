@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Teleport : MonoBehaviour 
 {
-    public KeyCode Key = KeyCode.Alpha1;//KeyCode.None;
+    //public KeyCode Key = KeyCode.Alpha1;//KeyCode.None;
 
     private TankParams _params;
     // ======================================================================================================================================== //
@@ -14,9 +14,11 @@ public class Teleport : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (Key == KeyCode.None)
+        KeyCode key = gameObject.GetComponentInParent<Loot>().SkillKey;
+
+        if (key == KeyCode.None)
             return;
-        if (!Input.GetKeyDown(Key))
+        if (!Input.GetKeyDown(key))
             return;
 
         int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));

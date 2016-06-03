@@ -66,7 +66,9 @@ public class Loot : MonoBehaviour
     public GameObject Body;
     public GameObject Frame;
     public GameObject Logo;
+
     public GameObject SkillChildObject;
+    public KeyCode SkillKey = KeyCode.None;
 
     // chances
     public float GetScrapChance = 75.0F;

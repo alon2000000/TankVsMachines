@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -70,6 +71,8 @@ public class SkillsManager : MonoBehaviour
                         _skills[tempIndex].transform.FindChild("SkillImage").gameObject.SetActive(true);
                         _skills[tempIndex].transform.FindChild("SkillImage").GetComponent<Image>().sprite = chipScript.Logo.GetComponent<SpriteRenderer>().sprite;
                         chipScript.SkillChildObject.SetActive(true);
+                        int skillNumber = Convert.ToInt32(_skills[tempIndex].transform.FindChild("Text").GetComponent<Text>().text);
+                        chipScript.gameObject.GetComponentInParent<Loot>().SkillKey = getKeyByNumber(skillNumber);
                         tempIndex++;
                     }
                 }
