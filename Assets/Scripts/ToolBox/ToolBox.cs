@@ -10,6 +10,7 @@ public class Toolbox : Singleton<Toolbox>
 
     public ChipsResources ChipsResources;
     public ScrapOnGroundResources ScrapOnGroundResources;
+    public SkillsManager SkillsManager;
 
 
     void Awake () 
@@ -20,5 +21,6 @@ public class Toolbox : Singleton<Toolbox>
 
         ChipsResources = GameObject.Find("Resources").GetComponent<ChipsResources>();
         ScrapOnGroundResources = GameObject.Find("Resources").GetComponent<ScrapOnGroundResources>();
+        SkillsManager = GameObject.Find("SkillsManager").GetComponent<SkillsManager>();
     }
 }

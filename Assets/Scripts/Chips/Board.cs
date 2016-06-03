@@ -8,6 +8,8 @@ public class Board : MonoBehaviour
 	public int BoardSizeX;
 	public int BoardSizeY;
 	public Transform TilePrefab;
+
+    public List<Transform> Tiles = new List<Transform>();
 	// ======================================================================================================================================== //
 	void Start () 
 	{
@@ -32,6 +34,8 @@ public class Board : MonoBehaviour
 
 				tile.GetComponent<Tile>().PosX = x;
 				tile.GetComponent<Tile>().PosY = y;
+
+                Tiles.Add(tile);
 			}
 		}
 	}

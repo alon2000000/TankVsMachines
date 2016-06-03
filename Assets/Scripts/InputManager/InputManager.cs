@@ -225,6 +225,9 @@ public class InputManager : MonoBehaviour
 
         // change state
         _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.ATTACHED;
+
+        // update skills panel
+        Toolbox.Instance.SkillsManager.RearrangeSkills();
     }
     // ======================================================================================================================================== //
     private void unsocketChip()
@@ -252,6 +255,9 @@ public class InputManager : MonoBehaviour
             // change state
             _objectHandledByMouse.GetComponent<Loot>().State = Loot.LootState.INSIDE_BAG;
         }
+
+        // update skills panel
+        Toolbox.Instance.SkillsManager.RearrangeSkills();
     }
     // ======================================================================================================================================== //
     private void showChipDescriptionInUI()
