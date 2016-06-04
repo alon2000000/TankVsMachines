@@ -54,6 +54,11 @@ public class LootCollection : MonoBehaviour
 
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
+            // change the sorting layer of chips parts
+            chipSpriteRenderer.sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+            lootScript.Body.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+            lootScript.Logo.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer + 1;
+            Toolbox.Instance.MaxChipOrderInLayer += 2;
 
 			// update polygon collider
             Destroy(lootObject.GetComponent<BoxCollider2D>());

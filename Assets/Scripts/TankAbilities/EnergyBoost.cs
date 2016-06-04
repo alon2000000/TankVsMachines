@@ -3,8 +3,6 @@ using System.Collections;
 
 public class EnergyBoost : MonoBehaviour 
 {
-    //public KeyCode Key = KeyCode.Alpha2;//KeyCode.None;
-
     private TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 

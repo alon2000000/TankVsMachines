@@ -27,13 +27,14 @@ public class Loot : MonoBehaviour
         ENGINE,
         TELEPORT,
         ARMOR,
-        ENERGY_BOOST
+        ENERGY_BOOST,
+        ENERGY
     }
 
     public enum LootRarity
     {
         NORMAL = 1,                 // gray
-        SPECIAL = 3,                // silver glow
+        SPECIAL = 3,                // blue glow
         RARE = 7,                   // glow gold
         UNIQUE                  // blinked random colors r/g/b
     }
@@ -205,7 +206,7 @@ public class Loot : MonoBehaviour
     // ======================================================================================================================================== //
     private void setLootLogo4NormalChip()
     {
-        int rand = Random.Range(0,4);
+        int rand = Random.Range(0,5);
         if (rand == 0)
         {
             SkillTexture = Toolbox.Instance.ChipsResources.TurretTexture;
@@ -225,6 +226,11 @@ public class Loot : MonoBehaviour
         {
             SkillTexture = Toolbox.Instance.ChipsResources.ShieldTexture;
             ChipLogo = LogoType.ARMOR;
+        }
+        else if (rand == 4)
+        {
+            SkillTexture = Toolbox.Instance.ChipsResources.EnergyTexture;
+            ChipLogo = LogoType.ENERGY;
         }
     }
     // ======================================================================================================================================== //
@@ -255,11 +261,11 @@ public class Loot : MonoBehaviour
         else if (Type == LootType.SKILL_CHIP)
         {
             if (State == LootState.ON_GROUND)
-                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
             else if (State == LootState.INSIDE_BAG)
-                Logo.GetComponent<SpriteRenderer>().color = (GoldEndColor + GoldStartColor) / 2;
+                Logo.GetComponent<SpriteRenderer>().color = (GreenEndColor + GreenStartColor) / 2;
             else
-                Logo.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+                Logo.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
         else if (Rarity == LootRarity.NORMAL)
         {
@@ -280,11 +286,11 @@ public class Loot : MonoBehaviour
         else if (Rarity == LootRarity.RARE)
         {
             if (State == LootState.ON_GROUND)
-                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
             else if (State == LootState.INSIDE_BAG)
-                Logo.GetComponent<SpriteRenderer>().color = (GreenEndColor + GreenStartColor) / 2;
+                Logo.GetComponent<SpriteRenderer>().color = (GoldEndColor + GoldStartColor) / 2;
             else
-                Logo.GetComponent<SpriteRenderer>().color = Color.Lerp(GreenStartColor, GreenEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
+                Logo.GetComponent<SpriteRenderer>().color = Color.Lerp(GoldStartColor, GoldEndColor, Mathf.PingPong(Time.realtimeSinceStartup, 1.0F));
         }
         else if (Rarity == LootRarity.UNIQUE)
         {
@@ -395,6 +401,21 @@ public class Loot : MonoBehaviour
             {
                 addReward(new TankParamReward("EnergyBoostValue", (float)(int)Rarity * Random.Range(1, 6), TankParamReward.RewardType.ADDITION));
                 addReward(new TankParamReward("EnergyBoostCost", (float)(int)Rarity * Random.Range(1, 5), TankParamReward.RewardType.ADDITION));
+            }
+        }
+        //########################################################################### //
+        // ENERGY
+        //########################################################################### //
+        if (ChipLogo == LogoType.ENERGY)
+        {
+            int rand = Random.Range(0, 21);
+            if (rand <= 17)
+            {
+                addReward(new TankParamReward("MaxEnergy", (float)((int)Rarity * Random.Range(1, 4)), TankParamReward.RewardType.ADDITION));
+            }
+            else
+            {
+                addReward(new TankParamReward("EnergyRegeneration", (float)(int)Rarity * Random.Range(1, 6), TankParamReward.RewardType.PERCENT));
             }
         }
         //########################################################################### //

@@ -93,6 +93,12 @@ public class InputManager : MonoBehaviour
                             _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                             _objectHandledByMouse = hit.collider.gameObject;
                             unsocketChip();
+
+                            // change sorting order to be on top of all other chips
+                            _objectHandledByMouse.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+                            _objectHandledByMouse.GetComponent<Loot>().Body.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+                            _objectHandledByMouse.GetComponent<Loot>().Logo.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer + 1;
+                            Toolbox.Instance.MaxChipOrderInLayer += 2;
                         }
                     }
                 }

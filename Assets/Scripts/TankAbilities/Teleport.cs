@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Teleport : MonoBehaviour 
 {
-    //public KeyCode Key = KeyCode.Alpha1;//KeyCode.None;
-
     private TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 
