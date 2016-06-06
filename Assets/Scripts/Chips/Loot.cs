@@ -69,7 +69,6 @@ public class Loot : MonoBehaviour
     public GameObject Logo;
 
     public GameObject SkillChildObject;
-    public KeyCode SkillKey = KeyCode.None;
 
     // chances
     public float GetScrapChance = 75.0F;
@@ -381,7 +380,7 @@ public class Loot : MonoBehaviour
             }
             else
             {
-                addReward(new TankParamReward("TeleportDistance", (int)Rarity * Random.Range(1.0F, 5.0F), TankParamReward.RewardType.ADDITION));
+                // TODO: add some good thing...
                 addReward(new TankParamReward("TeleportCost", (float)(int)Rarity * Random.Range(1, 5), TankParamReward.RewardType.ADDITION));
             }
         }

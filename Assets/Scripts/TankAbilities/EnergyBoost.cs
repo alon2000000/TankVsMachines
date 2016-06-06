@@ -1,8 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnergyBoost : MonoBehaviour 
+public class EnergyBoost : MonoBehaviour, ISkill
 {
+    private KeyCode _key = KeyCode.None;
+    public KeyCode Key
+    {
+        get{ return _key; }
+        set{ _key = value; }
+    }
+
+    public float Cost
+    {
+        get{ return _params.Get("EnergyBoostCost"); }
+    }
+
+    public bool IsReady
+    {
+        get{ return (_params.CashChips >= Cost); }
+    }
+
+    public float MaxCooldown
+    {
+        get{ return _params.Get("EnergyBoostCooldown"); }
+    }
+
+    private float _Cooldown = 0.0F;
+    public float Cooldown
+    {
+        get{ return _Cooldown; }
+        set{ _Cooldown = value; }
+    }
+
     private TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 
@@ -12,25 +41,31 @@ public class EnergyBoost : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        KeyCode key = gameObject.GetComponentInParent<Loot>().SkillKey;
-
-        if (key == KeyCode.None)
+        if (Cooldown > 0.0F)
+        {
+            Cooldown -= Time.deltaTime;
             return;
-        if (!Input.GetKeyDown(key))
+        }
+
+        if (Key == KeyCode.None)
+            return;
+        if (!Input.GetKeyDown(Key))
             return;
 
         int level = Mathf.RoundToInt(_params.Get("EnergyBoostLevel"));
         if (level <= 0)
             return;
 
-        if (_params.CashChips < _params.Get("EnergyBoostCost"))
+        if (!IsReady)
             return;
 
-        _params.CashChips -= Mathf.RoundToInt(_params.Get("EnergyBoostCost"));
+        _params.CashChips -= Mathf.RoundToInt(Cost);
 
         float newEnergyAmount = Mathf.Clamp(_params.Get("Energy") + _params.Get("EnergyBoostValue"), 0.0F, _params.Get("MaxEnergy"));
 
         _params.Set("Energy", newEnergyAmount);
+
+        Cooldown = MaxCooldown;
 	}
     // ======================================================================================================================================== //
 }

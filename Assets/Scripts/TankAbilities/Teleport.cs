@@ -1,8 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teleport : MonoBehaviour 
+public class Teleport : MonoBehaviour, ISkill
 {
+    private KeyCode _key = KeyCode.None;
+    public KeyCode Key
+    {
+        get{ return _key; }
+        set{ _key = value; }
+    }
+
+    public float Cost
+    {
+        get{ return _params.Get("TeleportCost"); }
+    }
+
+    public bool IsReady
+    {
+        get{ return (_params.Get("Energy") >= Cost); }
+    }
+
+    public float MaxCooldown
+    {
+        get{ return _params.Get("TeleportCooldown"); }
+    }
+
+    private float _Cooldown = 0.0F;
+    public float Cooldown
+    {
+        get{ return _Cooldown; }
+        set{ _Cooldown = value; }
+    }
+
     private TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 
@@ -12,21 +41,23 @@ public class Teleport : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        KeyCode key = gameObject.GetComponentInParent<Loot>().SkillKey;
-
-        if (key == KeyCode.None)
+        if (Cooldown > 0.0F)
+        {
+            Cooldown -= Time.deltaTime;
             return;
-        if (!Input.GetKeyDown(key))
+        }
+
+        if (Key == KeyCode.None)
+            return;
+        if (!Input.GetKeyDown(Key))
             return;
 
         int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));
         if (level <= 0)
             return;
 
-        if (_params.Get("Energy") < _params.Get("TeleportCost"))
+        if (!IsReady)
             return;
-
-        //float distance = Vector2.Distance(gameObject.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
         GameObject tankObj = GameObject.Find("Tank");
         tankObj.transform.position = new Vector3(
@@ -34,7 +65,9 @@ public class Teleport : MonoBehaviour
             Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
             tankObj.transform.position.z);
 
-        _params.Add("Energy", -_params.Get("TeleportCost"));
+        _params.Add("Energy", -Cost);
+
+        Cooldown = MaxCooldown;
 	}
     // ======================================================================================================================================== //
 }
