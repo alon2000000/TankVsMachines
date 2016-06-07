@@ -50,14 +50,26 @@ public class SkillsManager : MonoBehaviour
             // matched skill icon of the current skill
             GameObject currentSkillIcon = _skillsIcons[i];
 
-            // cool down effect shown - size of background
-            float ratio = 1.0F - _skills[i].Cooldown / _skills[i].MaxCooldown;
-            currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
+            // ACTIVE SKILL
+            if (_skills[i] is IActiveSkill)
+            {
+                IActiveSkill currentSkill = _skills[i] as IActiveSkill;
 
-            // if skill not ready - gray it
-            bool isSkillReady = _skills[i].IsReady;
-            Color backgroundColor = isSkillReady ? Color.blue : Color.gray;
-            currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = backgroundColor;
+                // cool down effect shown - size of background
+                float ratio = 1.0F - currentSkill.Cooldown / currentSkill.MaxCooldown;
+                currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
+
+                // if skill not ready - gray it
+                bool isSkillReady = currentSkill.IsReady;
+                Color backgroundColor = isSkillReady ? Color.blue : Color.gray;
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = backgroundColor;
+            }
+            // PASSIVE SKILL
+            else if (_skills[i] is IPassiveSkill)
+            {
+                IPassiveSkill currentSkill = _skills[i] as IPassiveSkill;
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
+            }
         }
 	}
     // ======================================================================================================================================== //
@@ -137,24 +149,6 @@ public class SkillsManager : MonoBehaviour
     private KeyCode getKeyByNumber(int number)
     {
         return (KeyCode)(48 + number); // 48 is the number of KeyCode.Alpha0
-        /*if (number == 0)
-            return KeyCode.Alpha0;
-        if (number == 1)
-            return KeyCode.Alpha1;
-        if (number == 2)
-            return KeyCode.Alpha2;
-        if (number == 3)
-            return KeyCode.Alpha3;
-        if (number == 4)
-            return KeyCode.Alpha4;
-        if (number == 5)
-            return KeyCode.Alpha5;
-        if (number == 6)
-            return KeyCode.Alpha6;
-        if (number == 7)
-            return KeyCode.Alpha7;
-        if (number == 8)
-            return KeyCode.Alpha8;*/
     }
     // ======================================================================================================================================== //
 }

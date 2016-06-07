@@ -26,6 +26,7 @@ public class ChipsResources : MonoBehaviour
     public Sprite ShieldTexture;
     public Sprite EnergyBoostTexture;
     public Sprite EnergyTexture;
+    public Sprite TurboTexture;
     // ======================================================================================================================================== //
 	void Start () 
     {

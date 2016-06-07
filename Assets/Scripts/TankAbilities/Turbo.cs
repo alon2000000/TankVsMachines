@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnergyBoost : MonoBehaviour, IActiveSkill
+public class Turbo : MonoBehaviour, IPassiveSkill
 {
     private KeyCode _key = KeyCode.None;
     public KeyCode Key
@@ -10,38 +10,28 @@ public class EnergyBoost : MonoBehaviour, IActiveSkill
         set{ _key = value; }
     }
 
-    public float Cost
+    public float CostPerSec
     {
-        get{ return _params.Get("EnergyBoostCost"); }
+        get{ return _params.Get("TurboCostPerSec"); }
     }
 
-    public bool IsReady
+    private bool _isActive = false;
+    public bool IsActive
     {
-        get{ return (_params.CashChips >= Cost); }
-    }
-
-    public float MaxCooldown
-    {
-        get{ return _params.Get("EnergyBoostCooldown"); }
-    }
-
-    private float _Cooldown = 0.0F;
-    public float Cooldown
-    {
-        get{ return _Cooldown; }
-        set{ _Cooldown = value; }
+        get{ return _isActive; }
+        set{ _isActive = value; }
     }
 
     private TankParams _params;
     // ======================================================================================================================================== //
-	void Start () 
+    void Start () 
     {
         _params = Toolbox.Instance.TankParams;
-	}
+    }
     // ======================================================================================================================================== //
-	void Update () 
+    void Update () 
     {
-        if (Cooldown > 0.0F)
+        /*if (Cooldown > 0.0F)
         {
             Cooldown -= Time.deltaTime;
             return;
@@ -52,20 +42,22 @@ public class EnergyBoost : MonoBehaviour, IActiveSkill
         if (!Input.GetKeyDown(Key))
             return;
 
-        int level = Mathf.RoundToInt(_params.Get("EnergyBoostLevel"));
+        int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));
         if (level <= 0)
             return;
 
         if (!IsReady)
             return;
 
-        _params.CashChips -= Mathf.RoundToInt(Cost);
+        GameObject tankObj = GameObject.Find("Tank");
+        tankObj.transform.position = new Vector3(
+            Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
+            Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
+            tankObj.transform.position.z);
 
-        float newEnergyAmount = Mathf.Clamp(_params.Get("Energy") + _params.Get("EnergyBoostValue"), 0.0F, _params.Get("MaxEnergy"));
+        _params.Add("Energy", -Cost);
 
-        _params.Set("Energy", newEnergyAmount);
-
-        Cooldown = MaxCooldown;
-	}
+        Cooldown = MaxCooldown;*/
+    }
     // ======================================================================================================================================== //
 }

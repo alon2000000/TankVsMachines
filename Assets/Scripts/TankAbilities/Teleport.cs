@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teleport : MonoBehaviour, ISkill
+public class Teleport : MonoBehaviour, IActiveSkill
 {
     private KeyCode _key = KeyCode.None;
     public KeyCode Key

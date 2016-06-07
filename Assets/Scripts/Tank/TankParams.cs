@@ -40,6 +40,10 @@ public class TankParams : MonoBehaviour
     public float EnergyBoostValue = 20.0F;
     public float EnergyBoostCooldown = 5.0F; // in sec
 
+    public float TurboLevel = 0.0F;
+    public float TurboCostPerSec = 1.5F;
+    public float TurboSpeedMultiplyer = 2.0F;
+
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
@@ -79,6 +83,11 @@ public class TankParams : MonoBehaviour
         _params["EnergyBoostCost"] =       new TankParam("EnergyBoostCost",       EnergyBoostCost);
         _params["EnergyBoostValue"] =       new TankParam("EnergyBoostValue",       EnergyBoostValue);
         _params["EnergyBoostCooldown"] =   new TankParam("EnergyBoostCooldown",   EnergyBoostCooldown);
+
+        // turbo
+        _params["TurboLevel"] =             new TankParam("TurboLevel",             TurboLevel);
+        _params["TurboCostPerSec"] =        new TankParam("TurboCostPerSec",        TurboCostPerSec);
+        _params["TurboSpeedMultiplyer"] =   new TankParam("TurboSpeedMultiplyer",   TurboSpeedMultiplyer);
     }
     // ======================================================================================================================================== //
 	void Start () 
