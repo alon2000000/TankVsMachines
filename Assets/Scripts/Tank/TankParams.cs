@@ -25,6 +25,13 @@ public class TankParams : MonoBehaviour
 
     public float Weight = 10.0F;
 
+    public float TurretRotateSpeed = 90.0F;
+    public float TankTurnSpeed = 180.0F;
+    public float TankSpeed = 3.0F;
+    public float MagFireRate = 0.05F;
+    public float MagRange = 3.0F;
+    public float MagAccuracy = 0.05F;
+
     public float MaxShield = 100.0F;
     public float Shield = 100.0F;
     public float ShieldDurability = 5.0F;
@@ -58,13 +65,12 @@ public class TankParams : MonoBehaviour
 
         _params["Weight"] =     new TankParam("Weight",     Weight);
 
-        _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  90.0F  );
-        _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      180.0F );
-        _params["TankSpeed"] =           new TankParam("TankSpeed",          3.0F   );
-        _params["MagFireRate"] =         new TankParam("MagFireRate",        0.05F  );
-        _params["MagRange"] =            new TankParam("MagRange",           3.0F   );
-        _params["MagAccuracy"] =         new TankParam("MagAccuracy",        0.05F  );
-        _params["TeleportLevel"] =       new TankParam("TeleportLevel",      0.0F   );
+        _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  TurretRotateSpeed);
+        _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      TankTurnSpeed);
+        _params["TankSpeed"] =           new TankParam("TankSpeed",          TankSpeed);
+        _params["MagFireRate"] =         new TankParam("MagFireRate",        MagFireRate);
+        _params["MagRange"] =            new TankParam("MagRange",           MagRange);
+        _params["MagAccuracy"] =         new TankParam("MagAccuracy",        MagAccuracy);
 
         // shield
         _params["MaxShield"] =              new TankParam("MaxShield",              MaxShield);

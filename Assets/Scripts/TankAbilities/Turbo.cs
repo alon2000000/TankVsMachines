@@ -19,7 +19,25 @@ public class Turbo : MonoBehaviour, IPassiveSkill
     public bool IsActive
     {
         get{ return _isActive; }
-        set{ _isActive = value; }
+        set
+        { 
+            _isActive = value; 
+
+            if (_isActive)
+            {
+                Time.timeScale /= _params.Get("TurboSpeedMultiplyer");
+                _params.Set("TankSpeed", _params.Get("TankSpeed") * _params.Get("TurboSpeedMultiplyer"));
+                _params.Set("TurretRotateSpeed",_params.Get("TurretRotateSpeed") * _params.Get("TurboSpeedMultiplyer"));
+                _params.Set("TankTurnSpeed",_params.Get("TankTurnSpeed") * _params.Get("TurboSpeedMultiplyer"));
+            }
+            else
+            {
+                Time.timeScale *= _params.Get("TurboSpeedMultiplyer");
+                _params.Set("TankSpeed", _params.Get("TankSpeed") / _params.Get("TurboSpeedMultiplyer"));
+                _params.Set("TurretRotateSpeed",_params.Get("TurretRotateSpeed") / _params.Get("TurboSpeedMultiplyer"));
+                _params.Set("TankTurnSpeed",_params.Get("TankTurnSpeed") / _params.Get("TurboSpeedMultiplyer"));
+            }
+        }
     }
 
     private TankParams _params;
@@ -31,33 +49,23 @@ public class Turbo : MonoBehaviour, IPassiveSkill
     // ======================================================================================================================================== //
     void Update () 
     {
-        /*if (Cooldown > 0.0F)
+        if (Input.GetKeyDown(Key))
         {
-            Cooldown -= Time.deltaTime;
-            return;
+            IsActive = !IsActive;
         }
 
-        if (Key == KeyCode.None)
-            return;
-        if (!Input.GetKeyDown(Key))
-            return;
+        if (IsActive)
+        {
+            if (_params.Get("Energy") > 0.0F)
+            {
+                _params.Add("Energy", -CostPerSec * Time.deltaTime);
 
-        int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));
-        if (level <= 0)
-            return;
-
-        if (!IsReady)
-            return;
-
-        GameObject tankObj = GameObject.Find("Tank");
-        tankObj.transform.position = new Vector3(
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
-            tankObj.transform.position.z);
-
-        _params.Add("Energy", -Cost);
-
-        Cooldown = MaxCooldown;*/
+            }
+            else
+            {
+                IsActive = false;
+            }
+        }
     }
     // ======================================================================================================================================== //
 }

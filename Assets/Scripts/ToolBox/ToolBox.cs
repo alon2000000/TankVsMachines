@@ -7,6 +7,7 @@ public class Toolbox : Singleton<Toolbox>
     public string myGlobalVar = "whatever";
 
     public int MaxChipOrderInLayer = 0; // jumps in 2 when chip inserted into inventory + when chip is dragged (in 2 because we wnat the logo to be one over the body)
+    public bool IsInsideInventory = false;
 
     //public ChipBonusManager ChipBonusManager;
 

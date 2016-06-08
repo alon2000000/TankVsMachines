@@ -17,7 +17,7 @@ public class BarrelShooting : MonoBehaviour
 	void Update () 
 	{
         // return if in inventory
-        if (Mathf.RoundToInt(Time.timeScale) == 0)
+        if (Toolbox.Instance.IsInsideInventory)
             return;
 
         if (Input.GetMouseButtonDown(1)) // left click

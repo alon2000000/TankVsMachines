@@ -68,7 +68,10 @@ public class SkillsManager : MonoBehaviour
             else if (_skills[i] is IPassiveSkill)
             {
                 IPassiveSkill currentSkill = _skills[i] as IPassiveSkill;
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
+                if (currentSkill.IsActive)
+                    currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
+                else
+                    currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = new Color(0.0F, 0.111F, 0.0F);
             }
         }
 	}

@@ -21,7 +21,7 @@ public class ParallelMagShooting : MonoBehaviour
 	void FixedUpdate () 
 	{
         // return if in inventory
-        if (Mathf.RoundToInt(Time.timeScale) == 0)
+        if (Toolbox.Instance.IsInsideInventory)
             return;
             
 		float timePassedfFromLastShot = Time.time - _lastTimeShooting;

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class InputManager : MonoBehaviour 
 {
-    private bool _isInInventory = false;
-
     public GameObject Inventory;
     public GameObject ChipsBagObj;
     public GameObject ChipsBoardObj;
@@ -58,18 +56,20 @@ public class InputManager : MonoBehaviour
         // I to inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
-            _isInInventory = !_isInInventory;
+            Toolbox.Instance.IsInsideInventory = !Toolbox.Instance.IsInsideInventory;
 
-            Time.timeScale = _isInInventory ? 0.0F : 1.0F;
+            // stop game
+            Time.timeScale = Toolbox.Instance.IsInsideInventory ? 0.0F : 1.0F;
 
-            if (_isInInventory)
+            // move inventory to AZAZEL when not inside it
+            if (Toolbox.Instance.IsInsideInventory)
                 Inventory.transform.localPosition = new Vector3(0.0F, 0.0F, 0.0F);
             else
                 Inventory.transform.localPosition = new Vector3(10000.0F, 10000.0F, 0.0F);
             /*InventoryBackgroungObj.SetActive(_isInInventory);
             ChipsBagObj.SetActive(_isInInventory);
             ChipsBoardObj.SetActive(_isInInventory);*/
-            UiCanvas.SetActive(_isInInventory);
+            UiCanvas.SetActive(Toolbox.Instance.IsInsideInventory);
         }
     }
     // ======================================================================================================================================== //
@@ -319,7 +319,7 @@ public class InputManager : MonoBehaviour
     // ======================================================================================================================================== //
     private void updateCursor()
     {
-        if (_isInInventory)
+        if (Toolbox.Instance.IsInsideInventory)
             Cursor.SetCursor (SelectCursor, new Vector2(0.0F, 0.0F), CursorMode.Auto);
         else
             Cursor.SetCursor (TargetCursor, new Vector2(16.0F, 16.0F), CursorMode.Auto);
