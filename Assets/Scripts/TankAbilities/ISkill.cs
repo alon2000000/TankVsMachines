@@ -16,7 +16,6 @@ public interface ISkill
     KeyCode Key{ get; set; }
 
     float Cost{ get; }
-    bool IsReady{ get; }
 
     float MaxActionTime{ get; }
     float ActionTime{ get; }

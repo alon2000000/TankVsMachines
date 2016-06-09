@@ -3,7 +3,12 @@ using System.Collections;
 
 public class Teleport : MonoBehaviour, ISkill
 {
-    public SkillState State{ get; set; }
+    private SkillState _state = SkillState.NOT_READY;
+    public SkillState State
+    { 
+        get{ return _state; } 
+        set{ _state = value; } 
+    }
 
     private KeyCode _key = KeyCode.None;
     public KeyCode Key
@@ -17,13 +22,14 @@ public class Teleport : MonoBehaviour, ISkill
         get{ return _params.Get("TeleportCost"); }
     }
 
-    public bool IsReady
-    {
-        get{ return (_params.Get("Energy") >= Cost); }
-    }
-
     public float MaxActionTime{ get { return 0.0F; } }
-    public float ActionTime{ get { return 0.0F; } }
+
+    private float _actionTime = 0.0F;
+    public float ActionTime
+    { 
+        get { return _actionTime; } 
+        set{ _actionTime = value; }
+    }
 
     public float MaxCooldown
     {
@@ -46,33 +52,43 @@ public class Teleport : MonoBehaviour, ISkill
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (Cooldown > 0.0F)
+        if (State != SkillState.ACTION && State != SkillState.COOLDOWN)
         {
-            Cooldown -= Time.deltaTime;
-            return;
+            if (_params.Get("Energy") < Cost)
+                State = SkillState.NOT_READY;
+            else
+                State = SkillState.READY;
         }
 
-        if (Key == KeyCode.None)
-            return;
-        if (!Input.GetKeyDown(Key))
+        if (State == SkillState.NOT_READY)
             return;
 
-        int level = Mathf.RoundToInt(_params.Get("TeleportLevel"));
-        if (level <= 0)
-            return;
+        if (Input.GetKeyDown(Key) && State == SkillState.READY)
+        {
+            State = SkillState.COOLDOWN;
+            _params.Add("Energy", -Cost);
+            ActionTime = MaxActionTime;
 
-        if (!IsReady)
-            return;
+            GameObject tankObj = GameObject.Find("Tank");
+            tankObj.transform.position = new Vector3(
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
+                tankObj.transform.position.z);
 
-        GameObject tankObj = GameObject.Find("Tank");
-        tankObj.transform.position = new Vector3(
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).x, 
-            Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 
-            tankObj.transform.position.z);
+            Cooldown = MaxCooldown;
+        }
 
-        _params.Add("Energy", -Cost);
-
-        Cooldown = MaxCooldown;
+        if (State == SkillState.COOLDOWN)
+        {
+            if (Cooldown > 0.0F)
+            {
+                Cooldown -= Time.deltaTime;
+            }
+            else
+            {
+                State = SkillState.NOT_READY;
+            }
+        }
 	}
     // ======================================================================================================================================== //
 }
