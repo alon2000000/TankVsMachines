@@ -29,7 +29,8 @@ public class Loot : MonoBehaviour
         ARMOR,
         ENERGY_BOOST,
         ENERGY,
-        TURBO
+        TURBO,
+        TIME_MASTER
     }
 
     public enum LootRarity
@@ -236,7 +237,7 @@ public class Loot : MonoBehaviour
     // ======================================================================================================================================== //
     private void setLootLogoAndScript4SkillChip()
     {
-        int rand = Random.Range(0,3);
+        int rand = Random.Range(0,4);
         if (rand == 0)
         {
             SkillTexture = Toolbox.Instance.ChipsResources.TeleportTexture;
@@ -254,6 +255,12 @@ public class Loot : MonoBehaviour
             SkillTexture = Toolbox.Instance.ChipsResources.TurboTexture;
             ChipLogo = LogoType.TURBO;
             SkillChildObject.AddComponent<Turbo>();
+        }
+        else if (rand == 3)
+        {
+            SkillTexture = Toolbox.Instance.ChipsResources.TimeMasterTexture;
+            ChipLogo = LogoType.TIME_MASTER;
+            SkillChildObject.AddComponent<TimeMaster>();
         }
     }
     // ======================================================================================================================================== //

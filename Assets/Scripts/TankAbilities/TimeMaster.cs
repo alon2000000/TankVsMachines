@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Turbo : MonoBehaviour, ISkill
+public class TimeMaster : MonoBehaviour, ISkill
 {
     private SkillState _state = SkillState.NOT_READY;
     public SkillState State
@@ -19,7 +19,7 @@ public class Turbo : MonoBehaviour, ISkill
 
     public float Cost
     {
-        get{ return _params.Get("TurboCost"); }
+        get{ return _params.Get("TimeMasterCost"); }
     }
 
     public bool IsReady
@@ -27,7 +27,7 @@ public class Turbo : MonoBehaviour, ISkill
         get{ return (_params.Get("Energy") >= Cost); }
     }
 
-    public float MaxActionTime{ get { return _params.Get("TurboActionTime"); } }
+    public float MaxActionTime{ get { return _params.Get("TimeMasterActionTime"); } }
 
     private float _actionTime = 0.0F;
     public float ActionTime
@@ -38,7 +38,7 @@ public class Turbo : MonoBehaviour, ISkill
 
     public float MaxCooldown
     {
-        get{ return _params.Get("TurboCooldown"); }
+        get{ return _params.Get("TimeMasterCooldown"); }
     }
 
     private float _Cooldown = 0.0F;
@@ -73,7 +73,11 @@ public class Turbo : MonoBehaviour, ISkill
             State = SkillState.ACTION;
             _params.Add("Energy", -Cost);
             ActionTime = MaxActionTime;
-            _params.Set("TankSpeed", _params.Get("TankSpeed") * _params.Get("TurboSpeedMultiplyer"));
+
+            Time.timeScale /= _params.Get("TimeMasterTimeMultiplyer");
+            _params.Set("TankSpeed", _params.Get("TankSpeed") * _params.Get("TimeMasterTimeMultiplyer"));
+            _params.Set("TurretRotateSpeed",_params.Get("TurretRotateSpeed") * _params.Get("TimeMasterTimeMultiplyer"));
+            _params.Set("TankTurnSpeed",_params.Get("TankTurnSpeed") * _params.Get("TimeMasterTimeMultiplyer"));
         }
 
         if (State == SkillState.ACTION)
@@ -86,7 +90,11 @@ public class Turbo : MonoBehaviour, ISkill
             {
                 State = SkillState.COOLDOWN;
                 Cooldown = MaxCooldown;
-                _params.Set("TankSpeed", _params.Get("TankSpeed") / _params.Get("TurboSpeedMultiplyer"));
+
+                Time.timeScale *= _params.Get("TimeMasterTimeMultiplyer");
+                _params.Set("TankSpeed", _params.Get("TankSpeed") / _params.Get("TimeMasterTimeMultiplyer"));
+                _params.Set("TurretRotateSpeed",_params.Get("TurretRotateSpeed") / _params.Get("TimeMasterTimeMultiplyer"));
+                _params.Set("TankTurnSpeed",_params.Get("TankTurnSpeed") / _params.Get("TimeMasterTimeMultiplyer"));
             }
         }
 

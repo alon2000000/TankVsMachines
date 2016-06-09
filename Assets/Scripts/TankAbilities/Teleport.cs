@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teleport : MonoBehaviour, IActiveSkill
+public class Teleport : MonoBehaviour, ISkill
 {
+    public SkillState State{ get; set; }
+
     private KeyCode _key = KeyCode.None;
     public KeyCode Key
     {
@@ -19,6 +21,9 @@ public class Teleport : MonoBehaviour, IActiveSkill
     {
         get{ return (_params.Get("Energy") >= Cost); }
     }
+
+    public float MaxActionTime{ get { return 0.0F; } }
+    public float ActionTime{ get { return 0.0F; } }
 
     public float MaxCooldown
     {

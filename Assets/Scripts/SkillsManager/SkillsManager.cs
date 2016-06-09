@@ -50,28 +50,32 @@ public class SkillsManager : MonoBehaviour
             // matched skill icon of the current skill
             GameObject currentSkillIcon = _skillsIcons[i];
 
-            // ACTIVE SKILL
-            if (_skills[i] is IActiveSkill)
-            {
-                IActiveSkill currentSkill = _skills[i] as IActiveSkill;
+            // current skill script
+            ISkill currentSkill = _skills[i] as ISkill;
 
-                // cool down effect shown - size of background
+            // not ready state
+            if (currentSkill.State == SkillState.NOT_READY)
+            {
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.gray;
+            }
+            // ready state
+            else if (currentSkill.State == SkillState.READY)
+            {
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.blue;
+            }
+            // action state
+            else if (currentSkill.State == SkillState.ACTION)
+            {
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.yellow;
+                float ratio = currentSkill.ActionTime / currentSkill.MaxActionTime;
+                currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
+            }
+            // cooldown state
+            else if (currentSkill.State == SkillState.COOLDOWN)
+            {
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
                 float ratio = 1.0F - currentSkill.Cooldown / currentSkill.MaxCooldown;
                 currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
-
-                // if skill not ready - gray it
-                bool isSkillReady = currentSkill.IsReady;
-                Color backgroundColor = isSkillReady ? Color.blue : Color.gray;
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = backgroundColor;
-            }
-            // PASSIVE SKILL
-            else if (_skills[i] is IPassiveSkill)
-            {
-                IPassiveSkill currentSkill = _skills[i] as IPassiveSkill;
-                if (currentSkill.IsActive)
-                    currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
-                else
-                    currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = new Color(0.0F, 0.111F, 0.0F);
             }
         }
 	}

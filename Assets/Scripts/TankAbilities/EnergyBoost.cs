@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnergyBoost : MonoBehaviour, IActiveSkill
+public class EnergyBoost : MonoBehaviour, ISkill
 {
+    public SkillState State{ get; set; }
+
     private KeyCode _key = KeyCode.None;
     public KeyCode Key
     {
@@ -19,6 +21,9 @@ public class EnergyBoost : MonoBehaviour, IActiveSkill
     {
         get{ return (_params.CashChips >= Cost); }
     }
+
+    public float MaxActionTime{ get { return 0.0F; } }
+    public float ActionTime{ get { return 0.0F; } }
 
     public float MaxCooldown
     {

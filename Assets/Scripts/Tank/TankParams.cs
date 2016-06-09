@@ -48,8 +48,17 @@ public class TankParams : MonoBehaviour
     public float EnergyBoostCooldown = 5.0F; // in sec
 
     public float TurboLevel = 0.0F;
-    public float TurboCostPerSec = 1.5F;
-    public float TurboSpeedMultiplyer = 2.0F;
+    public float TurboCost = 20.0F;
+    public float TurboSpeedMultiplyer = 4.0F;
+    public float TurboActionTime = 1.0F;
+    public float TurboCooldown = 5.0F;
+
+    public float TimeMasterLevel = 0.0F;
+    public float TimeMasterCost = 80.0F;
+    public float TimeMasterActionTime = 10.0F;
+    public float TimeMasterCooldown = 7.0F;
+    public float TimeMasterTimeMultiplyer = 2.0F;
+
 
     public GameObject ExplosionObj;
 
@@ -92,8 +101,18 @@ public class TankParams : MonoBehaviour
 
         // turbo
         _params["TurboLevel"] =             new TankParam("TurboLevel",             TurboLevel);
-        _params["TurboCostPerSec"] =        new TankParam("TurboCostPerSec",        TurboCostPerSec);
+        _params["TurboCost"] =              new TankParam("TurboCost",              TurboCost);
         _params["TurboSpeedMultiplyer"] =   new TankParam("TurboSpeedMultiplyer",   TurboSpeedMultiplyer);
+        _params["TurboActionTime"] =        new TankParam("TurboActionTime",        TurboActionTime);
+        _params["TurboCooldown"] =          new TankParam("TurboCooldown",          TurboCooldown);
+
+        // time master
+        _params["TimeMasterLevel"] =            new TankParam("TimeMasterLevel",            TimeMasterLevel);
+        _params["TimeMasterCost"] =             new TankParam("TimeMasterCost",             TimeMasterCost);
+        _params["TimeMasterActionTime"] =       new TankParam("TimeMasterActionTime",       TimeMasterActionTime);
+        _params["TimeMasterCooldown"] =         new TankParam("TimeMasterCooldown",         TimeMasterCooldown);
+        _params["TimeMasterTimeMultiplyer"] =   new TankParam("TimeMasterTimeMultiplyer",   TimeMasterTimeMultiplyer);
+
     }
     // ======================================================================================================================================== //
 	void Start () 
@@ -109,16 +128,22 @@ public class TankParams : MonoBehaviour
     // ======================================================================================================================================== //
     public float Get(string name)
     {
+        if (!_params.Keys.Contains(name))
+            throw new UnityException("param not exists");
         return _params[name].Value;
     }
     // ======================================================================================================================================== //
     public void Set(string name, float val)
     {
+        if (!_params.Keys.Contains(name))
+            throw new UnityException("param not exists");
         _params[name].OriginalValue = val;
     }
     // ======================================================================================================================================== //
     public void Add(string name, float val)
     {
+        if (!_params.Keys.Contains(name))
+            throw new UnityException("param not exists");
         _params[name].OriginalValue += val;
     }
     // ======================================================================================================================================== //
