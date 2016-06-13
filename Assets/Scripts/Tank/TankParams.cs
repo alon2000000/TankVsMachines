@@ -16,103 +16,58 @@ public class TankParams : MonoBehaviour
 
     public int CashChips = 0;
 
-    public float MaxHP = 100.0F;
-    public float HP = 100.0F;
-
-    public float MaxEnergy = 100.0F;
-    public float Energy = 100.0F;
-    public float EnergyRegeneration = 1.0F; // energy unit per sec
-
-    public float Weight = 10.0F;
-
-    public float TurretRotateSpeed = 90.0F;
-    public float TankTurnSpeed = 180.0F;
-    public float TankSpeed = 3.0F;
-    public float MagFireRate = 0.05F;
-    public float MagRange = 3.0F;
-    public float MagAccuracy = 0.05F;
-
-    public float MaxShield = 100.0F;
-    public float Shield = 100.0F;
-    public float ShieldDurability = 5.0F;
-    public float ShieldVsPenetration = 25.0F;
-    public float ShieldAbsorption = 25.0F;
-
-    public float TeleportLevel = 0.0F;
-    public float TeleportCost = 50.0F;
-    public float TeleportCooldown = 5.0F; // in sec
-
-    public float EnergyBoostLevel = 0.0F;
-    public float EnergyBoostCost = 10.0F;
-    public float EnergyBoostValue = 20.0F;
-    public float EnergyBoostCooldown = 5.0F; // in sec
-
-    public float TurboLevel = 0.0F;
-    public float TurboCost = 20.0F;
-    public float TurboSpeedMultiplyer = 4.0F;
-    public float TurboActionTime = 1.0F;
-    public float TurboCooldown = 5.0F;
-
-    public float TimeMasterLevel = 0.0F;
-    public float TimeMasterCost = 80.0F;
-    public float TimeMasterActionTime = 10.0F;
-    public float TimeMasterCooldown = 7.0F;
-    public float TimeMasterTimeMultiplyer = 2.0F;
-
-
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
     void Awake()
     {
-        _params["MaxHP"] =      new TankParam("MaxHP",      MaxHP);
-        _params["HP"] =         new TankParam("HP",         HP);
+        addParam("MaxHP", 1000.0F);
+        addParam("HP", 1000.0F);
 
-        _params["MaxEnergy"] =          new TankParam("MaxEnergy",          MaxEnergy);
-        _params["Energy"] =             new TankParam("Energy",             Energy);
-        _params["EnergyRegeneration"] = new TankParam("EnergyRegeneration", EnergyRegeneration);
+        addParam("MaxEnergy", 100.0F);
+        addParam("Energy", 100.0F);
+        addParam("EnergyRegeneration", 1.0F);
 
-        _params["Weight"] =     new TankParam("Weight",     Weight);
+        addParam("Weight", 10.0F);
 
-        _params["TurretRotateSpeed"] =   new TankParam("TurretRotateSpeed",  TurretRotateSpeed);
-        _params["TankTurnSpeed"] =       new TankParam("TankTurnSpeed",      TankTurnSpeed);
-        _params["TankSpeed"] =           new TankParam("TankSpeed",          TankSpeed);
-        _params["MagFireRate"] =         new TankParam("MagFireRate",        MagFireRate);
-        _params["MagRange"] =            new TankParam("MagRange",           MagRange);
-        _params["MagAccuracy"] =         new TankParam("MagAccuracy",        MagAccuracy);
+        addParam("TurretRotateSpeed", 90.0F);
+        addParam("TankTurnSpeed", 180.0F);
+        addParam("TankSpeed", 3.0F);
+        addParam("MagFireRate", 0.05F);
+        addParam("MagRange", 3.0F);
+        addParam("MagAccuracy", 0.05F);
 
         // shield
-        _params["MaxShield"] =              new TankParam("MaxShield",              MaxShield);
-        _params["Shield"] =                 new TankParam("Shield",                 Shield);
-        _params["ShieldDurability"] =       new TankParam("ShieldDurability",       ShieldDurability);
-        _params["ShieldVsPenetration"] =    new TankParam("ShieldVsPenetration",    ShieldVsPenetration);
-        _params["ShieldAbsorption"] =       new TankParam("ShieldAbsorption",       ShieldAbsorption);
+        addParam("MaxShield", 100.0F);
+        addParam("Shield", 100.0F);
+        addParam("ShieldDurability", 5.0F);
+        addParam("ShieldVsPenetration", 25.0F);
+        addParam("ShieldAbsorption", 25.0F);
 
         // teleport
-        _params["TeleportLevel"] =      new TankParam("TeleportLevel",      TeleportLevel);
-        _params["TeleportCost"] =       new TankParam("TeleportCost",       TeleportCost);
-        _params["TeleportCooldown"] =   new TankParam("TeleportCooldown",   TeleportCooldown);
+        addParam("TeleportLevel", 1.0F);
+        addParam("TeleportCost", 80.0F);
+        addParam("TeleportCooldown", 5.0F); // in sec
 
         // energy boost
-        _params["EnergyBoostLevel"] =      new TankParam("EnergyBoostLevel",      EnergyBoostLevel);
-        _params["EnergyBoostCost"] =       new TankParam("EnergyBoostCost",       EnergyBoostCost);
-        _params["EnergyBoostValue"] =       new TankParam("EnergyBoostValue",       EnergyBoostValue);
-        _params["EnergyBoostCooldown"] =   new TankParam("EnergyBoostCooldown",   EnergyBoostCooldown);
+        addParam("EnergyBoostLevel", 1.0F);
+        addParam("EnergyBoostCost", 10.0F);
+        addParam("EnergyBoostValue", 15.0F);
+        addParam("EnergyBoostCooldown", 1.0F);
 
         // turbo
-        _params["TurboLevel"] =             new TankParam("TurboLevel",             TurboLevel);
-        _params["TurboCost"] =              new TankParam("TurboCost",              TurboCost);
-        _params["TurboSpeedMultiplyer"] =   new TankParam("TurboSpeedMultiplyer",   TurboSpeedMultiplyer);
-        _params["TurboActionTime"] =        new TankParam("TurboActionTime",        TurboActionTime);
-        _params["TurboCooldown"] =          new TankParam("TurboCooldown",          TurboCooldown);
+        addParam("TurboLevel", 1.0F);
+        addParam("TurboCost", 25.0F);
+        addParam("TurboSpeedMultiplyer", 4.0F);
+        addParam("TurboActionTime", 1.0F);
+        addParam("TurboCooldown", 10.0F);
 
         // time master
-        _params["TimeMasterLevel"] =            new TankParam("TimeMasterLevel",            TimeMasterLevel);
-        _params["TimeMasterCost"] =             new TankParam("TimeMasterCost",             TimeMasterCost);
-        _params["TimeMasterActionTime"] =       new TankParam("TimeMasterActionTime",       TimeMasterActionTime);
-        _params["TimeMasterCooldown"] =         new TankParam("TimeMasterCooldown",         TimeMasterCooldown);
-        _params["TimeMasterTimeMultiplyer"] =   new TankParam("TimeMasterTimeMultiplyer",   TimeMasterTimeMultiplyer);
-
+        addParam("TimeMasterLevel", 1.0F);
+        addParam("TimeMasterCost", 50.0F);
+        addParam("TimeMasterActionTime", 10.0F);
+        addParam("TimeMasterCooldown", 20.0F);
+        addParam("TimeMasterTimeMultiplyer", 2.0F);
     }
     // ======================================================================================================================================== //
 	void Start () 
@@ -125,6 +80,13 @@ public class TankParams : MonoBehaviour
         updateCheckLife();
         updateEnergyRegeneration();
 	}
+    // ======================================================================================================================================== //
+    private void addParam(string paramName, float initValue)
+    {
+        if (_params.Keys.Contains(paramName))
+            throw new UnityException("duplication of param "+paramName);
+        _params[paramName] =   new TankParam(paramName, initValue);
+    }
     // ======================================================================================================================================== //
     public float Get(string name)
     {
