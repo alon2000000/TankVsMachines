@@ -20,7 +20,7 @@ public class SkillsManager : MonoBehaviour
     public GameObject Skill0;
 
     private List<GameObject> _skillsIcons = new List<GameObject>();
-    private List<ISkill> _skills = new List<ISkill>();
+    private List<Skill> _skills = new List<Skill>();
     // ======================================================================================================================================== //
 	void Start () 
     {
@@ -51,7 +51,8 @@ public class SkillsManager : MonoBehaviour
             GameObject currentSkillIcon = _skillsIcons[i];
 
             // current skill script
-            ISkill currentSkill = _skills[i] as ISkill;
+
+            Skill currentSkill = _skills[i] as Skill;
 
             // not ready state
             if (currentSkill.State == SkillState.NOT_READY)
@@ -111,9 +112,9 @@ public class SkillsManager : MonoBehaviour
                         chipScript.SkillChildObject.SetActive(true);
                         int skillNumber = Convert.ToInt32(_skillsIcons[tempIndex].transform.FindChild("Text").GetComponent<Text>().text);
 
-                        chipScript.SkillChildObject.GetComponent<ISkill>().Key = getKeyByNumber(skillNumber);
+                        chipScript.SkillChildObject.GetComponent<Skill>().Key = getKeyByNumber(skillNumber);
 
-                        _skills.Add(chipScript.SkillChildObject.GetComponent<ISkill>());
+                        _skills.Add(chipScript.SkillChildObject.GetComponent<Skill>());
 
                         tempIndex++;
                     }
@@ -145,8 +146,7 @@ public class SkillsManager : MonoBehaviour
                         // deactive the skill child object
                         chipScript.SkillChildObject.SetActive(false);
 
-                        chipScript.SkillChildObject.GetComponent<ISkill>().Key = KeyCode.None;
-                        //chipScript.SkillChildObject.GetComponent<ISkill>().Chip = null;
+                        chipScript.SkillChildObject.GetComponent<Skill>().Key = KeyCode.None;
                     }
                 }
             }
