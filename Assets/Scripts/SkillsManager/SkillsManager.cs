@@ -19,8 +19,13 @@ public class SkillsManager : MonoBehaviour
     public GameObject Skill9;
     public GameObject Skill0;
 
+    // list of icons in the gui of socketed skill chips
     private List<GameObject> _skillsIcons = new List<GameObject>();
+    // list of scripts of socketed skill chips
     private List<Skill> _skills = new List<Skill>();
+
+    // list of all skills scripts that the tank contains
+    public List<Skill> TankSkills = new List<Skill>();
     // ======================================================================================================================================== //
 	void Start () 
     {

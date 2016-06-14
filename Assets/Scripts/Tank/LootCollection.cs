@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class LootCollection : MonoBehaviour 
 {
@@ -32,6 +34,25 @@ public class LootCollection : MonoBehaviour
             Destroy(lootObject);
             Params.Add("Cash", 1);
             return;
+        }
+
+        // if skill that exists - upgrade version to skill else, add it to the tank skills list
+        if (lootScript.Type == Loot.LootType.SKILL_CHIP)
+        {
+            Skill skillScript = lootScript.SkillChildObject.GetComponent<Skill>();
+
+            List<Skill> existsSameSkillScriptList = Toolbox.Instance.SkillsManager.TankSkills.Where(a => a.GetType() == skillScript.GetType()).ToList();
+
+            if (existsSameSkillScriptList.Count == 0)
+            {
+                Toolbox.Instance.SkillsManager.TankSkills.Add(skillScript);
+            }
+            else
+            {
+                existsSameSkillScriptList[0].Version += 0.1F;
+                Destroy(lootObject);
+                return;
+            }
         }
 
         // else, create bigger version in inventory

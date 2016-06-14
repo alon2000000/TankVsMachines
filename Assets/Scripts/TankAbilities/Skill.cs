@@ -25,6 +25,14 @@ public abstract class Skill : MonoBehaviour
         set{ _key = value; }
     }
 
+    //public float Version = 1.0F;
+    private float _version = 1.0F;
+    public float Version
+    {
+        get{ return _version; }
+        set{ _version = value; }
+    }
+
     public abstract float Cost { get; }
     public abstract float Resource { get; set; }
 
