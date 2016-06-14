@@ -14,11 +14,6 @@ public class EnergyBoost : Skill
         set{ _params.Set("Cash", value); }
     }
 
-    public override float MaxActionTime
-    { 
-        get { return 0.0F; } 
-    }
-
     public override float MaxCooldown
     {
         get{ return _params.Get("EnergyBoostCooldown"); }

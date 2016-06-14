@@ -28,7 +28,7 @@ public abstract class Skill : MonoBehaviour
     public abstract float Cost { get; }
     public abstract float Resource { get; set; }
 
-    public abstract float MaxActionTime { get; } 
+    public virtual float MaxActionTime { get { return 0.0F; } } 
 
     private float _actionTime = 0.0F;
     public float ActionTime

@@ -14,11 +14,6 @@ public class Teleport : Skill
         set{ _params.Set("Energy", value); }
     }
 
-    public override float MaxActionTime
-    { 
-        get { return 0.0F; } 
-    }
-
     public override float MaxCooldown
     {
         get{ return _params.Get("TeleportCooldown"); }
