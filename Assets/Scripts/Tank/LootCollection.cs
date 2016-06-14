@@ -30,7 +30,7 @@ public class LootCollection : MonoBehaviour
         if (lootScript.Type == Loot.LootType.SCRAP)
         {
             Destroy(lootObject);
-            Params.CashChips++;
+            Params.Add("Cash", 1);
             return;
         }
 

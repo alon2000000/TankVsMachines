@@ -8,6 +8,12 @@ public class Turbo : Skill
         get{ return _params.Get("TurboCost"); }
     }
 
+    public override float Resource 
+    { 
+        get{ return _params.Get("Energy"); }
+        set{ _params.Set("Energy", value); }
+    }
+
     public override float MaxActionTime
     { 
         get { return _params.Get("TurboActionTime"); } 
@@ -16,11 +22,6 @@ public class Turbo : Skill
     public override float MaxCooldown
     {
         get{ return _params.Get("TurboCooldown"); }
-    }
-
-    public override bool IsCanPayCost
-    {
-        get{ return _params.Get("Energy") >= Cost; }
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

@@ -14,13 +14,15 @@ public class TankParams : MonoBehaviour
         get{ return _params;}
     }
 
-    public int CashChips = 0;
+    //public int CashChips = 0;
 
     public GameObject ExplosionObj;
 
     // ======================================================================================================================================== //
     void Awake()
     {
+        addParam("Cash", 0.0F);
+
         addParam("MaxHP", 1000.0F);
         addParam("HP", 1000.0F);
 

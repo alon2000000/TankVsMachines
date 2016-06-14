@@ -8,6 +8,12 @@ public class Teleport : Skill
         get{ return _params.Get("TeleportCost"); }
     }
 
+    public override float Resource 
+    { 
+        get{ return _params.Get("Energy"); }
+        set{ _params.Set("Energy", value); }
+    }
+
     public override float MaxActionTime
     { 
         get { return 0.0F; } 
@@ -16,11 +22,6 @@ public class Teleport : Skill
     public override float MaxCooldown
     {
         get{ return _params.Get("TeleportCooldown"); }
-    }
-
-    public override bool IsCanPayCost
-    {
-        get{ return _params.Get("Energy") >= Cost; }
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

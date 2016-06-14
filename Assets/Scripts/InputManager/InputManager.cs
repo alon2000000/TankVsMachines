@@ -114,7 +114,7 @@ public class InputManager : MonoBehaviour
                 if (_isHandledChipAboveSalvage)
                 {
                     Destroy(_objectHandledByMouse.gameObject);
-                    Params.CashChips += 5; // TODO: change to be different in unique etc.
+                    Params.Add("Cash", 5); // TODO: change to be different in unique etc.
                 }
 
                 // if on legal board tiles - socket!

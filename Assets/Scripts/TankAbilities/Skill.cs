@@ -26,6 +26,7 @@ public abstract class Skill : MonoBehaviour
     }
 
     public abstract float Cost { get; }
+    public abstract float Resource { get; set; }
 
     public abstract float MaxActionTime { get; } 
 
@@ -45,8 +46,6 @@ public abstract class Skill : MonoBehaviour
         set{ _Cooldown = value; }
     }
 
-    public abstract bool IsCanPayCost { get; }
-
     protected TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 
@@ -58,7 +57,7 @@ public abstract class Skill : MonoBehaviour
     {
         if (State != SkillState.ACTION && State != SkillState.COOLDOWN)
         {
-            if (IsCanPayCost)
+            if (Cost <= Resource)
                 State = SkillState.READY;
             else
                 State = SkillState.NOT_READY;
@@ -70,7 +69,7 @@ public abstract class Skill : MonoBehaviour
         if (Input.GetKeyDown(Key) && State == SkillState.READY)
         {
             State = SkillState.ACTION;
-            _params.Add("Energy", -Cost);
+            Resource = Resource - Cost;
             ActionTime = MaxActionTime;
 
             beginAction();

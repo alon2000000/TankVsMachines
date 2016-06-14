@@ -39,7 +39,7 @@ public class ShowTankParamsInGui : MonoBehaviour
     // ======================================================================================================================================== //
     private void showChipsCashAmountInUI()
     {
-        ChipsAmountText.text = Params.CashChips.ToString();
+        ChipsAmountText.text = Params.Get("Cash").ToString();
     }
     // ======================================================================================================================================== //
     private void showBars()

@@ -8,6 +8,12 @@ public class TimeMaster : Skill
         get{ return _params.Get("TimeMasterCost"); }
     }
 
+    public override float Resource 
+    { 
+        get{ return _params.Get("Energy"); }
+        set{ _params.Set("Energy", value); }
+    }
+
     public override float MaxActionTime
     { 
         get { return _params.Get("TimeMasterActionTime"); } 
@@ -16,11 +22,6 @@ public class TimeMaster : Skill
     public override float MaxCooldown
     {
         get{ return _params.Get("TimeMasterCooldown"); }
-    }
-
-    public override bool IsCanPayCost
-    {
-        get{ return _params.Get("Energy") >= Cost; }
     }
     // ======================================================================================================================================== //
     protected override void beginAction()
