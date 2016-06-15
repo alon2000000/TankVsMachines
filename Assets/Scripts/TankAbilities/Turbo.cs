@@ -23,6 +23,11 @@ public class Turbo : Skill
     {
         get{ return _params.Get("TurboCooldown"); }
     }
+
+    public override float FailChance 
+    { 
+        get{ return _params.Get("TurboFailChance"); }
+    }
     // ======================================================================================================================================== //
     protected override void beginAction()
     {

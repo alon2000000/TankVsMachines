@@ -6,7 +6,8 @@ public enum SkillState
     NOT_READY,
     READY,
     ACTION,
-    COOLDOWN
+    COOLDOWN,
+    FAILURE
 }
 
 public abstract class Skill : MonoBehaviour 
@@ -25,7 +26,6 @@ public abstract class Skill : MonoBehaviour
         set{ _key = value; }
     }
 
-    //public float Version = 1.0F;
     private float _version = 1.0F;
     public float Version
     {
@@ -54,6 +54,9 @@ public abstract class Skill : MonoBehaviour
         set{ _Cooldown = value; }
     }
 
+    public abstract float FailChance { get; }
+    private float _maxFailureTime;
+
     protected TankParams _params;
     // ======================================================================================================================================== //
 	void Start () 
@@ -63,7 +66,7 @@ public abstract class Skill : MonoBehaviour
     // ======================================================================================================================================== //
 	void Update () 
     {
-        if (State != SkillState.ACTION && State != SkillState.COOLDOWN)
+        if (State != SkillState.ACTION && State != SkillState.COOLDOWN && State != SkillState.FAILURE)
         {
             if (Cost <= Resource)
                 State = SkillState.READY;
@@ -76,11 +79,20 @@ public abstract class Skill : MonoBehaviour
 
         if (Input.GetKeyDown(Key) && State == SkillState.READY)
         {
-            State = SkillState.ACTION;
-            Resource = Resource - Cost;
-            ActionTime = MaxActionTime;
+            if (Random.Range(0.0F, 1.0F) <= FailChance) // if fail
+            {
+                State = SkillState.FAILURE;
+                _maxFailureTime = 2.0F;
+            }
+            else
+            {
+                State = SkillState.ACTION;
+                ActionTime = MaxActionTime;
 
-            beginAction();
+                beginAction();
+            }
+
+            Resource = Resource - Cost; // pay cost also if failed
         }
 
         if (State == SkillState.ACTION)
@@ -103,6 +115,18 @@ public abstract class Skill : MonoBehaviour
             if (Cooldown > 0.0F)
             {
                 Cooldown -= Time.deltaTime;
+            }
+            else
+            {
+                State = SkillState.NOT_READY;
+            }
+        }
+
+        if (State == SkillState.FAILURE)
+        {
+            if (_maxFailureTime > 0.0F)
+            {
+                _maxFailureTime -= Time.deltaTime;
             }
             else
             {

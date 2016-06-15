@@ -18,6 +18,11 @@ public class EnergyBoost : Skill
     {
         get{ return _params.Get("EnergyBoostCooldown"); }
     }
+
+    public override float FailChance 
+    { 
+        get{ return _params.Get("EnergyBoostFailChance"); }
+    }
     // ======================================================================================================================================== //
     protected override void beginAction()
     {

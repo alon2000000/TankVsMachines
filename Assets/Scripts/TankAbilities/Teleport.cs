@@ -18,6 +18,11 @@ public class Teleport : Skill
     {
         get{ return _params.Get("TeleportCooldown"); }
     }
+
+    public override float FailChance 
+    { 
+        get{ return _params.Get("TeleportFailChance"); }
+    }
     // ======================================================================================================================================== //
     protected override void beginAction()
     {

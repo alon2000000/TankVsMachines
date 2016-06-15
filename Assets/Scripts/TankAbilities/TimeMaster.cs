@@ -5,7 +5,7 @@ public class TimeMaster : Skill
 {
     public override float Cost
     {
-        get{ return _params.Get("TimeMasterCost"); }
+        get{ return _params.Get("TimeMasterCost")/* * Mathf.Pow(0.97F, Mathf.Floor(Version))*/; }
     }
 
     public override float Resource 
@@ -22,6 +22,11 @@ public class TimeMaster : Skill
     public override float MaxCooldown
     {
         get{ return _params.Get("TimeMasterCooldown"); }
+    }
+
+    public override float FailChance 
+    { 
+        get{ return _params.Get("TimeMasterFailChance"); }
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

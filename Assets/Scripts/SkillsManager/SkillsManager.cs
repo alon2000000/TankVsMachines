@@ -83,6 +83,11 @@ public class SkillsManager : MonoBehaviour
                 float ratio = 1.0F - currentSkill.Cooldown / currentSkill.MaxCooldown;
                 currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
             }
+            // failure state
+            else if (currentSkill.State == SkillState.FAILURE)
+            {
+                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.red;
+            }
         }
 	}
     // ======================================================================================================================================== //
