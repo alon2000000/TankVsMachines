@@ -118,7 +118,7 @@ public abstract class Skill : MonoBehaviour
     { 
         get
         {
-            return this.GetType().Name+" V"+Version.ToString()+"\nCost: " + Cost.ToString() + "\nAction Time: " + MaxActionTime.ToString() + "\nCooldown: " + MaxCooldown.ToString() + "\nEffect Power: " + EffectPower.ToString() + "\nFailure Chance: " + FailureChance.ToString("P1");
+            return this.GetType().Name+" V"+Version.ToString("F1")+"\nCost: " + Cost.ToString() + "\nAction Time: " + MaxActionTime.ToString() + "\nCooldown: " + MaxCooldown.ToString() + "\nEffect Power: " + EffectPower.ToString() + "\nFailure Chance: " + FailureChance.ToString("P1");
         } 
     }
 
