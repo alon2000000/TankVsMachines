@@ -89,20 +89,14 @@ public class InputManager : MonoBehaviour
                 {
                     //Debug.Log(hit.collider.gameObject.name);
 
-                    if (hit.collider.gameObject.GetComponent<Loot>() != null)
+                    Loot lootScript = hit.collider.gameObject.GetComponent<Loot>();
+                    if (lootScript != null)
                     {
-                        //if (hit.collider.gameObject.GetComponent<Chip>().State != Chip.ChipState.ON_GROUND)
-                        {
-                            _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                            _objectHandledByMouse = hit.collider.gameObject;
-                            unsocketChip();
+                        _mouseDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        _objectHandledByMouse = hit.collider.gameObject;
+                        unsocketChip();
 
-                            // change sorting order to be on top of all other chips
-                            _objectHandledByMouse.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
-                            _objectHandledByMouse.GetComponent<Loot>().Body.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
-                            _objectHandledByMouse.GetComponent<Loot>().Logo.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer + 1;
-                            Toolbox.Instance.MaxChipOrderInLayer += 2;
-                        }
+                        lootScript.PutChipOnTopOfAllOthers();
                     }
                 }
             }

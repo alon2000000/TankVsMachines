@@ -129,6 +129,7 @@ public abstract class Skill : MonoBehaviour
         _params = Toolbox.Instance.TankParams;
 
         addBonuses();
+        updateDecorationColor();
 	}
     // ======================================================================================================================================== //
 	void Update () 
@@ -215,7 +216,25 @@ public abstract class Skill : MonoBehaviour
             _currentSkillBonusIndex = 0;
         else
             _currentSkillBonusIndex++;
-        Debug.Log("ToggleSkillBonus");
+
+        updateDecorationColor();
+    }
+    // ======================================================================================================================================== //
+    private void updateDecorationColor()
+    {
+        // change color of decoration due to the cureent skill bonus
+        Color decorationColor;
+        if (CurrentSkillBonus == SkillBonus.COST)
+            decorationColor = new Color(0.0F, 0.5F, 1.0F);
+        else if (CurrentSkillBonus == SkillBonus.ACTION_TIME)
+            decorationColor = Color.yellow;
+        else if (CurrentSkillBonus == SkillBonus.EFFECT_POWER)
+            decorationColor = Color.red;
+        else if (CurrentSkillBonus == SkillBonus.COOLDOWN)
+            decorationColor = Color.green;
+        else
+            decorationColor = Color.black;
+        gameObject.GetComponent<Loot>().Decoration.GetComponent<SpriteRenderer>().color = decorationColor;
     }
     // ======================================================================================================================================== //
 }

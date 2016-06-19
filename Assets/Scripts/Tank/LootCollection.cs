@@ -68,18 +68,16 @@ public class LootCollection : MonoBehaviour
             chipSpriteRenderer.sprite = lootScript.FrameTexture;
             lootScript.Logo.SetActive(true);
             lootScript.Body.SetActive(true);
-            //lootScript.Frame.SetActive(true);
+            lootScript.Decoration.SetActive(true);
             lootScript.Logo.GetComponent<SpriteRenderer>().sprite = lootScript.SkillTexture;
             lootScript.Body.GetComponent<SpriteRenderer>().sprite = lootScript.BodyTexture;
-            //lootScript.Frame.GetComponent<SpriteRenderer>().sprite = lootScript.FrameTexture;
+            if (lootScript.Type == Loot.LootType.SKILL_CHIP)
+                lootScript.Decoration.GetComponent<SpriteRenderer>().sprite = lootScript.DecorationTexture;
 
 			// change the layer of sprite
 			chipSpriteRenderer.sortingLayerName = "AboveUI";
             // change the sorting layer of chips parts
-            chipSpriteRenderer.sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
-            lootScript.Body.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
-            lootScript.Logo.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer + 1;
-            Toolbox.Instance.MaxChipOrderInLayer += 2;
+            lootScript.PutChipOnTopOfAllOthers();
 
 			// update polygon collider
             Destroy(lootObject.GetComponent<BoxCollider2D>());

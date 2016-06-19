@@ -18,6 +18,9 @@ public class ChipsResources : MonoBehaviour
     // chip skill body
     public Sprite BodySkillTexture;
 
+    // chip skill body
+    public Sprite DecorationSkillTexture;
+
     // chips logos
     public Sprite RepairTexture;
     public Sprite TurretTexture;

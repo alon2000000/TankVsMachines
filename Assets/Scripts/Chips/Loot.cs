@@ -52,6 +52,7 @@ public class Loot : MonoBehaviour
     public Sprite BodyTexture;
     public Sprite FrameTexture;
     public Sprite SkillTexture;
+    public Sprite DecorationTexture;
 
     // colors
     public Color SilverStartColor;
@@ -69,6 +70,7 @@ public class Loot : MonoBehaviour
     public GameObject Body;
     public GameObject Frame;
     public GameObject Logo;
+    public GameObject Decoration;
 
     // chances
     public float GetScrapChance = 75.0F;
@@ -96,6 +98,7 @@ public class Loot : MonoBehaviour
         else if (Type == LootType.SKILL_CHIP) // skill chip
         {
             BodyTexture = Toolbox.Instance.ChipsResources.BodySkillTexture;
+            DecorationTexture = Toolbox.Instance.ChipsResources.DecorationSkillTexture;
             FrameTexture = Toolbox.Instance.ChipsResources.FrameTexture2on2;
 
             setLootLogoAndScript4SkillChip();
@@ -333,6 +336,16 @@ public class Loot : MonoBehaviour
         float ZRotation = (transform.rotation.eulerAngles.z == 0) ? -90.0F : 90.0F;
         transform.Rotate(new Vector3(0.0F, 0.0F, ZRotation));
         Body.transform.Rotate(new Vector3(180.0F, 0.0F, 0.0F));
+    }
+    // ======================================================================================================================================== //
+    public void PutChipOnTopOfAllOthers()
+    {
+        // change sorting order to be on top of all other chips
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+        gameObject.GetComponent<Loot>().Decoration.GetComponent<SpriteRenderer>().sortingOrder = Toolbox.Instance.MaxChipOrderInLayer;
+        gameObject.GetComponent<Loot>().Body.GetComponent<SpriteRenderer>().sortingOrder =       Toolbox.Instance.MaxChipOrderInLayer + 1;
+        gameObject.GetComponent<Loot>().Logo.GetComponent<SpriteRenderer>().sortingOrder =       Toolbox.Instance.MaxChipOrderInLayer + 2;
+        Toolbox.Instance.MaxChipOrderInLayer += 3;
     }
     // ======================================================================================================================================== //
     private void addReward(TankParamReward reward)
