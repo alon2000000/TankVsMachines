@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnergyBoost : Skill
 {
-    public override float Cost
+    public override float BaseCost
     {
         get{ return _params.Get("EnergyBoostCost"); }
     }
@@ -14,14 +14,27 @@ public class EnergyBoost : Skill
         set{ _params.Set("Cash", value); }
     }
 
-    public override float MaxCooldown
+    public override float BaseMaxCooldown
     {
         get{ return _params.Get("EnergyBoostCooldown"); }
     }
 
-    public override float FailChance 
+    public override float BaseFailureChance 
     { 
         get{ return _params.Get("EnergyBoostFailChance"); }
+    }
+
+    /*public override string Description 
+    { 
+        get
+        {
+            return "Energy Boost V"+Version.ToString()+"\nCost: " + Cost.ToString() + "\nAction Time: " + MaxActionTime.ToString() + "\nCooldown: " + MaxCooldown.ToString() + "\nEffect Power: " + EffectPower.ToString() + "\nFailure Chance: " + FailureChance.ToString();
+        } 
+    }*/
+    // ======================================================================================================================================== //
+    protected override void addBonuses()
+    {
+        SkillBonuses.Add(SkillBonus.COST);
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

@@ -70,8 +70,6 @@ public class Loot : MonoBehaviour
     public GameObject Frame;
     public GameObject Logo;
 
-    public GameObject SkillChildObject;
-
     // chances
     public float GetScrapChance = 75.0F;
     public float GetSkillChipChance = 5.0F;
@@ -242,25 +240,25 @@ public class Loot : MonoBehaviour
         {
             SkillTexture = Toolbox.Instance.ChipsResources.TeleportTexture;
             ChipLogo = LogoType.TELEPORT;
-            SkillChildObject.AddComponent<Teleport>();
+            gameObject.AddComponent<Teleport>();
         }
         else if (rand == 1)
         {
             SkillTexture = Toolbox.Instance.ChipsResources.EnergyBoostTexture;
             ChipLogo = LogoType.ENERGY_BOOST;
-            SkillChildObject.AddComponent<EnergyBoost>();
+            gameObject.AddComponent<EnergyBoost>();
         }
         else if (rand == 2)
         {
             SkillTexture = Toolbox.Instance.ChipsResources.TurboTexture;
             ChipLogo = LogoType.TURBO;
-            SkillChildObject.AddComponent<Turbo>();
+            gameObject.AddComponent<Turbo>();
         }
         else if (rand == 3)
         {
             SkillTexture = Toolbox.Instance.ChipsResources.TimeMasterTexture;
             ChipLogo = LogoType.TIME_MASTER;
-            SkillChildObject.AddComponent<TimeMaster>();
+            gameObject.AddComponent<TimeMaster>();
         }
     }
     // ======================================================================================================================================== //
@@ -385,8 +383,6 @@ public class Loot : MonoBehaviour
         //########################################################################### //
         if (ChipLogo == LogoType.TELEPORT)
         {
-            addReward(new TankParamReward("TeleportLevel", 1.0F, TankParamReward.RewardType.ADDITION));
-
             int rand = Random.Range(0, 21);
             if (rand <= 17)
             {
@@ -403,8 +399,6 @@ public class Loot : MonoBehaviour
         //########################################################################### //
         if (ChipLogo == LogoType.ENERGY_BOOST)
         {
-            addReward(new TankParamReward("EnergyBoostLevel", 1.0F, TankParamReward.RewardType.ADDITION));
-
             int rand = Random.Range(0, 21);
             if (rand <= 17)
             {

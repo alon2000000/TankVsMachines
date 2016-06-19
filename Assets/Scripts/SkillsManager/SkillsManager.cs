@@ -119,12 +119,12 @@ public class SkillsManager : MonoBehaviour
                         _skillsIcons[tempIndex].transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.blue;
                         _skillsIcons[tempIndex].transform.FindChild("SkillImage").gameObject.SetActive(true);
                         _skillsIcons[tempIndex].transform.FindChild("SkillImage").GetComponent<Image>().sprite = chipScript.Logo.GetComponent<SpriteRenderer>().sprite;
-                        chipScript.SkillChildObject.SetActive(true);
+                        socketedChip.GetComponent<Skill>().IsActice = true;
                         int skillNumber = Convert.ToInt32(_skillsIcons[tempIndex].transform.FindChild("Text").GetComponent<Text>().text);
 
-                        chipScript.SkillChildObject.GetComponent<Skill>().Key = getKeyByNumber(skillNumber);
+                        socketedChip.GetComponent<Skill>().Key = getKeyByNumber(skillNumber);
 
-                        _skills.Add(chipScript.SkillChildObject.GetComponent<Skill>());
+                        _skills.Add(socketedChip.GetComponent<Skill>());
 
                         tempIndex++;
                     }
@@ -154,9 +154,9 @@ public class SkillsManager : MonoBehaviour
                     if (chipScript.Type == Loot.LootType.SKILL_CHIP)
                     {
                         // deactive the skill child object
-                        chipScript.SkillChildObject.SetActive(false);
+                        socketedChip.GetComponent<Skill>().IsActice = false;
 
-                        chipScript.SkillChildObject.GetComponent<Skill>().Key = KeyCode.None;
+                        socketedChip.GetComponent<Skill>().Key = KeyCode.None;
                     }
                 }
             }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Teleport : Skill
 {
-    public override float Cost
+    public override float BaseCost
     {
         get{ return _params.Get("TeleportCost"); }
     }
@@ -14,14 +14,28 @@ public class Teleport : Skill
         set{ _params.Set("Energy", value); }
     }
 
-    public override float MaxCooldown
+    public override float BaseMaxCooldown
     {
         get{ return _params.Get("TeleportCooldown"); }
     }
 
-    public override float FailChance 
+    public override float BaseFailureChance 
     { 
         get{ return _params.Get("TeleportFailChance"); }
+    }
+
+    /*public override string Description 
+    { 
+        get
+        {
+            return "Teleport V"+Version.ToString()+"\nCost: " + Cost.ToString() + "\nAction Time: " + MaxActionTime.ToString() + "\nCooldown: " + MaxCooldown.ToString() + "\nEffect Power: " + EffectPower.ToString() + "\nFailure Chance: " + FailureChance.ToString();
+        } 
+    }*/
+    // ======================================================================================================================================== //
+    protected override void addBonuses()
+    {
+        SkillBonuses.Add(SkillBonus.COST);
+        SkillBonuses.Add(SkillBonus.COOLDOWN);
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

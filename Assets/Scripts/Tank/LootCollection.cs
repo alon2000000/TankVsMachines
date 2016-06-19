@@ -39,7 +39,7 @@ public class LootCollection : MonoBehaviour
         // if skill that exists - upgrade version to skill else, add it to the tank skills list
         if (lootScript.Type == Loot.LootType.SKILL_CHIP)
         {
-            Skill skillScript = lootScript.SkillChildObject.GetComponent<Skill>();
+            Skill skillScript = lootObject.GetComponent<Skill>();
 
             List<Skill> existsSameSkillScriptList = Toolbox.Instance.SkillsManager.TankSkills.Where(a => a.GetType() == skillScript.GetType()).ToList();
 

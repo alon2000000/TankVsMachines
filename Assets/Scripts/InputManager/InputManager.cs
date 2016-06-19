@@ -38,7 +38,10 @@ public class InputManager : MonoBehaviour
 
         dragChip();
         draggedChipHoverOverBoard();
+
         rotateChipUpdate();
+        toggleSkillChipBonusUpdate();
+
         showChipDescriptionInUI();
         salvageChips();
 
@@ -156,6 +159,25 @@ public class InputManager : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<Loot>() != null)
                 {
                     hit.collider.gameObject.GetComponent<Loot>().Rotate90Deg();
+                }
+            }
+        }
+    }
+    // ======================================================================================================================================== //
+    private void toggleSkillChipBonusUpdate()
+    {
+        if (Input.GetMouseButtonDown(1)) // check right click
+        {
+            LayerMask layerMask = (1 << LayerMask.NameToLayer("LootInInventoryLayer"));
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.GetComponent<Loot>() != null)
+                {
+                    if (hit.collider.gameObject.GetComponent<Loot>().Type == Loot.LootType.SKILL_CHIP)
+                    {
+                        hit.collider.gameObject.GetComponent<Loot>().GetComponent<Skill>().ToggleSkillBonus();
+                    }
                 }
             }
         }
@@ -279,18 +301,26 @@ public class InputManager : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f, layerMask);
         if (hit.collider != null)
         {
-            if (hit.collider.gameObject.GetComponent<Loot>() != null)
+            Loot lootScript = hit.collider.gameObject.GetComponent<Loot>();
+            if (lootScript != null)
             {
-                List<TankParamReward> rewards = hit.collider.gameObject.GetComponent<Loot>().Rewards;
-                if (rewards != null)
-                    foreach (TankParamReward reward in rewards)
-                    {
-                        ChipDescriptionText.text += "[" + reward.Name + ": ";
-                        ChipDescriptionText.text += reward.Value;
-                        if (reward.Type == TankParamReward.RewardType.PERCENT)
-                            ChipDescriptionText.text += "%";
-                        ChipDescriptionText.text += "] ";
-                    }
+                if (lootScript.Type == Loot.LootType.SKILL_CHIP)
+                {
+                    ChipDescriptionText.text = lootScript.gameObject.GetComponent<Skill>().Description;
+                }
+                else
+                {
+                    List<TankParamReward> rewards = lootScript.Rewards;
+                    if (rewards != null)
+                        foreach (TankParamReward reward in rewards)
+                        {
+                            ChipDescriptionText.text += "[" + reward.Name + ": ";
+                            ChipDescriptionText.text += reward.Value;
+                            if (reward.Type == TankParamReward.RewardType.PERCENT)
+                                ChipDescriptionText.text += "%";
+                            ChipDescriptionText.text += "] ";
+                        }
+                }
             }
         }
     }

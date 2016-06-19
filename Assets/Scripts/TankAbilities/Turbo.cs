@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Turbo : Skill
 {
-    public override float Cost
+    public override float BaseCost
     {
         get{ return _params.Get("TurboCost"); }
     }
@@ -14,19 +14,35 @@ public class Turbo : Skill
         set{ _params.Set("Energy", value); }
     }
 
-    public override float MaxActionTime
+    public override float BaseMaxActionTime
     { 
         get { return _params.Get("TurboActionTime"); } 
     }
 
-    public override float MaxCooldown
+    public override float BaseMaxCooldown
     {
         get{ return _params.Get("TurboCooldown"); }
     }
 
-    public override float FailChance 
+    public override float BaseFailureChance 
     { 
         get{ return _params.Get("TurboFailChance"); }
+    }
+
+    /*public override string Description 
+    { 
+        get
+        {
+            return "Turbo V"+Version.ToString()+"\nCost: " + Cost.ToString() + "\nAction Time: " + MaxActionTime.ToString() + "\nCooldown: " + MaxCooldown.ToString() + "\nEffect Power: " + EffectPower.ToString() + "\nFailure Chance: " + FailureChance.ToString();
+        } 
+    }*/
+    // ======================================================================================================================================== //
+    protected override void addBonuses()
+    {
+        SkillBonuses.Add(SkillBonus.COST);
+        SkillBonuses.Add(SkillBonus.ACTION_TIME);
+        SkillBonuses.Add(SkillBonus.COOLDOWN);
+        SkillBonuses.Add(SkillBonus.EFFECT_POWER);
     }
     // ======================================================================================================================================== //
     protected override void beginAction()

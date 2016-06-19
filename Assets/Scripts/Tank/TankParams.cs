@@ -47,20 +47,17 @@ public class TankParams : MonoBehaviour
         addParam("ShieldAbsorption", 25.0F);
 
         // teleport
-        addParam("TeleportLevel", 1.0F);
         addParam("TeleportCost", 80.0F);
         addParam("TeleportCooldown", 5.0F); // in sec
         addParam("TeleportFailChance", 0.10F);
 
         // energy boost
-        addParam("EnergyBoostLevel", 1.0F);
         addParam("EnergyBoostCost", 10.0F);
         addParam("EnergyBoostValue", 15.0F);
         addParam("EnergyBoostCooldown", 1.0F);
         addParam("EnergyBoostFailChance", 0.025F);
 
         // turbo
-        addParam("TurboLevel", 1.0F);
         addParam("TurboCost", 25.0F);
         addParam("TurboSpeedMultiplyer", 4.0F);
         addParam("TurboActionTime", 1.0F);
@@ -68,7 +65,6 @@ public class TankParams : MonoBehaviour
         addParam("TurboFailChance", 0.50F);
 
         // time master
-        addParam("TimeMasterLevel", 1.0F);
         addParam("TimeMasterCost", 50.0F);
         addParam("TimeMasterActionTime", 10.0F);
         addParam("TimeMasterCooldown", 20.0F);
