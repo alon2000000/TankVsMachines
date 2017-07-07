@@ -62,31 +62,31 @@ public class SkillsManager : MonoBehaviour
             // not ready state
             if (currentSkill.State == SkillState.NOT_READY)
             {
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.gray;
+                currentSkillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.gray;
             }
             // ready state
             else if (currentSkill.State == SkillState.READY)
             {
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.blue;
+                currentSkillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.blue;
             }
             // action state
             else if (currentSkill.State == SkillState.ACTION)
             {
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.yellow;
+                currentSkillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.yellow;
                 float ratio = currentSkill.ActionTime / currentSkill.MaxActionTime;
-                currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
+                currentSkillIcon.transform.Find("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
             }
             // cooldown state
             else if (currentSkill.State == SkillState.COOLDOWN)
             {
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.green;
+                currentSkillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.green;
                 float ratio = 1.0F - currentSkill.Cooldown / currentSkill.MaxCooldown;
-                currentSkillIcon.transform.FindChild("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
+                currentSkillIcon.transform.Find("SkillBackground").transform.localScale = new Vector3(1.0F, ratio, 1.0F);
             }
             // failure state
             else if (currentSkill.State == SkillState.FAILURE)
             {
-                currentSkillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.red;
+                currentSkillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.red;
             }
         }
 	}
@@ -116,11 +116,11 @@ public class SkillsManager : MonoBehaviour
                         tempSkillsList.Add((int)chipScript.ChipLogo);
 
                         // add to _skills
-                        _skillsIcons[tempIndex].transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.blue;
-                        _skillsIcons[tempIndex].transform.FindChild("SkillImage").gameObject.SetActive(true);
-                        _skillsIcons[tempIndex].transform.FindChild("SkillImage").GetComponent<Image>().sprite = chipScript.Logo.GetComponent<SpriteRenderer>().sprite;
+                        _skillsIcons[tempIndex].transform.Find("SkillBackground").GetComponent<Image>().color = Color.blue;
+                        _skillsIcons[tempIndex].transform.Find("SkillImage").gameObject.SetActive(true);
+                        _skillsIcons[tempIndex].transform.Find("SkillImage").GetComponent<Image>().sprite = chipScript.Logo.GetComponent<SpriteRenderer>().sprite;
                         socketedChip.GetComponent<Skill>().IsActice = true;
-                        int skillNumber = Convert.ToInt32(_skillsIcons[tempIndex].transform.FindChild("Text").GetComponent<Text>().text);
+                        int skillNumber = Convert.ToInt32(_skillsIcons[tempIndex].transform.Find("Text").GetComponent<Text>().text);
 
                         socketedChip.GetComponent<Skill>().Key = getKeyByNumber(skillNumber);
 
@@ -139,8 +139,8 @@ public class SkillsManager : MonoBehaviour
 
         foreach (GameObject skillIcon in _skillsIcons)
         {
-            skillIcon.transform.FindChild("SkillBackground").GetComponent<Image>().color = Color.black;
-            skillIcon.transform.FindChild("SkillImage").gameObject.SetActive(false); // hide the image - TODO... maybe not good
+            skillIcon.transform.Find("SkillBackground").GetComponent<Image>().color = Color.black;
+            skillIcon.transform.Find("SkillImage").gameObject.SetActive(false); // hide the image - TODO... maybe not good
 
             // move over all tiles
             foreach (Transform tile in BoardObj.GetComponent<Board>().Tiles)
